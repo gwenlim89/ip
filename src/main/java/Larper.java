@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Larper {
     public static void main(String[] args) {
 
@@ -11,22 +9,14 @@ public class Larper {
                 + "|_____|  \\__,_| |_|    | .__/   \\___| |_|\n"
                 + "                       |_|\n";
         System.out.println(banner);
-        System.out.println("\t Fine day! I'm Larper. \n");
-        System.out.println("\t What can I do for you? \n");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.nextLine();
+        System.out.println("Fine day! I'm Larper. \n");
+        System.out.println("What can I do for you? \n");
+        
 
-            if (input.equals("exit")) {
-                break;
-            }   
-            System.out.println("____________________________________________________________ \n");
-            System.out.println("\t explain " + input);
-            System.out.println("____________________________________________________________ \n");
-        }
 
         System.out.println("____________________________________________________________ \n");
-        System.out.println(" \t Bye. Hope to see you again soon!");
+        System.out.println("Bye. Hope to see you soon! \n");
+        System.out.println("____________________________________________________________ \n");          
 
 
     }
