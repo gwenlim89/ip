@@ -1,8 +1,10 @@
 import java.util.Scanner;
 
 public class Larper {
+
     public static void main(String[] args) {
-        String line = "____________________________________________________________";
+        String[] tasks = new String[100];
+        String line = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
 
         System.out.println(line);
         String banner = " _                              \n"
@@ -17,7 +19,7 @@ public class Larper {
         System.out.println(line);
 
         Scanner scanner = new Scanner(System.in);
-
+        int taskCount = 0;
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
 
@@ -29,8 +31,20 @@ public class Larper {
                 break;
             }
 
-            System.out.println(" " + input);
-            System.out.println(line);
+            if (input.equals("list")){
+                int count = 0;
+                while (count < taskCount){
+                    System.out.println((count + 1) + ". " + tasks[count]);
+                    count++;
+                }
+                System.out.println(line);
+            }else{
+                tasks[taskCount] = input;
+                System.out.println("added: " + input);
+                System.out.println(line);
+                taskCount++;
+            }
+            
         }
 
         scanner.close();
