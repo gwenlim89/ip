@@ -2,8 +2,34 @@ import java.util.Scanner;
 
 public class Larper {
 
+    public static class Task {
+        private String description;
+        private boolean isDone;
+
+        public Task(String description) {
+            this.description = description;
+            this.isDone = false;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public boolean isDone() {
+            return isDone;
+        }
+
+        public void markAsDone() {
+            isDone = true;
+        }
+
+        public void unmarkAsDone() {
+            isDone = false;
+        }
+    }
+
     public static void main(String[] args) {
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         String line = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
 
         System.out.println(line);
@@ -34,24 +60,24 @@ public class Larper {
             if (input.equals("list")){
                 int count = 0;
                 while (count < taskCount){
-                    System.out.println((count + 1) + ". " + tasks[count]);
+                    System.out.println((count + 1) + ". " +  " [" + (tasks[count].isDone() ? "X" : " ") + "]" + tasks[count].getDescription());
                     count++;
                 }
                 System.out.println(line);
             }else if(input.contains("mark")){
                 int number = Integer.parseInt(input.substring(5, input.length()));
-                tasks[number - 1] = "[X] " + tasks[number - 1].substring(4, tasks[number - 1].length());
+                tasks[number - 1].markAsDone();
                 System.out.println("Marked task " + number + " as done.");
                 System.out.println(line);
 
             }else if(input.contains("unmark")){
                 int number = Integer.parseInt(input.substring(5, input.length()));
-                tasks[number - 1] = "[ ] " + tasks[number - 1].substring(4, tasks[number - 1].length());
+                tasks[number - 1].unmarkAsDone();
                 System.out.println("Unmarked task " + number + " as done.");
                 System.out.println(line);
 
             }else{
-                tasks[taskCount] = "[ ] " + input;
+                tasks[taskCount] = new Task(input);
                 System.out.println("added: " + input);
                 System.out.println(line);
                 taskCount++;
