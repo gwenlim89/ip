@@ -159,9 +159,9 @@ public class Larper {
                 Task task = createTask(input);
                 if (task == null) {
                     System.out.println(" Please use one of these formats:");
-                    System.out.println(" DESCRIPTION");
-                    System.out.println(" DESCRIPTION /by TIME");
-                    System.out.println(" DESCRIPTION /from START /to END");
+                    System.out.println(" todo DESCRIPTION");
+                    System.out.println(" deadline DESCRIPTION /by TIME");
+                    System.out.println(" event DESCRIPTION /from START /to END");
                 } else {
                     tasks[taskCount] = task;
                     taskCount++;
@@ -182,35 +182,39 @@ public class Larper {
             return null;
         }
 
-        int slashCount = countSlashes(input);
-
-        if (slashCount == 0) {
-            return new Todo(input);
+        if (input.startsWith("todo ")) {
+            String description = input.substring(5).trim();
+            if (description.isEmpty() || countSlashes(description) != 0) {
+                return null;
+            }
+            return new Todo(description);
         }
 
-        if (slashCount == 1) {
-            int byIndex = input.indexOf("/by");
+        if (input.startsWith("deadline ")) {
+            String taskInfo = input.substring(9).trim();
+            int byIndex = taskInfo.indexOf("/by");
             if (byIndex == -1) {
                 return null;
             }
-            String description = input.substring(0, byIndex).trim();
-            String by = input.substring(byIndex + 3).trim();
-            if (description.isEmpty() || by.isEmpty()) {
+            String description = taskInfo.substring(0, byIndex).trim();
+            String by = taskInfo.substring(byIndex + 3).trim();
+            if (description.isEmpty() || by.isEmpty() || countSlashes(taskInfo) != 1) {
                 return null;
             }
             return new Deadline(description, by);
         }
 
-        if (slashCount == 2) {
-            int fromIndex = input.indexOf("/from");
-            int toIndex = input.indexOf("/to");
+        if (input.startsWith("event ")) {
+            String taskInfo = input.substring(6).trim();
+            int fromIndex = taskInfo.indexOf("/from");
+            int toIndex = taskInfo.indexOf("/to");
             if (fromIndex == -1 || toIndex == -1 || fromIndex > toIndex) {
                 return null;
             }
-            String description = input.substring(0, fromIndex).trim();
-            String from = input.substring(fromIndex + 5, toIndex).trim();
-            String to = input.substring(toIndex + 3).trim();
-            if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            String description = taskInfo.substring(0, fromIndex).trim();
+            String from = taskInfo.substring(fromIndex + 5, toIndex).trim();
+            String to = taskInfo.substring(toIndex + 3).trim();
+            if (description.isEmpty() || from.isEmpty() || to.isEmpty() || countSlashes(taskInfo) != 2) {
                 return null;
             }
             return new Event(description, from, to);
