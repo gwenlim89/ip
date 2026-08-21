@@ -26,6 +26,70 @@ public class Larper {
         public void unmarkAsDone() {
             isDone = false;
         }
+
+        public String getStatusIcon() {
+            return isDone ? "X" : " ";
+        }
+
+        public String getTypeIcon() {
+            return "?";
+        }
+
+        @Override
+        public String toString() {
+            return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
+        }
+    }
+
+    public static class Todo extends Task {
+        public Todo(String description) {
+            super(description);
+        }
+
+        @Override
+        public String getTypeIcon() {
+            return "T";
+        }
+    }
+
+    public static class Deadline extends Task {
+        private String by;
+
+        public Deadline(String description, String by) {
+            super(description);
+            this.by = by;
+        }
+
+        @Override
+        public String getTypeIcon() {
+            return "D";
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " (by: " + by + ")";
+        }
+    }
+
+    public static class Event extends Task {
+        private String from;
+        private String to;
+
+        public Event(String description, String from, String to) {
+            super(description);
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public String getTypeIcon() {
+            return "E";
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " (from: " + from + " to: " + to + ")";
+        }
     }
 
     public static void main(String[] args) {
@@ -57,34 +121,126 @@ public class Larper {
                 break;
             }
 
-            if (input.equals("list")){
+            if (input.equals("list")) {
                 int count = 0;
-                while (count < taskCount){
-                    System.out.println((count + 1) + ". " +  " [" + (tasks[count].isDone() ? "X" : " ") + "]" + tasks[count].getDescription());
+                System.out.println(" Here are the tasks in your list:");
+                while (count < taskCount) {
+                    System.out.println(" " + (count + 1) + ". " + tasks[count]);
                     count++;
                 }
                 System.out.println(line);
-            }else if(input.contains("mark")){
-                int number = Integer.parseInt(input.substring(5, input.length()));
-                tasks[number - 1].markAsDone();
-                System.out.println("Marked task " + number + " as done.");
+            } else if (input.startsWith("mark ")) {
+                int number = parseTaskNumber(input.substring(5).trim());
+                if (number == -1) {
+                    System.out.println(" Please give me a valid task number to mark.");
+                } else if (number < 1 || number > taskCount) {
+                    System.out.println(" That task number does not exist.");
+                } else {
+                    tasks[number - 1].markAsDone();
+                    System.out.println(" Nice! I've marked this task as done:");
+                    System.out.println(" " + tasks[number - 1]);
+                }
                 System.out.println(line);
 
-            }else if(input.contains("unmark")){
-                int number = Integer.parseInt(input.substring(5, input.length()));
-                tasks[number - 1].unmarkAsDone();
-                System.out.println("Unmarked task " + number + " as done.");
+            } else if (input.startsWith("unmark ")) {
+                int number = parseTaskNumber(input.substring(7).trim());
+                if (number == -1) {
+                    System.out.println(" Please give me a valid task number to unmark.");
+                } else if (number < 1 || number > taskCount) {
+                    System.out.println(" That task number does not exist.");
+                } else {
+                    tasks[number - 1].unmarkAsDone();
+                    System.out.println(" OK, I've marked this task as not done yet:");
+                    System.out.println(" " + tasks[number - 1]);
+                }
                 System.out.println(line);
 
-            }else{
-                tasks[taskCount] = new Task(input);
-                System.out.println("added: " + input);
+            } else {
+                Task task = createTask(input);
+                if (task == null) {
+                    System.out.println(" Please use one of these formats:");
+                    System.out.println(" DESCRIPTION");
+                    System.out.println(" DESCRIPTION /by TIME");
+                    System.out.println(" DESCRIPTION /from START /to END");
+                } else {
+                    tasks[taskCount] = task;
+                    taskCount++;
+                    System.out.println(" Got it. I've added this task:");
+                    System.out.println(" " + tasks[taskCount - 1]);
+                    printTaskCount(taskCount);
+                }
                 System.out.println(line);
-                taskCount++;
             }
-            
+
         }
 
         scanner.close();
+    }
+
+    private static Task createTask(String input) {
+        if (input.isEmpty()) {
+            return null;
+        }
+
+        int slashCount = countSlashes(input);
+
+        if (slashCount == 0) {
+            return new Todo(input);
+        }
+
+        if (slashCount == 1) {
+            int byIndex = input.indexOf("/by");
+            if (byIndex == -1) {
+                return null;
+            }
+            String description = input.substring(0, byIndex).trim();
+            String by = input.substring(byIndex + 3).trim();
+            if (description.isEmpty() || by.isEmpty()) {
+                return null;
+            }
+            return new Deadline(description, by);
+        }
+
+        if (slashCount == 2) {
+            int fromIndex = input.indexOf("/from");
+            int toIndex = input.indexOf("/to");
+            if (fromIndex == -1 || toIndex == -1 || fromIndex > toIndex) {
+                return null;
+            }
+            String description = input.substring(0, fromIndex).trim();
+            String from = input.substring(fromIndex + 5, toIndex).trim();
+            String to = input.substring(toIndex + 3).trim();
+            if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                return null;
+            }
+            return new Event(description, from, to);
+        }
+
+        return null;
+    }
+
+    private static int countSlashes(String input) {
+        int slashCount = 0;
+        int index = 0;
+        while (index < input.length()) {
+            if (input.charAt(index) == '/') {
+                slashCount++;
+            }
+            index++;
+        }
+        return slashCount;
+    }
+
+    private static int parseTaskNumber(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private static void printTaskCount(int taskCount) {
+        String taskWord = taskCount == 1 ? "task" : "tasks";
+        System.out.println(" Now you have " + taskCount + " " + taskWord + " in the list.");
     }
 }
