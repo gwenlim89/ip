@@ -38,8 +38,20 @@ public class Larper {
                     count++;
                 }
                 System.out.println(line);
+            }else if(input.contains("mark")){
+                int number = Integer.parseInt(input.substring(5, input.length()));
+                tasks[number - 1] = "[X] " + tasks[number - 1].substring(4, tasks[number - 1].length());
+                System.out.println("Marked task " + number + " as done.");
+                System.out.println(line);
+
+            }else if(input.contains("unmark")){
+                int number = Integer.parseInt(input.substring(5, input.length()));
+                tasks[number - 1] = "[ ] " + tasks[number - 1].substring(4, tasks[number - 1].length());
+                System.out.println("Unmarked task " + number + " as done.");
+                System.out.println(line);
+
             }else{
-                tasks[taskCount] = input;
+                tasks[taskCount] = "[ ] " + input;
                 System.out.println("added: " + input);
                 System.out.println(line);
                 taskCount++;
