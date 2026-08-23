@@ -233,3 +233,146 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
+
+## Test Case: delete task from middle
+
+Aim: Verify that a delete command embedded in a sentence removes the numbered task and keeps the remaining task order correct.
+
+Inputs:
+```text
+todo alpha
+deadline beta /by 9 mar no time
+event gamma /from 10 mar 2pm /to 11 mar 4pm
+please delete 2
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [T][ ] alpha
+ Now you have 1 task in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] beta (by: 9 mar no time)
+ Now you have 2 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [E][ ] gamma (from: 10 mar 2pm to: 11 mar 4pm)
+ Now you have 3 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Poof it gone now:
+ [D][ ] beta (by: 9 mar no time)
+ Now you have 2 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [T][ ] alpha
+ 2. [E][ ] gamma (from: 10 mar 2pm to: 11 mar 4pm)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+## Test Case: invalid delete inputs
+
+Aim: Verify that non-number delete input and out-of-range delete numbers show delete-specific exception messages.
+
+Inputs:
+```text
+todo alpha
+delete two
+delete 7
+delete 0
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [T][ ] alpha
+ Now you have 1 task in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Deletion needs a number, not characters.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ The number provided is invalid. Try again.
+ You have 1 task(s) in the list, so the number must be from 1 to 1.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ The number provided is invalid. Try again.
+ You have 1 task(s) in the list, so the number must be from 1 to 1.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [T][ ] alpha
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+## Test Case: delete from empty list
+
+Aim: Verify that deleting from an empty task list shows the empty deletion exception message.
+
+Inputs:
+```text
+delete 1
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Task list is empty nothing to delete here!!!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```

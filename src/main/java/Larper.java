@@ -1,107 +1,15 @@
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Larper {
-
-    public static class Task {
-        private String description;
-        private boolean isDone;
-
-        public Task(String description) {
-            this.description = description;
-            this.isDone = false;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public boolean isDone() {
-            return isDone;
-        }
-
-        public void markAsDone() {
-            isDone = true;
-        }
-
-        public void unmarkAsDone() {
-            isDone = false;
-        }
-
-        public String getStatusIcon() {
-            return isDone ? "X" : " ";
-        }
-
-        public String getTypeIcon() {
-            return "?";
-        }
-
-        @Override
-        public String toString() {
-            return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
-        }
-    }
-
-    public static class Todo extends Task {
-        public Todo(String description) {
-            super(description);
-        }
-
-        @Override
-        public String getTypeIcon() {
-            return "T";
-        }
-    }
-
-    public static class Deadline extends Task {
-        private String byDate;
-        private String byTime;
-
-        public Deadline(String description, String byDate, String byTime) {
-            super(description);
-            this.byDate = byDate;
-            this.byTime = byTime;
-        }
-
-        @Override
-        public String getTypeIcon() {
-            return "D";
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " (by: " + byDate + " " + byTime + ")";
-        }
-    }
-
-    public static class Event extends Task {
-        private String startDate;
-        private String startTime;
-        private String endDate;
-        private String endTime;
-
-        public Event(String description, String startDate, String startTime, String endDate, String endTime) {
-            super(description);
-            this.startDate = startDate;
-            this.startTime = startTime;
-            this.endDate = endDate;
-            this.endTime = endTime;
-        }
-
-        @Override
-        public String getTypeIcon() {
-            return "E";
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " (from: " + startDate + " " + startTime
-                    + " to: " + endDate + " " + endTime + ")";
-        }
-    }
+    private static final Pattern DELETE_PATTERN = Pattern.compile("\\bdelete\\b\\s+(\\S+)");
+    private static final Pattern DELETE_WORD_PATTERN = Pattern.compile("\\bdelete\\b");
 
     private static class PendingTask {
         private String type;
@@ -125,7 +33,7 @@ public class Larper {
     private static PendingTask pendingTask;
 
     public static void main(String[] args) {
-        Task[] tasks = new Task[100];
+        ArrayList<Task> tasks = new ArrayList<>();
         String line = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
 
         System.out.println(line);
@@ -158,7 +66,7 @@ public class Larper {
                     int count = 0;
                     System.out.println(" Here are the tasks in your list:");
                     while (count < taskCount) {
-                        System.out.println(" " + (count + 1) + ". " + tasks[count]);
+                        System.out.println(" " + (count + 1) + ". " + tasks.get(count));
                         count++;
                     }
                     System.out.println(line);
@@ -168,12 +76,12 @@ public class Larper {
                         System.out.println(" Please give me a valid task number to mark.");
                     } else if (number < 1 || number > taskCount) {
                         System.out.println(" That task number does not exist.");
-                    } else if (tasks[number - 1].isDone()) {
+                    } else if (tasks.get(number - 1).isDone()) {
                         throw new MarkingException();
                     } else {
-                        tasks[number - 1].markAsDone();
+                        tasks.get(number - 1).markAsDone();
                         System.out.println(" Nice! I've marked this task as done:");
-                        System.out.println(" " + tasks[number - 1]);
+                        System.out.println(" " + tasks.get(number - 1));
                     }
                     System.out.println(line);
 
@@ -183,13 +91,28 @@ public class Larper {
                         System.out.println(" Please give me a valid task number to unmark.");
                     } else if (number < 1 || number > taskCount) {
                         System.out.println(" That task number does not exist.");
-                    } else if (!tasks[number - 1].isDone()) {
+                    } else if (!tasks.get(number - 1).isDone()) {
                         throw new UnmarkingException();
                     } else {
-                        tasks[number - 1].unmarkAsDone();
+                        tasks.get(number - 1).unmarkAsDone();
                         System.out.println(" OK, I've marked this task as not done yet:");
-                        System.out.println(" " + tasks[number - 1]);
+                        System.out.println(" " + tasks.get(number - 1));
                     }
+                    System.out.println(line);
+
+                } else if (hasDeleteWord(input)) {
+                    if (taskCount == 0) {
+                        throw new EmptyDeletionException();
+                    }
+                    int number = parseDeleteNumber(input);
+                    if (number < 1 || number > taskCount) {
+                        throw new InvalidNumberDeleteException(taskCount);
+                    }
+                    Task removedTask = tasks.remove(number - 1);
+                    taskCount--;
+                    System.out.println(" Poof it gone now:");
+                    System.out.println(" " + removedTask);
+                    printTaskCount(taskCount);
                     System.out.println(line);
 
                 } else {
@@ -200,10 +123,10 @@ public class Larper {
                         pendingTask = null;
                         task = createTask(input);
                     }
-                    tasks[taskCount] = task;
+                    tasks.add(task);
                     taskCount++;
                     System.out.println(" Got it. I've added this task:");
-                    System.out.println(" " + tasks[taskCount - 1]);
+                    System.out.println(" " + tasks.get(taskCount - 1));
                     printTaskCount(taskCount);
                     System.out.println(line);
                 }
@@ -469,6 +392,23 @@ public class Larper {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    private static boolean hasDeleteWord(String input) {
+        return DELETE_WORD_PATTERN.matcher(input).find();
+    }
+
+    private static int parseDeleteNumber(String input) throws NonNumberDeleteException {
+        Matcher matcher = DELETE_PATTERN.matcher(input);
+        if (!matcher.find()) {
+            throw new NonNumberDeleteException();
+        }
+
+        try {
+            return Integer.parseInt(matcher.group(1));
+        } catch (NumberFormatException e) {
+            throw new NonNumberDeleteException();
         }
     }
 
