@@ -5,12 +5,19 @@ public class Larper {
     private static final String DATA_PATH_PROPERTY = "larper.data.path";
     private static final Path DEFAULT_DATA_PATH = Path.of("data", "larperdata.txt");
 
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Parser parser = new Parser();
-        Storage storage = new Storage(getDataPath());
-        TaskList tasks = loadTasks(storage);
+    private Ui ui;
+    private Parser parser;
+    private Storage storage;
+    private TaskList tasks;
 
+    public Larper(Path dataPath) {
+        ui = new Ui();
+        parser = new Parser();
+        storage = new Storage(dataPath);
+        tasks = loadTasks();
+    }
+
+    public void run() {
         ui.showWelcome();
         while (ui.hasNextInput()) {
             String input = ui.readInput();
@@ -33,7 +40,7 @@ public class Larper {
                         ui.showMissingTaskNumber();
                     } else {
                         Task markedTask = tasks.markTask(number);
-                        saveTasks(storage, tasks);
+                        saveTasks();
                         ui.showMarkedTask(markedTask);
                     }
                     ui.showLine();
@@ -46,7 +53,7 @@ public class Larper {
                         ui.showMissingTaskNumber();
                     } else {
                         Task unmarkedTask = tasks.unmarkTask(number);
-                        saveTasks(storage, tasks);
+                        saveTasks();
                         ui.showUnmarkedTask(unmarkedTask);
                     }
                     ui.showLine();
@@ -54,13 +61,13 @@ public class Larper {
                 } else if (parser.isDeleteCommand(input)) {
                     int number = parser.parseDeleteNumber(input);
                     Task removedTask = tasks.deleteTask(number);
-                    saveTasks(storage, tasks);
+                    saveTasks();
                     ui.showDeletedTask(removedTask, tasks.size());
 
                 } else {
                     Task task = parser.parseTask(input);
                     tasks.addTask(task);
-                    saveTasks(storage, tasks);
+                    saveTasks();
                     ui.showAddedTask(task, tasks.size());
                 }
             } catch (LarperException e) {
@@ -72,6 +79,10 @@ public class Larper {
         ui.close();
     }
 
+    public static void main(String[] args) {
+        new Larper(getDataPath()).run();
+    }
+
     private static Path getDataPath() {
         String dataPath = System.getProperty(DATA_PATH_PROPERTY);
         if (dataPath == null || dataPath.isBlank()) {
@@ -80,7 +91,7 @@ public class Larper {
         return Path.of(dataPath);
     }
 
-    private static void saveTasks(Storage storage, TaskList tasks) throws LarperException {
+    private void saveTasks() throws LarperException {
         try {
             storage.saveTasks(tasks.getTasks());
         } catch (IOException e) {
@@ -88,7 +99,7 @@ public class Larper {
         }
     }
 
-    private static TaskList loadTasks(Storage storage) {
+    private TaskList loadTasks() {
         try {
             return new TaskList(storage.loadTasks());
         } catch (IOException e) {
