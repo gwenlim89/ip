@@ -184,6 +184,50 @@ D | 0 | quiz | 2026-09-08 | 1800
 D | 0 | typo check | 2026-01-09 | 0800
 ```
 
+## Test Case: event string date and time formatting
+
+Aim: Verify that Larper accepts event dates with month names, short forms, mixed case, and saves event times in military time.
+
+Inputs:
+```text
+event project sync /from FEB 7 2:30PM /to 8 Sept 2026 16:00
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
+ Now you have 1 task in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+E | 0 | project sync | 2026-02-07 | 1430 | 2026-09-08 | 1600
+```
+
 ## Test Case: missing description and type
 
 Aim: Verify that missing task descriptions and unknown task types show personalised exception messages.
@@ -213,15 +257,19 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Larper needs a task description before charging into battle.
  Please use one of these formats:
  todo DESCRIPTION
- deadline DESCRIPTION /by yyyy-MM-dd TIME
+ deadline DESCRIPTION /by DATE TIME
  event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
+ Dates: 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
+ Times: 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  oh watchu yapping on
  Please use one of these formats:
  todo DESCRIPTION
- deadline DESCRIPTION /by yyyy-MM-dd TIME
+ deadline DESCRIPTION /by DATE TIME
  event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
+ Dates: 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
+ Times: 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -262,21 +310,23 @@ Fine day! I'm Larper.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Larper found the deadline date, but no time was given.
- Time is optional, so please confirm: add a time, or type no time.
+ Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Where the date is? Larper needs the deadline date.
- Try: deadline DESCRIPTION /by yyyy-MM-dd TIME
- Or: event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
+ Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
+ Try: deadline DESCRIPTION /by 2019-10-15 1400
+ Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Where the date is? Larper needs the deadline date.
- Try: deadline DESCRIPTION /by yyyy-MM-dd TIME
- Or: event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
+ Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
+ Try: deadline DESCRIPTION /by 2019-10-15 1400
+ Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Larper found the event start date, but no time was given.
- Time is optional, so please confirm: add a time, or type no time.
+ Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
@@ -336,7 +386,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Larper found the deadline date, but no time was given.
- Time is optional, so please confirm: add a time, or type no time.
+ Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
