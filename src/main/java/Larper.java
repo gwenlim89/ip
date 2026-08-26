@@ -2,7 +2,6 @@ import java.time.LocalDate;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,75 +33,54 @@ public class Larper {
     private static PendingTask pendingTask;
 
     public static void main(String[] args) {
+        Ui ui = new Ui();
         Storage storage = new Storage(getDataPath());
         ArrayList<Task> tasks = loadTasks(storage);
-        String line = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
 
-        System.out.println(line);
-        String banner = " _                              \n"
-                + "| |       __ _   _ __   _ __     ___   _ __\n"
-                + "| |      / _` | | '__| | '_ \\   / _ \\ | '__|\n"
-                + "| |___  | (_| | | |    | |_) | |  __/ | |\n"
-                + "|_____|  \\__,_| |_|    | .__/   \\___| |_|\n"
-                + "                       |_|\n";
-        System.out.print(banner);
-        System.out.println("Fine day! I'm Larper. \n");
-        System.out.println(" What can I do for you? \n");
-        System.out.println(line);
-
-        Scanner scanner = new Scanner(System.in);
+        ui.showWelcome();
         int taskCount = tasks.size();
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+        while (ui.hasNextInput()) {
+            String input = ui.readInput();
 
-            System.out.println(line);
+            ui.showLine();
 
             if (input.equals("exit")) {
-                System.out.println(" Bye. Hope to see you again soon!");
-                System.out.println(line);
+                ui.showExit();
                 break;
             }
 
             try {
                 if (input.equals("list")) {
-                    int count = 0;
-                    System.out.println(" Here are the tasks in your list:");
-                    while (count < taskCount) {
-                        System.out.println(" " + (count + 1) + ". " + tasks.get(count));
-                        count++;
-                    }
-                    System.out.println(line);
+                    ui.showTaskList(tasks, taskCount);
                 } else if (input.startsWith("mark ")) {
                     int number = parseTaskNumber(input.substring(5).trim());
                     if (number == -1) {
-                        System.out.println(" Please give me a valid task number to mark.");
+                        ui.showInvalidMarkNumber();
                     } else if (number < 1 || number > taskCount) {
-                        System.out.println(" That task number does not exist.");
+                        ui.showMissingTaskNumber();
                     } else if (tasks.get(number - 1).isDone()) {
                         throw new MarkingException();
                     } else {
                         tasks.get(number - 1).markAsDone();
                         saveTasks(storage, tasks);
-                        System.out.println(" Nice! I've marked this task as done:");
-                        System.out.println(" " + tasks.get(number - 1));
+                        ui.showMarkedTask(tasks.get(number - 1));
                     }
-                    System.out.println(line);
+                    ui.showLine();
 
                 } else if (input.startsWith("unmark ")) {
                     int number = parseTaskNumber(input.substring(7).trim());
                     if (number == -1) {
-                        System.out.println(" Please give me a valid task number to unmark.");
+                        ui.showInvalidUnmarkNumber();
                     } else if (number < 1 || number > taskCount) {
-                        System.out.println(" That task number does not exist.");
+                        ui.showMissingTaskNumber();
                     } else if (!tasks.get(number - 1).isDone()) {
                         throw new UnmarkingException();
                     } else {
                         tasks.get(number - 1).unmarkAsDone();
                         saveTasks(storage, tasks);
-                        System.out.println(" OK, I've marked this task as not done yet:");
-                        System.out.println(" " + tasks.get(number - 1));
+                        ui.showUnmarkedTask(tasks.get(number - 1));
                     }
-                    System.out.println(line);
+                    ui.showLine();
 
                 } else if (hasDeleteWord(input)) {
                     if (taskCount == 0) {
@@ -115,10 +93,7 @@ public class Larper {
                     Task removedTask = tasks.remove(number - 1);
                     taskCount--;
                     saveTasks(storage, tasks);
-                    System.out.println(" Poof it gone now:");
-                    System.out.println(" " + removedTask);
-                    printTaskCount(taskCount);
-                    System.out.println(line);
+                    ui.showDeletedTask(removedTask, taskCount);
 
                 } else {
                     Task task;
@@ -131,19 +106,15 @@ public class Larper {
                     tasks.add(task);
                     taskCount++;
                     saveTasks(storage, tasks);
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println(" " + tasks.get(taskCount - 1));
-                    printTaskCount(taskCount);
-                    System.out.println(line);
+                    ui.showAddedTask(tasks.get(taskCount - 1), taskCount);
                 }
             } catch (LarperException e) {
-                System.out.println(e.getMessage());
-                System.out.println(line);
+                ui.showError(e.getMessage());
             }
 
         }
 
-        scanner.close();
+        ui.close();
     }
 
     private static Task createTask(String input) throws LarperException {
@@ -267,14 +238,6 @@ public class Larper {
         return TaskDateTimeParser.isValidTimeAnswer(text);
     }
 
-    private static boolean isNoTimeOnly(String text) {
-        return text.trim().equalsIgnoreCase("no time");
-    }
-
-    private static boolean endsWithNoTime(String text) {
-        return text.trim().toLowerCase().endsWith(" no time");
-    }
-
     private static boolean startsWithTaskCommand(String input) {
         return input.startsWith("todo ") || input.startsWith("deadline ") || input.startsWith("event ")
                 || input.equals("todo") || input.equals("deadline") || input.equals("event");
@@ -315,11 +278,6 @@ public class Larper {
         } catch (NumberFormatException e) {
             throw new NonNumberDeleteException();
         }
-    }
-
-    private static void printTaskCount(int taskCount) {
-        String taskWord = taskCount == 1 ? "task" : "tasks";
-        System.out.println(" Now you have " + taskCount + " " + taskWord + " in the list.");
     }
 
     private static Path getDataPath() {
