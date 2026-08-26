@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,10 +34,9 @@ public class Larper {
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage(getDataPath());
-        ArrayList<Task> tasks = loadTasks(storage);
+        TaskList tasks = loadTasks(storage);
 
         ui.showWelcome();
-        int taskCount = tasks.size();
         while (ui.hasNextInput()) {
             String input = ui.readInput();
 
@@ -51,19 +49,17 @@ public class Larper {
 
             try {
                 if (input.equals("list")) {
-                    ui.showTaskList(tasks, taskCount);
+                    ui.showTaskList(tasks);
                 } else if (input.startsWith("mark ")) {
                     int number = parseTaskNumber(input.substring(5).trim());
                     if (number == -1) {
                         ui.showInvalidMarkNumber();
-                    } else if (number < 1 || number > taskCount) {
+                    } else if (!tasks.hasTaskNumber(number)) {
                         ui.showMissingTaskNumber();
-                    } else if (tasks.get(number - 1).isDone()) {
-                        throw new MarkingException();
                     } else {
-                        tasks.get(number - 1).markAsDone();
+                        Task markedTask = tasks.markTask(number);
                         saveTasks(storage, tasks);
-                        ui.showMarkedTask(tasks.get(number - 1));
+                        ui.showMarkedTask(markedTask);
                     }
                     ui.showLine();
 
@@ -71,29 +67,20 @@ public class Larper {
                     int number = parseTaskNumber(input.substring(7).trim());
                     if (number == -1) {
                         ui.showInvalidUnmarkNumber();
-                    } else if (number < 1 || number > taskCount) {
+                    } else if (!tasks.hasTaskNumber(number)) {
                         ui.showMissingTaskNumber();
-                    } else if (!tasks.get(number - 1).isDone()) {
-                        throw new UnmarkingException();
                     } else {
-                        tasks.get(number - 1).unmarkAsDone();
+                        Task unmarkedTask = tasks.unmarkTask(number);
                         saveTasks(storage, tasks);
-                        ui.showUnmarkedTask(tasks.get(number - 1));
+                        ui.showUnmarkedTask(unmarkedTask);
                     }
                     ui.showLine();
 
                 } else if (hasDeleteWord(input)) {
-                    if (taskCount == 0) {
-                        throw new EmptyDeletionException();
-                    }
                     int number = parseDeleteNumber(input);
-                    if (number < 1 || number > taskCount) {
-                        throw new InvalidNumberDeleteException(taskCount);
-                    }
-                    Task removedTask = tasks.remove(number - 1);
-                    taskCount--;
+                    Task removedTask = tasks.deleteTask(number);
                     saveTasks(storage, tasks);
-                    ui.showDeletedTask(removedTask, taskCount);
+                    ui.showDeletedTask(removedTask, tasks.size());
 
                 } else {
                     Task task;
@@ -103,10 +90,9 @@ public class Larper {
                         pendingTask = null;
                         task = createTask(input);
                     }
-                    tasks.add(task);
-                    taskCount++;
+                    tasks.addTask(task);
                     saveTasks(storage, tasks);
-                    ui.showAddedTask(tasks.get(taskCount - 1), taskCount);
+                    ui.showAddedTask(task, tasks.size());
                 }
             } catch (LarperException e) {
                 ui.showError(e.getMessage());
@@ -288,19 +274,19 @@ public class Larper {
         return Path.of(dataPath);
     }
 
-    private static void saveTasks(Storage storage, ArrayList<Task> tasks) throws LarperException {
+    private static void saveTasks(Storage storage, TaskList tasks) throws LarperException {
         try {
-            storage.saveTasks(tasks);
+            storage.saveTasks(tasks.getTasks());
         } catch (IOException e) {
             throw new LarperException(" Larper could not save the task list to the local data file.");
         }
     }
 
-    private static ArrayList<Task> loadTasks(Storage storage) {
+    private static TaskList loadTasks(Storage storage) {
         try {
-            return storage.loadTasks();
+            return new TaskList(storage.loadTasks());
         } catch (IOException e) {
-            return new ArrayList<>();
+            return new TaskList();
         }
     }
 }

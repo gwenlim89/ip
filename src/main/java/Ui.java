@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -44,11 +43,11 @@ public class Ui {
         showLine();
     }
 
-    public void showTaskList(ArrayList<Task> tasks, int taskCount) {
+    public void showTaskList(TaskList tasks) {
         int count = 0;
         System.out.println(" Here are the tasks in your list:");
-        while (count < taskCount) {
-            System.out.println(" " + (count + 1) + ". " + tasks.get(count));
+        while (count < tasks.size()) {
+            System.out.println(" " + (count + 1) + ". " + tasks.getTask(count + 1));
             count++;
         }
         showLine();
