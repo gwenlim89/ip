@@ -1,14 +1,17 @@
+import java.time.LocalDate;
+
 public class Deadline extends Task {
-    private String by;
+    private LocalDate byDate;
+    private String byTime;
 
     public Deadline(String description, String byDate, String byTime) {
-        super(description);
-        this.by = byDate + " " + byTime;
+        this(description, LocalDate.parse(byDate), byTime);
     }
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, LocalDate byDate, String byTime) {
         super(description);
-        this.by = by;
+        this.byDate = byDate;
+        this.byTime = byTime;
     }
 
     @Override
@@ -18,19 +21,19 @@ public class Deadline extends Task {
 
     @Override
     public String toFileString() {
-        return super.toFileString() + " | " + by;
+        return super.toFileString() + " | " + byDate + " | " + byTime;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + hideNoTime(by) + ")";
+        String formattedDate = TaskDateTimeParser.formatDate(byDate);
+        if (isNoTime()) {
+            return super.toString() + " (by: " + formattedDate + ")";
+        }
+        return super.toString() + " (by: " + formattedDate + " " + byTime + ")";
     }
 
-    private String hideNoTime(String dateTime) {
-        String trimmedDateTime = dateTime.trim();
-        if (trimmedDateTime.toLowerCase().endsWith(" no time")) {
-            return trimmedDateTime.substring(0, trimmedDateTime.length() - " no time".length()).trim();
-        }
-        return trimmedDateTime;
+    private boolean isNoTime() {
+        return byTime.trim().equalsIgnoreCase("no time");
     }
 }

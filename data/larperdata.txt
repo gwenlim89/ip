@@ -1,0 +1,6 @@
+T | 1 | read book
+D | 0 | return library book | by 2/12/2019 1800
+E | 0 | project meeting | 8 aug 2pm | 8 aug 4pm
+T | 1 | join sports club
+D | 1 | practise work | 7 july no time 
+D | 1 | run | feb 7 no time 

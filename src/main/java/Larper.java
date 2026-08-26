@@ -1,10 +1,7 @@
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -177,11 +174,8 @@ public class Larper {
             if (description.isEmpty()) {
                 throw new NoDescriptionException();
             }
-            if (countSlashes(taskInfo) != 1) {
-                throw new InvalidDateException("deadline");
-            }
-            String[] byDateTime = parseDateTime(by, "deadline", "deadline", description, null, null);
-            return new Deadline(description, byDateTime[0], byDateTime[1]);
+            TaskDateTime byDateTime = parseTaskDateTime(by, "deadline", "deadline", description, null, null);
+            return new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
         }
 
         if (input.startsWith("event ")) {
@@ -200,10 +194,11 @@ public class Larper {
             if (countSlashes(taskInfo) != 2) {
                 throw new InvalidDateException("event start or end");
             }
-            String[] startDateTime = parseDateTime(from, "event start", "event-start", description, to, null);
-            String[] endDateTime = parseDateTime(to, "event end", "event-end", description,
-                    startDateTime[0], startDateTime[1]);
-            return new Event(description, startDateTime[0], startDateTime[1], endDateTime[0], endDateTime[1]);
+            TaskDateTime startDateTime = parseTaskDateTime(from, "event start", "event-start",
+                    description, to, null);
+            TaskDateTime endDateTime = parseTaskDateTime(to, "event end", "event-end",
+                    description, startDateTime.getDate().toString(), startDateTime.getTime());
+            return new Event(description, startDateTime, endDateTime);
         }
 
         throw new NoTaskTypeException();
@@ -219,156 +214,57 @@ public class Larper {
         pendingTask = null;
 
         if (taskToComplete.type.equals("deadline")) {
-            return new Deadline(taskToComplete.description, taskToComplete.firstDate, time);
+            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
+            return new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime);
         }
 
         if (taskToComplete.type.equals("event-start")) {
-            String[] endDateTime = parseDateTime(taskToComplete.secondDate, "event end", "event-end",
-                    taskToComplete.description, taskToComplete.firstDate, time);
-            return new Event(taskToComplete.description, taskToComplete.firstDate, time,
-                    endDateTime[0], endDateTime[1]);
+            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
+            TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", "event-end",
+                    taskToComplete.description, taskToComplete.firstDate, normalizedTime);
+            return new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime,
+                    endDateTime.getDate(), endDateTime.getTime());
         }
 
         if (taskToComplete.type.equals("event-end")) {
+            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
             return new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
-                    taskToComplete.secondDate, time);
+                    taskToComplete.secondDate, normalizedTime);
         }
 
         throw new NoTaskTypeException();
     }
 
-    private static String[] parseDateTime(String text, String label, String pendingType, String description,
-            String extraDate, String extraTime) throws InvalidDateException, InvalidTimeException {
-        String trimmedText = text.trim();
-        if (trimmedText.isEmpty()) {
+    private static TaskDateTime parseTaskDateTime(String text, String label, String pendingType, String description,
+            String extraDate, String extraTime)
+            throws InvalidDateException, InvalidTimeException {
+        TaskDateTime taskDateTime;
+        try {
+            taskDateTime = TaskDateTimeParser.parse(text, "");
+        } catch (RuntimeException e) {
             throw new InvalidDateException(label);
         }
 
-        if (isNoTimeOnly(trimmedText)) {
-            throw new InvalidDateException(label);
-        }
-
-        String date = trimmedText;
-        String time = "";
-        if (endsWithNoTime(trimmedText)) {
-            date = trimmedText.substring(0, trimmedText.length() - " no time".length()).trim();
-            time = "no time";
-        } else {
-            int lastSpaceIndex = trimmedText.lastIndexOf(' ');
-            if (lastSpaceIndex != -1) {
-                String possibleDate = trimmedText.substring(0, lastSpaceIndex).trim();
-                String possibleTime = trimmedText.substring(lastSpaceIndex + 1).trim();
-                if (looksLikeTime(possibleTime)) {
-                    date = possibleDate;
-                    time = possibleTime;
-                }
-            }
-        }
-
-        if (date.isEmpty() || looksLikeTime(date) || isNoTimeOnly(date) || !looksLikeDate(date)) {
-            throw new InvalidDateException(label);
-        }
-
-        date = normalizeDate(date);
-
-        if (time.isEmpty()) {
+        if (taskDateTime.getTime().isEmpty()) {
             if (pendingType.equals("event-end")) {
-                pendingTask = new PendingTask(pendingType, description, extraDate, extraTime, date, label);
+                pendingTask = new PendingTask(pendingType, description, extraDate, extraTime,
+                        taskDateTime.getDate().toString(), label);
             } else {
-                pendingTask = new PendingTask(pendingType, description, date, extraTime, extraDate, label);
+                pendingTask = new PendingTask(pendingType, description, taskDateTime.getDate().toString(),
+                        extraTime, extraDate, label);
             }
             throw new InvalidTimeException(label);
         }
 
-        return new String[] { date, time };
+        return taskDateTime;
     }
 
     private static boolean looksLikeTime(String text) {
-        String lowerText = text.toLowerCase();
-        return lowerText.contains("am") || lowerText.contains("pm");
+        return TaskDateTimeParser.looksLikeTime(text);
     }
 
     private static boolean isValidTimeAnswer(String text) {
-        return isNoTimeOnly(text) || looksLikeTime(text);
-    }
-
-    private static boolean looksLikeDate(String text) {
-        String lowerText = text.toLowerCase().trim();
-        return lowerText.matches(".*\\d{1,2}/\\d{1,2}.*") || containsMonth(lowerText)
-                || parseDayOfWeek(lowerText) != null;
-    }
-
-    private static String normalizeDate(String text) {
-        DayOfWeek dayOfWeek = parseDayOfWeek(text.toLowerCase().trim());
-        if (dayOfWeek == null) {
-            return text;
-        }
-
-        LocalDate today = getToday();
-        int daysAhead = dayOfWeek.getValue() - today.getDayOfWeek().getValue();
-        if (daysAhead < 0) {
-            daysAhead += 7;
-        }
-
-        LocalDate date = today.plusDays(daysAhead);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH);
-        return date.format(formatter).toLowerCase();
-    }
-
-    private static LocalDate getToday() {
-        String todayProperty = System.getProperty("larper.today");
-        if (todayProperty != null && !todayProperty.isBlank()) {
-            return LocalDate.parse(todayProperty);
-        }
-        return LocalDate.now();
-    }
-
-    private static DayOfWeek parseDayOfWeek(String text) {
-        String trimmedText = text.trim();
-        switch (trimmedText) {
-        case "mon":
-        case "monday":
-            return DayOfWeek.MONDAY;
-        case "tue":
-        case "tues":
-        case "tuesday":
-            return DayOfWeek.TUESDAY;
-        case "wed":
-        case "wednesday":
-            return DayOfWeek.WEDNESDAY;
-        case "thu":
-        case "thur":
-        case "thurs":
-        case "thursday":
-            return DayOfWeek.THURSDAY;
-        case "fri":
-        case "friday":
-            return DayOfWeek.FRIDAY;
-        case "sat":
-        case "saturday":
-            return DayOfWeek.SATURDAY;
-        case "sun":
-        case "sunday":
-            return DayOfWeek.SUNDAY;
-        default:
-            return null;
-        }
-    }
-
-    private static boolean containsMonth(String text) {
-        String[] months = {"jan", "january", "feb", "february", "mar", "march", "apr", "april",
-                "may", "jun", "june", "jul", "july", "aug", "august", "sep", "sept", "september",
-                "oct", "october", "nov", "november", "dec", "december"};
-
-        String paddedText = " " + text + " ";
-        int index = 0;
-        while (index < months.length) {
-            if (paddedText.contains(" " + months[index] + " ")) {
-                return true;
-            }
-            index++;
-        }
-        return false;
+        return TaskDateTimeParser.isValidTimeAnswer(text);
     }
 
     private static boolean isNoTimeOnly(String text) {

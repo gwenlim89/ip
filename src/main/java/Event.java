@@ -1,17 +1,29 @@
+import java.time.LocalDate;
+
 public class Event extends Task {
-    private String start;
-    private String end;
+    private LocalDate startDate;
+    private String startTime;
+    private LocalDate endDate;
+    private String endTime;
 
     public Event(String description, String startDate, String startTime, String endDate, String endTime) {
+        this(description, LocalDate.parse(startDate), startTime, LocalDate.parse(endDate), endTime);
+    }
+
+    public Event(String description, LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
         super(description);
-        this.start = startDate + " " + startTime;
-        this.end = endDate + " " + endTime;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public Event(String description, String start, String end) {
-        super(description);
-        this.start = start;
-        this.end = end;
+        this(description, TaskDateTimeParser.parse(start, "no time"), TaskDateTimeParser.parse(end, "no time"));
+    }
+
+    public Event(String description, TaskDateTime start, TaskDateTime end) {
+        this(description, start.getDate(), start.getTime(), end.getDate(), end.getTime());
     }
 
     @Override
@@ -21,19 +33,25 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        return super.toFileString() + " | " + start + " | " + end;
+        return super.toFileString() + " | " + startDate + " | " + startTime + " | "
+                + endDate + " | " + endTime;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (from: " + hideNoTime(start) + " to: " + hideNoTime(end) + ")";
+        return super.toString() + " (from: " + formatDateTime(startDate, startTime)
+                + " to: " + formatDateTime(endDate, endTime) + ")";
     }
 
-    private String hideNoTime(String dateTime) {
-        String trimmedDateTime = dateTime.trim();
-        if (trimmedDateTime.toLowerCase().endsWith(" no time")) {
-            return trimmedDateTime.substring(0, trimmedDateTime.length() - " no time".length()).trim();
+    private String formatDateTime(LocalDate date, String time) {
+        String formattedDate = TaskDateTimeParser.formatDate(date);
+        if (isNoTime(time)) {
+            return formattedDate;
         }
-        return trimmedDateTime;
+        return formattedDate + " " + time;
+    }
+
+    private boolean isNoTime(String time) {
+        return time.trim().equalsIgnoreCase("no time");
     }
 }

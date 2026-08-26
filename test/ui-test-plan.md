@@ -9,7 +9,7 @@ Aim: Verify that todo, deadline, and event tasks can be added, listed, marked, u
 Inputs:
 ```text
 todo read book
-deadline return book /by Sunday no time
+deadline return book /by 2026-08-23 no time
 event meeting /from Mon 2pm /to Tue 4pm
 list
 mark 2
@@ -38,27 +38,27 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] return book (by: 23 aug)
+ [D][ ] return book (by: Aug 23 2026)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [E][ ] meeting (from: 24 aug 2pm to: 25 aug 4pm)
+ [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
  Now you have 3 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][ ] read book
- 2. [D][ ] return book (by: 23 aug)
- 3. [E][ ] meeting (from: 24 aug 2pm to: 25 aug 4pm)
+ 2. [D][ ] return book (by: Aug 23 2026)
+ 3. [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Nice! I've marked this task as done:
- [D][X] return book (by: 23 aug)
+ [D][X] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  OK, I've marked this task as not done yet:
- [D][ ] return book (by: 23 aug)
+ [D][ ] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -68,8 +68,120 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 Expected data file:
 ```text
 T | 0 | read book
-D | 0 | return book | 23 aug no time
-E | 0 | meeting | 24 aug 2pm | 25 aug 4pm
+D | 0 | return book | 2026-08-23 | no time
+E | 0 | meeting | 2026-08-24 | 1400 | 2026-08-25 | 1600
+```
+
+## Test Case: deadline date formatting
+
+Aim: Verify that Larper accepts a deadline date in yyyy-MM-dd format, stores it, and prints it in MMM dd yyyy format.
+
+Inputs:
+```text
+deadline submit report /by 2019-10-15 2pm
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] submit report (by: Oct 15 2019 1400)
+ Now you have 1 task in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [D][ ] submit report (by: Oct 15 2019 1400)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+D | 0 | submit report | 2019-10-15 | 1400
+```
+
+## Test Case: deadline string date and time formatting
+
+Aim: Verify that Larper accepts deadline dates with month names, short forms, mixed case, and saves deadline times in military time.
+
+Inputs:
+```text
+deadline project draft /by AUGUST 6th 9:30AM
+deadline dinner /by feb 7 7PM
+deadline quiz /by 8 Sept 2026 1800
+deadline typo check /by janurary 9 8am
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] project draft (by: Aug 06 2026 0930)
+ Now you have 1 task in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] dinner (by: Feb 07 2026 1900)
+ Now you have 2 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] quiz (by: Sep 08 2026 1800)
+ Now you have 3 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Got it. I've added this task:
+ [D][ ] typo check (by: Jan 09 2026 0800)
+ Now you have 4 tasks in the list.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [D][ ] project draft (by: Aug 06 2026 0930)
+ 2. [D][ ] dinner (by: Feb 07 2026 1900)
+ 3. [D][ ] quiz (by: Sep 08 2026 1800)
+ 4. [D][ ] typo check (by: Jan 09 2026 0800)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+D | 0 | project draft | 2026-08-06 | 0930
+D | 0 | dinner | 2026-02-07 | 1900
+D | 0 | quiz | 2026-09-08 | 1800
+D | 0 | typo check | 2026-01-09 | 0800
 ```
 
 ## Test Case: missing description and type
@@ -101,14 +213,14 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Larper needs a task description before charging into battle.
  Please use one of these formats:
  todo DESCRIPTION
- deadline DESCRIPTION /by DATE TIME
+ deadline DESCRIPTION /by yyyy-MM-dd TIME
  event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  oh watchu yapping on
  Please use one of these formats:
  todo DESCRIPTION
- deadline DESCRIPTION /by DATE TIME
+ deadline DESCRIPTION /by yyyy-MM-dd TIME
  event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
@@ -122,11 +234,11 @@ Aim: Verify invalid date/time inputs and repeated mark/unmark commands show exce
 
 Inputs:
 ```text
-deadline return book /by 9 mar
+deadline return book /by 2026-03-09
 deadline return book /by 2pm
 deadline return book /by no time
 event meeting /from 9 mar /to 10 mar 4pm
-deadline return book /by 9 mar no time
+deadline return book /by 2026-03-09 no time
 mark 1
 mark 1
 unmark 1
@@ -154,12 +266,12 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Where the date is? Larper needs the deadline date.
- Try: deadline DESCRIPTION /by DATE TIME
+ Try: deadline DESCRIPTION /by yyyy-MM-dd TIME
  Or: event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Where the date is? Larper needs the deadline date.
- Try: deadline DESCRIPTION /by DATE TIME
+ Try: deadline DESCRIPTION /by yyyy-MM-dd TIME
  Or: event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
@@ -168,19 +280,19 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] return book (by: 9 mar)
+ [D][ ] return book (by: Mar 09 2026)
  Now you have 1 task in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Nice! I've marked this task as done:
- [D][X] return book (by: 9 mar)
+ [D][X] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already marked. Lock in and pick one that is not done yet.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  OK, I've marked this task as not done yet:
- [D][ ] return book (by: 9 mar)
+ [D][ ] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already unmarked. Quit messing around and pick a done task.
@@ -197,7 +309,7 @@ Aim: Verify that typing no time after a missing deadline time prompt completes t
 Inputs:
 ```text
 todo larp
-deadline vnervn/by 9 mar
+deadline vnervn/by 2026-03-09
 no time
 list
 exit
@@ -228,13 +340,13 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] vnervn (by: 9 mar)
+ [D][ ] vnervn (by: Mar 09 2026)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][ ] larp
- 2. [D][ ] vnervn (by: 9 mar)
+ 2. [D][ ] vnervn (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -248,7 +360,7 @@ Aim: Verify that a delete command embedded in a sentence removes the numbered ta
 Inputs:
 ```text
 todo alpha
-deadline beta /by 9 mar no time
+deadline beta /by 2026-03-09 no time
 event gamma /from 10 mar 2pm /to 11 mar 4pm
 please delete 2
 list
@@ -276,23 +388,23 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] beta (by: 9 mar)
+ [D][ ] beta (by: Mar 09 2026)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [E][ ] gamma (from: 10 mar 2pm to: 11 mar 4pm)
+ [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
  Now you have 3 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Poof it gone now:
- [D][ ] beta (by: 9 mar)
+ [D][ ] beta (by: Mar 09 2026)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][ ] alpha
- 2. [E][ ] gamma (from: 10 mar 2pm to: 11 mar 4pm)
+ 2. [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -302,7 +414,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 Expected data file:
 ```text
 T | 0 | alpha
-E | 0 | gamma | 10 mar 2pm | 11 mar 4pm
+E | 0 | gamma | 2026-03-10 | 1400 | 2026-03-11 | 1600
 ```
 
 ## Test Case: invalid delete inputs
@@ -397,7 +509,7 @@ Aim: Verify that Larper loads saved todo, deadline, and event tasks from the dat
 Initial data file:
 ```text
 T | 1 | read book
-D | 0 | return library book | 6 jun no time
+D | 0 | return library book | 2026-06-06 | no time
 E | 0 | project meeting | 8 aug 2pm | 8 aug 4pm
 ```
 
@@ -424,8 +536,8 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][X] read book
- 2. [D][ ] return library book (by: 6 jun)
- 3. [E][ ] project meeting (from: 8 aug 2pm to: 8 aug 4pm)
+ 2. [D][ ] return library book (by: Jun 06 2026)
+ 3. [E][ ] project meeting (from: Aug 08 2026 1400 to: Aug 08 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -435,6 +547,48 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 Expected data file:
 ```text
 T | 1 | read book
-D | 0 | return library book | 6 jun no time
+D | 0 | return library book | 2026-06-06 | no time
 E | 0 | project meeting | 8 aug 2pm | 8 aug 4pm
+```
+
+## Test Case: load legacy deadline data
+
+Aim: Verify that older saved deadline lines are loaded as LocalDate deadlines instead of crashing the program.
+
+Initial data file:
+```text
+T | 1 | read book
+D | 0 | return library book | by 2/12/2019 1800
+D | 1 | practise work | 7 july no time 
+```
+
+Inputs:
+```text
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [T][X] read book
+ 2. [D][ ] return library book (by: Dec 02 2019 1800)
+ 3. [D][X] practise work (by: Jul 07 2026)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
