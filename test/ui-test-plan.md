@@ -4,7 +4,7 @@ This file records console UI test cases for the Larper chatbot.
 
 ## Test Case: add list mark unmark
 
-Aim: Verify that todo, deadline, and event tasks can be added, listed, marked, unmarked, and exited.
+Aim: Verify that todo, deadline, and event tasks can be added, listed, marked, unmarked, saved from a missing data file, and exited.
 
 Inputs:
 ```text
@@ -38,7 +38,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] return book (by: 23 aug no time)
+ [D][ ] return book (by: 23 aug)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
@@ -49,20 +49,27 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][ ] read book
- 2. [D][ ] return book (by: 23 aug no time)
+ 2. [D][ ] return book (by: 23 aug)
  3. [E][ ] meeting (from: 24 aug 2pm to: 25 aug 4pm)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Nice! I've marked this task as done:
- [D][X] return book (by: 23 aug no time)
+ [D][X] return book (by: 23 aug)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  OK, I've marked this task as not done yet:
- [D][ ] return book (by: 23 aug no time)
+ [D][ ] return book (by: 23 aug)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+T | 0 | read book
+D | 0 | return book | 23 aug no time
+E | 0 | meeting | 24 aug 2pm | 25 aug 4pm
 ```
 
 ## Test Case: missing description and type
@@ -161,19 +168,19 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] return book (by: 9 mar no time)
+ [D][ ] return book (by: 9 mar)
  Now you have 1 task in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Nice! I've marked this task as done:
- [D][X] return book (by: 9 mar no time)
+ [D][X] return book (by: 9 mar)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already marked. Lock in and pick one that is not done yet.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  OK, I've marked this task as not done yet:
- [D][ ] return book (by: 9 mar no time)
+ [D][ ] return book (by: 9 mar)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already unmarked. Quit messing around and pick a done task.
@@ -221,13 +228,13 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] vnervn (by: 9 mar no time)
+ [D][ ] vnervn (by: 9 mar)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Here are the tasks in your list:
  1. [T][ ] larp
- 2. [D][ ] vnervn (by: 9 mar no time)
+ 2. [D][ ] vnervn (by: 9 mar)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
@@ -236,7 +243,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 
 ## Test Case: delete task from middle
 
-Aim: Verify that a delete command embedded in a sentence removes the numbered task and keeps the remaining task order correct.
+Aim: Verify that a delete command embedded in a sentence removes the numbered task, keeps the remaining task order correct, and saves the final task list.
 
 Inputs:
 ```text
@@ -269,7 +276,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Got it. I've added this task:
- [D][ ] beta (by: 9 mar no time)
+ [D][ ] beta (by: 9 mar)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
@@ -279,7 +286,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Poof it gone now:
- [D][ ] beta (by: 9 mar no time)
+ [D][ ] beta (by: 9 mar)
  Now you have 2 tasks in the list.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
@@ -290,6 +297,12 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+T | 0 | alpha
+E | 0 | gamma | 10 mar 2pm | 11 mar 4pm
 ```
 
 ## Test Case: invalid delete inputs
@@ -375,4 +388,53 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Bye. Hope to see you again soon!
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+## Test Case: load tasks from data file
+
+Aim: Verify that Larper loads saved todo, deadline, and event tasks from the data file before handling commands.
+
+Initial data file:
+```text
+T | 1 | read book
+D | 0 | return library book | 6 jun no time
+E | 0 | project meeting | 8 aug 2pm | 8 aug 4pm
+```
+
+Inputs:
+```text
+list
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _                              
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Fine day! I'm Larper. 
+
+ What can I do for you? 
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Here are the tasks in your list:
+ 1. [T][X] read book
+ 2. [D][ ] return library book (by: 6 jun)
+ 3. [E][ ] project meeting (from: 8 aug 2pm to: 8 aug 4pm)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Bye. Hope to see you again soon!
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+T | 1 | read book
+D | 0 | return library book | 6 jun no time
+E | 0 | project meeting | 8 aug 2pm | 8 aug 4pm
 ```

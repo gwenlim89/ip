@@ -1,11 +1,14 @@
 public class Deadline extends Task {
-    private String byDate;
-    private String byTime;
+    private String by;
 
     public Deadline(String description, String byDate, String byTime) {
         super(description);
-        this.byDate = byDate;
-        this.byTime = byTime;
+        this.by = byDate + " " + byTime;
+    }
+
+    public Deadline(String description, String by) {
+        super(description);
+        this.by = by;
     }
 
     @Override
@@ -14,7 +17,20 @@ public class Deadline extends Task {
     }
 
     @Override
+    public String toFileString() {
+        return super.toFileString() + " | " + by;
+    }
+
+    @Override
     public String toString() {
-        return super.toString() + " (by: " + byDate + " " + byTime + ")";
+        return super.toString() + " (by: " + hideNoTime(by) + ")";
+    }
+
+    private String hideNoTime(String dateTime) {
+        String trimmedDateTime = dateTime.trim();
+        if (trimmedDateTime.toLowerCase().endsWith(" no time")) {
+            return trimmedDateTime.substring(0, trimmedDateTime.length() - " no time".length()).trim();
+        }
+        return trimmedDateTime;
     }
 }

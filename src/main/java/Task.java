@@ -23,12 +23,24 @@ public class Task {
         isDone = false;
     }
 
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
     public String getStatusIcon() {
         return isDone ? "X" : " ";
     }
 
     public String getTypeIcon() {
         return "?";
+    }
+
+    public String toFileString() {
+        return getTypeIcon() + " | " + getDoneStatusForFile() + " | " + description;
+    }
+
+    private String getDoneStatusForFile() {
+        return isDone ? "1" : "0";
     }
 
     @Override

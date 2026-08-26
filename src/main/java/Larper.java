@@ -1,6 +1,8 @@
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -10,6 +12,8 @@ import java.util.regex.Pattern;
 public class Larper {
     private static final Pattern DELETE_PATTERN = Pattern.compile("\\bdelete\\b\\s+(\\S+)");
     private static final Pattern DELETE_WORD_PATTERN = Pattern.compile("\\bdelete\\b");
+    private static final String DATA_PATH_PROPERTY = "larper.data.path";
+    private static final Path DEFAULT_DATA_PATH = Path.of("data", "larperdata.txt");
 
     private static class PendingTask {
         private String type;
@@ -33,7 +37,8 @@ public class Larper {
     private static PendingTask pendingTask;
 
     public static void main(String[] args) {
-        ArrayList<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage(getDataPath());
+        ArrayList<Task> tasks = loadTasks(storage);
         String line = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
 
         System.out.println(line);
@@ -49,7 +54,7 @@ public class Larper {
         System.out.println(line);
 
         Scanner scanner = new Scanner(System.in);
-        int taskCount = 0;
+        int taskCount = tasks.size();
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
 
@@ -80,6 +85,7 @@ public class Larper {
                         throw new MarkingException();
                     } else {
                         tasks.get(number - 1).markAsDone();
+                        saveTasks(storage, tasks);
                         System.out.println(" Nice! I've marked this task as done:");
                         System.out.println(" " + tasks.get(number - 1));
                     }
@@ -95,6 +101,7 @@ public class Larper {
                         throw new UnmarkingException();
                     } else {
                         tasks.get(number - 1).unmarkAsDone();
+                        saveTasks(storage, tasks);
                         System.out.println(" OK, I've marked this task as not done yet:");
                         System.out.println(" " + tasks.get(number - 1));
                     }
@@ -110,6 +117,7 @@ public class Larper {
                     }
                     Task removedTask = tasks.remove(number - 1);
                     taskCount--;
+                    saveTasks(storage, tasks);
                     System.out.println(" Poof it gone now:");
                     System.out.println(" " + removedTask);
                     printTaskCount(taskCount);
@@ -125,6 +133,7 @@ public class Larper {
                     }
                     tasks.add(task);
                     taskCount++;
+                    saveTasks(storage, tasks);
                     System.out.println(" Got it. I've added this task:");
                     System.out.println(" " + tasks.get(taskCount - 1));
                     printTaskCount(taskCount);
@@ -415,5 +424,29 @@ public class Larper {
     private static void printTaskCount(int taskCount) {
         String taskWord = taskCount == 1 ? "task" : "tasks";
         System.out.println(" Now you have " + taskCount + " " + taskWord + " in the list.");
+    }
+
+    private static Path getDataPath() {
+        String dataPath = System.getProperty(DATA_PATH_PROPERTY);
+        if (dataPath == null || dataPath.isBlank()) {
+            return DEFAULT_DATA_PATH;
+        }
+        return Path.of(dataPath);
+    }
+
+    private static void saveTasks(Storage storage, ArrayList<Task> tasks) throws LarperException {
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            throw new LarperException(" Larper could not save the task list to the local data file.");
+        }
+    }
+
+    private static ArrayList<Task> loadTasks(Storage storage) {
+        try {
+            return storage.loadTasks();
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
     }
 }

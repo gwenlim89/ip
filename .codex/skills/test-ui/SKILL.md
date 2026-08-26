@@ -41,9 +41,21 @@ Expected output:
 ```text
 full expected stdout
 ```
+
+Initial data file:
+```text
+task file contents to write before Larper starts
+```
+
+Expected data file:
+```text
+full expected contents of the saved data file
+```
 ~~~
 
 The runner treats each test case as a fresh program session. Include `exit` in the inputs unless the test is specifically checking end-of-input behavior.
+The `Initial data file` block is optional. Use it when a test needs Larper to start with saved tasks.
+The `Expected data file` block is optional. Use it only when a test needs to verify Larper's saved task file.
 
 ## Notes
 

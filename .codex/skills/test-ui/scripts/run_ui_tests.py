@@ -14,6 +14,8 @@ class TestCase:
     aim: str
     inputs: str
     expected_output: str
+    initial_data_file: str | None
+    expected_data_file: str | None
 
 
 def main() -> int:
@@ -50,7 +52,11 @@ def main() -> int:
             return compile_result.returncode
 
         for index, test_case in enumerate(test_cases, start=1):
-            actual_output = run_larper(build_dir, repo_root, test_case.inputs)
+            data_file = Path(build_dir) / f"data-{index}" / "larperdata.txt"
+            if test_case.initial_data_file is not None:
+                data_file.parent.mkdir(parents=True, exist_ok=True)
+                data_file.write_text(normalize_output(test_case.initial_data_file), encoding="utf-8")
+            actual_output = run_larper(build_dir, repo_root, test_case.inputs, data_file)
             expected_output = normalize_output(test_case.expected_output)
             normalized_actual = normalize_output(actual_output)
 
@@ -58,7 +64,19 @@ def main() -> int:
                 print_failure(index, test_case, normalized_actual, expected_output)
                 return 1
 
-            print_success(index, test_case, normalized_actual)
+            if test_case.expected_data_file is not None:
+                actual_data_file = ""
+                if data_file.exists():
+                    actual_data_file = data_file.read_text(encoding="utf-8")
+                expected_data_file = normalize_output(test_case.expected_data_file)
+                normalized_actual_data_file = normalize_output(actual_data_file)
+                if normalized_actual_data_file != expected_data_file:
+                    print_file_failure(index, test_case, normalized_actual_data_file, expected_data_file)
+                    return 1
+            else:
+                normalized_actual_data_file = None
+
+            print_success(index, test_case, normalized_actual, normalized_actual_data_file)
 
     print(f"All {len(test_cases)} UI test case(s) passed.")
     return 0
@@ -94,6 +112,8 @@ def parse_section(name: str, lines: list[str]) -> TestCase:
 
     inputs = extract_fenced_block(lines, "Inputs:")
     expected_output = extract_fenced_block(lines, "Expected output:")
+    initial_data_file = extract_fenced_block(lines, "Initial data file:")
+    expected_data_file = extract_fenced_block(lines, "Expected data file:")
 
     if not aim:
         raise ValueError(f"Test case '{name}' is missing Aim.")
@@ -102,7 +122,8 @@ def parse_section(name: str, lines: list[str]) -> TestCase:
     if expected_output is None:
         raise ValueError(f"Test case '{name}' is missing Expected output block.")
 
-    return TestCase(name=name, aim=aim, inputs=inputs, expected_output=expected_output)
+    return TestCase(name=name, aim=aim, inputs=inputs, expected_output=expected_output,
+            initial_data_file=initial_data_file, expected_data_file=expected_data_file)
 
 
 def extract_fenced_block(lines: list[str], label: str) -> str | None:
@@ -124,13 +145,13 @@ def extract_fenced_block(lines: list[str], label: str) -> str | None:
     return None
 
 
-def run_larper(build_dir: str, repo_root: Path, console_input: str) -> str:
+def run_larper(build_dir: str, repo_root: Path, console_input: str, data_file: Path) -> str:
     input_text = console_input
     if not input_text.endswith("\n"):
         input_text += "\n"
 
     result = subprocess.run(
-        ["java", "-Dlarper.today=2026-08-23", "-cp", build_dir, "Larper"],
+        ["java", "-Dlarper.today=2026-08-23", f"-Dlarper.data.path={data_file}", "-cp", build_dir, "Larper"],
         cwd=repo_root,
         input=input_text,
         text=True,
@@ -144,13 +165,16 @@ def normalize_output(output: str) -> str:
     return output.replace("\r\n", "\n").replace("\r", "\n").rstrip() + "\n"
 
 
-def print_success(index: int, test_case: TestCase, actual_output: str) -> None:
+def print_success(index: int, test_case: TestCase, actual_output: str, actual_data_file: str | None) -> None:
     print(f"PASS {index}: {test_case.name}")
     print(f"Aim: {test_case.aim}")
     print("Console input:")
     print(fenced(test_case.inputs))
     print("Console output:")
     print(fenced(actual_output.rstrip("\n")))
+    if actual_data_file is not None:
+        print("Data file output:")
+        print(fenced(actual_data_file.rstrip("\n")))
 
 
 def print_failure(index: int, test_case: TestCase, actual_output: str, expected_output: str) -> None:
@@ -162,6 +186,17 @@ def print_failure(index: int, test_case: TestCase, actual_output: str, expected_
     print(fenced(expected_output.rstrip("\n")))
     print("Actual output:")
     print(fenced(actual_output.rstrip("\n")))
+
+
+def print_file_failure(index: int, test_case: TestCase, actual_data_file: str, expected_data_file: str) -> None:
+    print(f"FAIL {index}: {test_case.name}")
+    print(f"Aim: {test_case.aim}")
+    print("Console input:")
+    print(fenced(test_case.inputs))
+    print("Expected data file:")
+    print(fenced(expected_data_file.rstrip("\n")))
+    print("Actual data file:")
+    print(fenced(actual_data_file.rstrip("\n")))
 
 
 def fenced(text: str) -> str:
