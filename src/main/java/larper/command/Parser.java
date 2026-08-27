@@ -62,6 +62,13 @@ public class Parser {
     }
 
     /**
+     * Returns whether the input is the command that starts a find search.
+     */
+    public boolean isFindCommand(String input) {
+        return input.equals("find");
+    }
+
+    /**
      * Returns the task number from a mark command.
      * If the command does not contain a number, -1 is returned.
      */

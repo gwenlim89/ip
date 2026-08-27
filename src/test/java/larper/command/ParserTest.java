@@ -53,6 +53,9 @@ public class ParserTest {
         assertTrue(parser.isDeleteCommand("delete 1"));
         assertTrue(parser.isDeleteCommand("please delete 1"));
         assertFalse(parser.isDeleteCommand("deleted 1"));
+
+        assertTrue(parser.isFindCommand("find"));
+        assertFalse(parser.isFindCommand("find book"));
     }
 
     @Test
