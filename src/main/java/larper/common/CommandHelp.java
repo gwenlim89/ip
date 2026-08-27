@@ -1,3 +1,5 @@
+package larper.common;
+
 /**
  * Stores command examples used in exception messages.
  */

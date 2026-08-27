@@ -31,7 +31,7 @@ def main() -> int:
         print(f"No test cases found in {plan_path}", file=sys.stderr)
         return 1
 
-    java_files = sorted((repo_root / "src" / "main" / "java").glob("*.java"))
+    java_files = sorted((repo_root / "src" / "main" / "java").rglob("*.java"))
     if not java_files:
         print("No Java source files found under src/main/java", file=sys.stderr)
         return 1
@@ -151,7 +151,7 @@ def run_larper(build_dir: str, repo_root: Path, console_input: str, data_file: P
         input_text += "\n"
 
     result = subprocess.run(
-        ["java", "-Dlarper.today=2026-08-23", f"-Dlarper.data.path={data_file}", "-cp", build_dir, "Larper"],
+        ["java", "-Dlarper.today=2026-08-23", f"-Dlarper.data.path={data_file}", "-cp", build_dir, "larper.Larper"],
         cwd=repo_root,
         input=input_text,
         text=True,

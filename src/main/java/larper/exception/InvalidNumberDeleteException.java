@@ -1,3 +1,5 @@
+package larper.exception;
+
 public class InvalidNumberDeleteException extends LarperException {
     public InvalidNumberDeleteException(int taskCount) {
         super(" The number provided is invalid. Try again.\n"
