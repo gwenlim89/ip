@@ -14,27 +14,47 @@ public class TaskList {
     private ArrayList<Task> tasks;
     private int taskCount;
 
+    /**
+     * Creates an empty task list.
+     */
     public TaskList() {
         this(new ArrayList<>());
     }
 
+    /**
+     * Creates a task list from existing tasks, such as tasks loaded from storage.
+     *
+     * @param tasks Existing tasks to manage.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
         taskCount = tasks.size();
     }
 
+    /**
+     * Returns the number of tasks currently in the list.
+     */
     public int size() {
         return taskCount;
     }
 
+    /**
+     * Returns whether the task list has no tasks.
+     */
     public boolean isEmpty() {
         return taskCount == 0;
     }
 
+    /**
+     * Returns whether the specified one-based task number exists in the list.
+     */
     public boolean hasTaskNumber(int number) {
         return number >= 1 && number <= taskCount;
     }
 
+    /**
+     * Returns the task with the specified one-based task number.
+     */
     public Task getTask(int number) {
         return tasks.get(number - 1);
     }
@@ -43,11 +63,22 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Adds a task to the end of the list.
+     *
+     * @param task Task to add.
+     */
     public void addTask(Task task) {
         tasks.add(task);
         taskCount++;
     }
 
+    /**
+     * Deletes and returns the task with the specified one-based task number.
+     *
+     * @throws EmptyDeletionException If the list is empty.
+     * @throws InvalidNumberDeleteException If the task number is outside the list.
+     */
     public Task deleteTask(int number) throws EmptyDeletionException, InvalidNumberDeleteException {
         if (isEmpty()) {
             throw new EmptyDeletionException();
@@ -60,6 +91,11 @@ public class TaskList {
         return tasks.remove(number - 1);
     }
 
+    /**
+     * Marks and returns the task with the specified one-based task number.
+     *
+     * @throws MarkingException If the task is already marked as done.
+     */
     public Task markTask(int number) throws MarkingException {
         Task task = getTask(number);
         if (task.isDone()) {
@@ -70,6 +106,11 @@ public class TaskList {
         return task;
     }
 
+    /**
+     * Unmarks and returns the task with the specified one-based task number.
+     *
+     * @throws UnmarkingException If the task is already not done.
+     */
     public Task unmarkTask(int number) throws UnmarkingException {
         Task task = getTask(number);
         if (!task.isDone()) {

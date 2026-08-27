@@ -10,6 +10,9 @@ import larper.task.Task;
 import larper.task.TaskList;
 import larper.ui.Ui;
 
+/**
+ * Coordinates Larper's user interface, command parser, task list, and storage.
+ */
 public class Larper {
     private static final String DATA_PATH_PROPERTY = "larper.data.path";
     private static final Path DEFAULT_DATA_PATH = Path.of("data", "larperdata.txt");
@@ -19,6 +22,11 @@ public class Larper {
     private Storage storage;
     private TaskList tasks;
 
+    /**
+     * Creates a Larper chatbot that stores tasks at the specified data path.
+     *
+     * @param dataPath Path of the task data file.
+     */
     public Larper(Path dataPath) {
         ui = new Ui();
         parser = new Parser();
@@ -26,6 +34,9 @@ public class Larper {
         tasks = loadTasks();
     }
 
+    /**
+     * Runs the main input loop until the user exits or the input stream ends.
+     */
     public void run() {
         ui.showWelcome();
         while (ui.hasNextInput()) {
@@ -88,6 +99,11 @@ public class Larper {
         ui.close();
     }
 
+    /**
+     * Starts Larper using the configured data path or the default local data file.
+     *
+     * @param args Command line arguments, which are currently unused.
+     */
     public static void main(String[] args) {
         new Larper(getDataPath()).run();
     }

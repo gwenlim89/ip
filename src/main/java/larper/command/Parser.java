@@ -18,7 +18,7 @@ import larper.task.TaskDateTimeParser;
 import larper.task.Todo;
 
 /**
- * Interprets user input as Larper commands or tasks.
+ * Interprets raw user input as Larper commands or task objects.
  */
 public class Parser {
     private static final Pattern DELETE_PATTERN = Pattern.compile("\\bdelete\\b\\s+(\\S+)");
@@ -26,34 +26,62 @@ public class Parser {
 
     private PendingTask pendingTask;
 
+    /**
+     * Returns whether the input is the command that exits Larper.
+     */
     public boolean isExitCommand(String input) {
         return input.equals("exit");
     }
 
+    /**
+     * Returns whether the input is the command that lists all tasks.
+     */
     public boolean isListCommand(String input) {
         return input.equals("list");
     }
 
+    /**
+     * Returns whether the input starts with the command for marking a task as done.
+     */
     public boolean isMarkCommand(String input) {
         return input.startsWith("mark ");
     }
 
+    /**
+     * Returns whether the input starts with the command for marking a task as not done.
+     */
     public boolean isUnmarkCommand(String input) {
         return input.startsWith("unmark ");
     }
 
+    /**
+     * Returns whether the input contains a delete command word.
+     */
     public boolean isDeleteCommand(String input) {
         return DELETE_WORD_PATTERN.matcher(input).find();
     }
 
+    /**
+     * Returns the task number from a mark command.
+     * If the command does not contain a number, -1 is returned.
+     */
     public int parseMarkNumber(String input) {
         return parseTaskNumber(input.substring(5).trim());
     }
 
+    /**
+     * Returns the task number from an unmark command.
+     * If the command does not contain a number, -1 is returned.
+     */
     public int parseUnmarkNumber(String input) {
         return parseTaskNumber(input.substring(7).trim());
     }
 
+    /**
+     * Returns the task number from a delete command embedded in the input.
+     *
+     * @throws NonNumberDeleteException If the delete command is missing a number or uses a non-numeric value.
+     */
     public int parseDeleteNumber(String input) throws NonNumberDeleteException {
         Matcher matcher = DELETE_PATTERN.matcher(input);
         if (!matcher.find()) {
@@ -67,6 +95,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns a task parsed from the user's input.
+     * If a previous command is waiting for a time confirmation, the input is interpreted as that time answer.
+     *
+     * @throws LarperException If the input does not match a valid task command or pending time answer.
+     */
     public Task parseTask(String input) throws LarperException {
         if (pendingTask != null && !startsWithTaskCommand(input)) {
             return completePendingTask(input);

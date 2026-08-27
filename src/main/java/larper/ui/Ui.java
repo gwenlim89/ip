@@ -19,18 +19,30 @@ public class Ui {
 
     private Scanner scanner;
 
+    /**
+     * Creates a console user interface that reads from standard input.
+     */
     public Ui() {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Returns whether the console has another line of user input.
+     */
     public boolean hasNextInput() {
         return scanner.hasNextLine();
     }
 
+    /**
+     * Returns the next line entered by the user.
+     */
     public String readInput() {
         return scanner.nextLine();
     }
 
+    /**
+     * Shows Larper's greeting and command prompt.
+     */
     public void showWelcome() {
         System.out.println(LINE);
         System.out.print(BANNER);
@@ -39,15 +51,24 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Shows the separator line used between console messages.
+     */
     public void showLine() {
         System.out.println(LINE);
     }
 
+    /**
+     * Shows Larper's exit message.
+     */
     public void showExit() {
         System.out.println(" Bye. Hope to see you again soon!");
         showLine();
     }
 
+    /**
+     * Shows all tasks in their current order.
+     */
     public void showTaskList(TaskList tasks) {
         int count = 0;
         System.out.println(" Here are the tasks in your list:");
@@ -58,28 +79,46 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Shows the message for a mark command without a valid task number.
+     */
     public void showInvalidMarkNumber() {
         System.out.println(" Please give me a valid task number to mark.");
     }
 
+    /**
+     * Shows the message for an unmark command without a valid task number.
+     */
     public void showInvalidUnmarkNumber() {
         System.out.println(" Please give me a valid task number to unmark.");
     }
 
+    /**
+     * Shows the message for a command that refers to a task number not in the list.
+     */
     public void showMissingTaskNumber() {
         System.out.println(" That task number does not exist.");
     }
 
+    /**
+     * Shows the task that has just been marked as done.
+     */
     public void showMarkedTask(Task task) {
         System.out.println(" Nice! I've marked this task as done:");
         System.out.println(" " + task);
     }
 
+    /**
+     * Shows the task that has just been marked as not done.
+     */
     public void showUnmarkedTask(Task task) {
         System.out.println(" OK, I've marked this task as not done yet:");
         System.out.println(" " + task);
     }
 
+    /**
+     * Shows the task that has just been deleted and the new task count.
+     */
     public void showDeletedTask(Task task, int taskCount) {
         System.out.println(" Poof it gone now:");
         System.out.println(" " + task);
@@ -87,6 +126,9 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Shows the task that has just been added and the new task count.
+     */
     public void showAddedTask(Task task, int taskCount) {
         System.out.println(" Got it. I've added this task:");
         System.out.println(" " + task);
@@ -94,11 +136,17 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Shows an error message followed by a separator line.
+     */
     public void showError(String message) {
         System.out.println(message);
         showLine();
     }
 
+    /**
+     * Closes the scanner used to read console input.
+     */
     public void close() {
         scanner.close();
     }

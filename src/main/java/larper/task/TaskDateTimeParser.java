@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
+/**
+ * Parses and formats date and time text used in deadline and event tasks.
+ */
 public class TaskDateTimeParser {
     private static final DateTimeFormatter DISPLAY_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy",
             Locale.ENGLISH);
@@ -56,6 +59,12 @@ public class TaskDateTimeParser {
             .appendPattern("MMMM d yyyy")
             .toFormatter(Locale.ENGLISH);
 
+    /**
+     * Returns the parsed date and time from a task date-time string.
+     * If no time is present, the specified default time is used.
+     *
+     * @throws RuntimeException If the date or time cannot be parsed.
+     */
     public static TaskDateTime parse(String text, String defaultTime) {
         String trimmedText = removeLeadingDateMarker(text.trim());
         if (trimmedText.isEmpty() || isNoTimeOnly(trimmedText)) {
@@ -82,6 +91,11 @@ public class TaskDateTimeParser {
         return new TaskDateTime(parseDate(dateText), time);
     }
 
+    /**
+     * Returns the parsed date from supported task date formats.
+     *
+     * @throws RuntimeException If the date cannot be parsed.
+     */
     public static LocalDate parseDate(String dateText) {
         String cleanDateText = cleanDateText(dateText);
         try {
@@ -91,6 +105,12 @@ public class TaskDateTimeParser {
         }
     }
 
+    /**
+     * Returns a normalized task time in 24-hour HHmm format.
+     * The special value "no time" is returned unchanged.
+     *
+     * @throws IllegalArgumentException If the time cannot be parsed.
+     */
     public static String normalizeTime(String timeText) {
         String cleanTimeText = timeText.trim().toLowerCase();
         if (isNoTimeOnly(cleanTimeText)) {
@@ -108,16 +128,25 @@ public class TaskDateTimeParser {
         throw new IllegalArgumentException("Invalid deadline time.");
     }
 
+    /**
+     * Returns whether the text looks like a supported task time.
+     */
     public static boolean looksLikeTime(String text) {
         String cleanTimeText = text.trim().toLowerCase();
         return cleanTimeText.matches("\\d{3,4}") || cleanTimeText.matches("\\d{1,2}:\\d{2}")
                 || cleanTimeText.matches("\\d{1,2}(:\\d{2})?(am|pm)");
     }
 
+    /**
+     * Returns whether the text is a valid answer to an optional time prompt.
+     */
     public static boolean isValidTimeAnswer(String text) {
         return isNoTimeOnly(text) || looksLikeTime(text);
     }
 
+    /**
+     * Returns whether the text contains a supported month name or month abbreviation.
+     */
     public static boolean containsMonthName(String text) {
         String cleanText = cleanDateText(text).toLowerCase();
         int index = 0;
@@ -130,6 +159,9 @@ public class TaskDateTimeParser {
         return false;
     }
 
+    /**
+     * Returns the date formatted for Larper's console output.
+     */
     public static String formatDate(LocalDate date) {
         return date.format(DISPLAY_DATE_FORMATTER);
     }

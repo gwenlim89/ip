@@ -14,13 +14,27 @@ import larper.task.TaskDateTime;
 import larper.task.TaskDateTimeParser;
 import larper.task.Todo;
 
+/**
+ * Loads tasks from Larper's data file and saves tasks back to the data file.
+ */
 public class Storage {
     private Path filePath;
 
+    /**
+     * Creates storage that reads and writes the specified task data file.
+     *
+     * @param filePath Path of the task data file.
+     */
     public Storage(Path filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves all tasks to the data file, creating the parent directory if needed.
+     *
+     * @param tasks Tasks to save.
+     * @throws IOException If the data file cannot be written.
+     */
     public void saveTasks(ArrayList<Task> tasks) throws IOException {
         Path parentDirectory = filePath.getParent();
         if (parentDirectory != null) {
@@ -35,6 +49,12 @@ public class Storage {
         Files.write(filePath, lines, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Returns all valid tasks loaded from the data file.
+     * If the data file does not exist, an empty task list is returned.
+     *
+     * @throws IOException If the data file exists but cannot be read.
+     */
     public ArrayList<Task> loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!Files.exists(filePath)) {
