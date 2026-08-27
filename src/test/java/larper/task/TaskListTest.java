@@ -1,0 +1,118 @@
+package larper.task;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
+
+import larper.exception.EmptyDeletionException;
+import larper.exception.InvalidNumberDeleteException;
+import larper.exception.MarkingException;
+import larper.exception.UnmarkingException;
+
+public class TaskListTest {
+    @Test
+    public void addTask_emptyList_taskStoredAndCountUpdated() {
+        TaskList taskList = new TaskList();
+        Task task = new Todo("read book");
+
+        taskList.addTask(task);
+
+        assertEquals(1, taskList.size());
+        assertFalse(taskList.isEmpty());
+        assertTrue(taskList.hasTaskNumber(1));
+        assertSame(task, taskList.getTask(1));
+        assertFalse(taskList.hasTaskNumber(0));
+        assertFalse(taskList.hasTaskNumber(2));
+    }
+
+    @Test
+    public void constructor_existingTasks_memoryRetainedAndCountSet() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Todo firstTask = new Todo("first");
+        Deadline secondTask = new Deadline("second", "2026-08-23", "no time");
+        tasks.add(firstTask);
+        tasks.add(secondTask);
+
+        TaskList taskList = new TaskList(tasks);
+
+        assertEquals(2, taskList.size());
+        assertSame(firstTask, taskList.getTask(1));
+        assertSame(secondTask, taskList.getTask(2));
+        assertSame(tasks, taskList.getTasks());
+    }
+
+    @Test
+    public void deleteTask_middleTask_taskRemovedAndRemainingOrderRetained() throws Exception {
+        TaskList taskList = new TaskList();
+        Task firstTask = new Todo("alpha");
+        Task secondTask = new Todo("beta");
+        Task thirdTask = new Todo("gamma");
+        taskList.addTask(firstTask);
+        taskList.addTask(secondTask);
+        taskList.addTask(thirdTask);
+
+        Task removedTask = taskList.deleteTask(2);
+
+        assertSame(secondTask, removedTask);
+        assertEquals(2, taskList.size());
+        assertSame(firstTask, taskList.getTask(1));
+        assertSame(thirdTask, taskList.getTask(2));
+        assertTrue(taskList.hasTaskNumber(2));
+        assertFalse(taskList.hasTaskNumber(3));
+    }
+
+    @Test
+    public void deleteTask_lastRemainingTask_listBecomesEmpty() throws Exception {
+        TaskList taskList = new TaskList();
+        Task task = new Todo("solo");
+        taskList.addTask(task);
+
+        Task removedTask = taskList.deleteTask(1);
+
+        assertSame(task, removedTask);
+        assertEquals(0, taskList.size());
+        assertTrue(taskList.isEmpty());
+        assertFalse(taskList.hasTaskNumber(1));
+    }
+
+    @Test
+    public void deleteTask_emptyOrInvalidNumber_expectedExceptions() throws Exception {
+        TaskList taskList = new TaskList();
+        assertThrows(EmptyDeletionException.class, () -> taskList.deleteTask(1));
+
+        taskList.addTask(new Todo("alpha"));
+        assertThrows(InvalidNumberDeleteException.class, () -> taskList.deleteTask(0));
+        assertThrows(InvalidNumberDeleteException.class, () -> taskList.deleteTask(2));
+    }
+
+    @Test
+    public void markAndUnmarkTask_validTask_statusUpdated() throws Exception {
+        TaskList taskList = new TaskList();
+        taskList.addTask(new Todo("read book"));
+
+        Task markedTask = taskList.markTask(1);
+        assertTrue(markedTask.isDone());
+        assertEquals("[T][X] read book", markedTask.toString());
+
+        Task unmarkedTask = taskList.unmarkTask(1);
+        assertFalse(unmarkedTask.isDone());
+        assertEquals("[T][ ] read book", unmarkedTask.toString());
+    }
+
+    @Test
+    public void markAndUnmarkTask_repeatedStatusChange_expectedExceptions() throws Exception {
+        TaskList taskList = new TaskList();
+        taskList.addTask(new Todo("read book"));
+
+        assertThrows(UnmarkingException.class, () -> taskList.unmarkTask(1));
+
+        taskList.markTask(1);
+        assertThrows(MarkingException.class, () -> taskList.markTask(1));
+    }
+}

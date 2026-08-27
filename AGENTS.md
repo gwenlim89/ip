@@ -38,3 +38,9 @@ Do not commit or push unless explicitly asked.
 
 After each code update, update `test/ui-test-plan.md` if the change affects commands, output text, formatting, or console behavior.
 After each code update, invoke the project-specific `$test-ui` skill to run the console UI test plan.
+
+## JUnit testing
+
+Focus JUnit tests on the top ~50% highest-value methods, prioritizing complex, core, or critical business logic over simple getters/setters.
+After each code update, update the relevant JUnit tests so the project continues to comply with this 50% high-value coverage target.
+Use Gradle/JUnit conventions for test paths and names, e.g. `src/test/java/larper/task/TaskListTest.java` for `src/main/java/larper/task/TaskList.java`.
