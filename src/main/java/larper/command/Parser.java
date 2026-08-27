@@ -46,6 +46,13 @@ public class Parser {
         return DELETE_WORD_PATTERN.matcher(input).find();
     }
 
+    /**
+     * Returns whether the input is the command that starts a find search.
+     */
+    public boolean isFindCommand(String input) {
+        return input.equals("find");
+    }
+
     public int parseMarkNumber(String input) {
         return parseTaskNumber(input.substring(5).trim());
     }

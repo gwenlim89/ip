@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import larper.exception.EmptyDeletionException;
 import larper.exception.InvalidNumberDeleteException;
 import larper.exception.MarkingException;
+import larper.exception.NoFindException;
 import larper.exception.UnmarkingException;
 
 /**
@@ -60,6 +61,32 @@ public class TaskList {
         return tasks.remove(number - 1);
     }
 
+    /**
+     * Returns tasks with descriptions containing the given phrase, ignoring case.
+     *
+     * @throws NoFindException If no task description contains the phrase.
+     */
+    public ArrayList<FindResult> findTasks(String phrase) throws NoFindException {
+        String normalizedPhrase = normalizeFindPhrase(phrase);
+        ArrayList<FindResult> results = new ArrayList<>();
+        int index = 0;
+
+        while (index < taskCount) {
+            Task task = tasks.get(index);
+            String normalizedDescription = normalizeFindPhrase(task.getDescription());
+            if (!normalizedPhrase.isEmpty() && normalizedDescription.contains(normalizedPhrase)) {
+                results.add(new FindResult(index + 1, task));
+            }
+            index++;
+        }
+
+        if (results.isEmpty()) {
+            throw new NoFindException();
+        }
+
+        return results;
+    }
+
     public Task markTask(int number) throws MarkingException {
         Task task = getTask(number);
         if (task.isDone()) {
@@ -78,5 +105,9 @@ public class TaskList {
 
         task.unmarkAsDone();
         return task;
+    }
+
+    private String normalizeFindPhrase(String phrase) {
+        return phrase.trim().replaceAll("\\s+", " ").toLowerCase();
     }
 }

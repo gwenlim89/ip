@@ -1,7 +1,9 @@
 package larper.ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import larper.task.FindResult;
 import larper.task.Task;
 import larper.task.TaskList;
 
@@ -10,7 +12,7 @@ import larper.task.TaskList;
  */
 public class Ui {
     private static final String LINE = "_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_";
-    private static final String BANNER = " _                              \n"
+    private static final String BANNER = " _\n"
             + "| |       __ _   _ __   _ __     ___   _ __\n"
             + "| |      / _` | | '__| | '_ \\   / _ \\ | '__|\n"
             + "| |___  | (_| | | |    | |_) | |  __/ | |\n"
@@ -34,8 +36,10 @@ public class Ui {
     public void showWelcome() {
         System.out.println(LINE);
         System.out.print(BANNER);
-        System.out.println("Fine day! I'm Larper. \n");
-        System.out.println(" What can I do for you? \n");
+        System.out.println("Fine day! I'm Larper.");
+        System.out.println();
+        System.out.println(" What can I do for you?");
+        System.out.println();
         System.out.println(LINE);
     }
 
@@ -54,6 +58,27 @@ public class Ui {
         while (count < tasks.size()) {
             System.out.println(" " + (count + 1) + ". " + tasks.getTask(count + 1));
             count++;
+        }
+        showLine();
+    }
+
+    /**
+     * Shows the prompt that asks what phrase to find.
+     */
+    public void showFindPrompt() {
+        System.out.println(" What do you want me to find?");
+        showLine();
+    }
+
+    /**
+     * Shows tasks found by the latest find search.
+     */
+    public void showFindResults(ArrayList<FindResult> results) {
+        int index = 0;
+        System.out.println(" OK found it!!!");
+        while (index < results.size()) {
+            System.out.println(" " + results.get(index));
+            index++;
         }
         showLine();
     }

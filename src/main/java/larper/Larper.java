@@ -2,10 +2,12 @@ package larper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import larper.command.Parser;
 import larper.exception.LarperException;
 import larper.storage.Storage;
+import larper.task.FindResult;
 import larper.task.Task;
 import larper.task.TaskList;
 import larper.ui.Ui;
@@ -18,6 +20,7 @@ public class Larper {
     private Parser parser;
     private Storage storage;
     private TaskList tasks;
+    private boolean isWaitingForFindPhrase;
 
     public Larper(Path dataPath) {
         ui = new Ui();
@@ -39,8 +42,15 @@ public class Larper {
             }
 
             try {
-                if (parser.isListCommand(input)) {
+                if (isWaitingForFindPhrase) {
+                    ArrayList<FindResult> results = tasks.findTasks(input);
+                    isWaitingForFindPhrase = false;
+                    ui.showFindResults(results);
+                } else if (parser.isListCommand(input)) {
                     ui.showTaskList(tasks);
+                } else if (parser.isFindCommand(input)) {
+                    isWaitingForFindPhrase = true;
+                    ui.showFindPrompt();
                 } else if (parser.isMarkCommand(input)) {
                     int number = parser.parseMarkNumber(input);
                     if (number == -1) {
@@ -80,6 +90,7 @@ public class Larper {
                     ui.showAddedTask(task, tasks.size());
                 }
             } catch (LarperException e) {
+                isWaitingForFindPhrase = false;
                 ui.showError(e.getMessage());
             }
 

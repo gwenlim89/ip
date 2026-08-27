@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import larper.exception.EmptyDeletionException;
 import larper.exception.InvalidNumberDeleteException;
 import larper.exception.MarkingException;
+import larper.exception.NoFindException;
 import larper.exception.UnmarkingException;
 
 public class TaskListTest {
@@ -89,6 +90,39 @@ public class TaskListTest {
         taskList.addTask(new Todo("alpha"));
         assertThrows(InvalidNumberDeleteException.class, () -> taskList.deleteTask(0));
         assertThrows(InvalidNumberDeleteException.class, () -> taskList.deleteTask(2));
+    }
+
+    @Test
+    public void findTasks_fullPhraseCaseInsensitive_matchingTasksReturned() throws Exception {
+        TaskList taskList = new TaskList();
+        Task firstTask = new Todo("Read Book");
+        Task secondTask = new Deadline("return library book", "2026-08-23", "no time");
+        Task thirdTask = new Event("project meeting", "2026-08-24", "1400", "2026-08-25", "1600");
+        taskList.addTask(firstTask);
+        taskList.addTask(secondTask);
+        taskList.addTask(thirdTask);
+
+        ArrayList<FindResult> bookResults = taskList.findTasks("BOOK");
+        ArrayList<FindResult> phraseResults = taskList.findTasks("return library");
+
+        assertEquals(2, bookResults.size());
+        assertEquals(1, bookResults.get(0).getTaskNumber());
+        assertSame(firstTask, bookResults.get(0).getTask());
+        assertEquals(2, bookResults.get(1).getTaskNumber());
+        assertSame(secondTask, bookResults.get(1).getTask());
+        assertEquals(1, phraseResults.size());
+        assertEquals(2, phraseResults.get(0).getTaskNumber());
+        assertSame(secondTask, phraseResults.get(0).getTask());
+    }
+
+    @Test
+    public void findTasks_dateOnlyOrNoMatch_exceptionThrown() {
+        TaskList taskList = new TaskList();
+        taskList.addTask(new Deadline("return book", "2026-08-23", "no time"));
+
+        assertThrows(NoFindException.class, () -> taskList.findTasks("Aug"));
+        assertThrows(NoFindException.class, () -> taskList.findTasks("movie"));
+        assertThrows(NoFindException.class, () -> taskList.findTasks(" "));
     }
 
     @Test
