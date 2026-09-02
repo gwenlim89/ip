@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launcher",
+            "request": "launch",
+            "mainClass": "larper.Launcher",
+            "projectName": "ip"
+        },
+        {
+            "type": "java",
             "name": "Run Larper",
             "request": "launch",
             "mainClass": "larper.Larper",

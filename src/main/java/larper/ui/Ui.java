@@ -47,11 +47,7 @@ public class Ui {
      */
     public void showWelcome() {
         System.out.println(LINE);
-        System.out.print(BANNER);
-        System.out.println("Fine day! I'm Larper.");
-        System.out.println();
-        System.out.println(" What can I do for you?");
-        System.out.println();
+        System.out.print(formatWelcomeMessage());
         System.out.println(LINE);
     }
 
@@ -66,107 +62,190 @@ public class Ui {
      * Shows Larper's exit message.
      */
     public void showExit() {
-        System.out.println(" Bye. Hope to see you again soon!");
-        showLine();
+        showMessage(formatExitMessage());
     }
 
     /**
      * Shows all tasks in their current order.
      */
     public void showTaskList(TaskList tasks) {
-        int count = 0;
-        System.out.println(" Here are the tasks in your list:");
-        while (count < tasks.size()) {
-            System.out.println(" " + (count + 1) + ". " + tasks.getTask(count + 1));
-            count++;
-        }
-        showLine();
+        showMessage(formatTaskList(tasks));
     }
 
     /**
      * Shows the prompt that asks what phrase to find.
      */
     public void showFindPrompt() {
-        System.out.println(" What do you want me to find?");
-        showLine();
+        showMessage(formatFindPrompt());
     }
 
     /**
      * Shows tasks found by the latest find search.
      */
     public void showFindResults(ArrayList<FindResult> results) {
-        int index = 0;
-        System.out.println(" OK found it!!!");
-        while (index < results.size()) {
-            System.out.println(" " + results.get(index));
-            index++;
-        }
-        showLine();
+        showMessage(formatFindResults(results));
     }
 
     /**
      * Shows the message for a mark command without a valid task number.
      */
     public void showInvalidMarkNumber() {
-        System.out.println(" Please give me a valid task number to mark.");
+        showMessage(formatInvalidMarkNumber());
     }
 
     /**
      * Shows the message for an unmark command without a valid task number.
      */
     public void showInvalidUnmarkNumber() {
-        System.out.println(" Please give me a valid task number to unmark.");
+        showMessage(formatInvalidUnmarkNumber());
     }
 
     /**
      * Shows the message for a command that refers to a task number not in the list.
      */
     public void showMissingTaskNumber() {
-        System.out.println(" That task number does not exist.");
+        showMessage(formatMissingTaskNumber());
     }
 
     /**
      * Shows the task that has just been marked as done.
      */
     public void showMarkedTask(Task task) {
-        System.out.println(" Nice! I've marked this task as done:");
-        System.out.println(" " + task);
+        showMessage(formatMarkedTask(task));
     }
 
     /**
      * Shows the task that has just been marked as not done.
      */
     public void showUnmarkedTask(Task task) {
-        System.out.println(" OK, I've marked this task as not done yet:");
-        System.out.println(" " + task);
+        showMessage(formatUnmarkedTask(task));
     }
 
     /**
      * Shows the task that has just been deleted and the new task count.
      */
     public void showDeletedTask(Task task, int taskCount) {
-        System.out.println(" Poof it gone now:");
-        System.out.println(" " + task);
-        showTaskCount(taskCount);
-        showLine();
+        showMessage(formatDeletedTask(task, taskCount));
     }
 
     /**
      * Shows the task that has just been added and the new task count.
      */
     public void showAddedTask(Task task, int taskCount) {
-        System.out.println(" Got it. I've added this task:");
-        System.out.println(" " + task);
-        showTaskCount(taskCount);
-        showLine();
+        showMessage(formatAddedTask(task, taskCount));
     }
 
     /**
      * Shows an error message followed by a separator line.
      */
     public void showError(String message) {
+        showMessage(message);
+    }
+
+    /**
+     * Shows a complete Larper message followed by a separator line.
+     *
+     * @param message Text to show before the separator line.
+     */
+    public void showMessage(String message) {
         System.out.println(message);
         showLine();
+    }
+
+    /**
+     * Returns Larper's greeting and command prompt.
+     */
+    public static String formatWelcomeMessage() {
+        return BANNER + "Larper has entered the chat.\n\n Drop a command. Let's lock in.\n\n";
+    }
+
+    /**
+     * Returns Larper's exit message.
+     */
+    public static String formatExitMessage() {
+        return " Aight, Larper is logging off. Come back with more quests soon.";
+    }
+
+    /**
+     * Returns all tasks in their current order.
+     */
+    public static String formatTaskList(TaskList tasks) {
+        int count = 0;
+        StringBuilder message = new StringBuilder(" Quest log check:");
+        while (count < tasks.size()) {
+            message.append("\n ").append(count + 1).append(". ").append(tasks.getTask(count + 1));
+            count++;
+        }
+        return message.toString();
+    }
+
+    /**
+     * Returns the prompt that asks what phrase to find.
+     */
+    public static String formatFindPrompt() {
+        return " What phrase are we hunting for?";
+    }
+
+    /**
+     * Returns tasks found by the latest find search.
+     */
+    public static String formatFindResults(ArrayList<FindResult> results) {
+        int index = 0;
+        StringBuilder message = new StringBuilder(" Found it. Receipts below:");
+        while (index < results.size()) {
+            message.append("\n ").append(results.get(index));
+            index++;
+        }
+        return message.toString();
+    }
+
+    /**
+     * Returns the message for a mark command without a valid task number.
+     */
+    public static String formatInvalidMarkNumber() {
+        return " Give me a real task number to mark. I cannot lock onto thin air.";
+    }
+
+    /**
+     * Returns the message for an unmark command without a valid task number.
+     */
+    public static String formatInvalidUnmarkNumber() {
+        return " Give me a real task number to unmark. I cannot unlock mystery tasks.";
+    }
+
+    /**
+     * Returns the message for a command that refers to a task number not in the list.
+     */
+    public static String formatMissingTaskNumber() {
+        return " That task number is not in the quest log.";
+    }
+
+    /**
+     * Returns the task that has just been marked as done.
+     */
+    public static String formatMarkedTask(Task task) {
+        return " Locked in. This task is done now:\n " + task;
+    }
+
+    /**
+     * Returns the task that has just been marked as not done.
+     */
+    public static String formatUnmarkedTask(Task task) {
+        return " Back on the grind pile:\n " + task;
+    }
+
+    /**
+     * Returns the task that has just been deleted and the new task count.
+     */
+    public static String formatDeletedTask(Task task, int taskCount) {
+        return " Poof, gone from the quest log:\n " + task + "\n" + formatTaskCount(taskCount);
+    }
+
+    /**
+     * Returns the task that has just been added and the new task count.
+     */
+    public static String formatAddedTask(Task task, int taskCount) {
+        return " Say less. I've added this quest:\n " + task + "\n" + formatTaskCount(taskCount);
     }
 
     /**
@@ -176,8 +255,8 @@ public class Ui {
         scanner.close();
     }
 
-    private void showTaskCount(int taskCount) {
+    private static String formatTaskCount(int taskCount) {
         String taskWord = taskCount == 1 ? "task" : "tasks";
-        System.out.println(" Now you have " + taskCount + " " + taskWord + " in the list.");
+        return " Quest log now has " + taskCount + " " + taskWord + ".";
     }
 }

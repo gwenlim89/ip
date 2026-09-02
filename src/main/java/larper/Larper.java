@@ -44,70 +44,94 @@ public class Larper {
         ui.showWelcome();
         while (ui.hasNextInput()) {
             String input = ui.readInput();
-
             ui.showLine();
-
-            if (parser.isExitCommand(input)) {
-                ui.showExit();
+            LarperResponse response = getResponse(input);
+            ui.showMessage(response.getMessage());
+            if (response.isExit()) {
                 break;
             }
-
-            try {
-                if (isWaitingForFindPhrase) {
-                    ArrayList<FindResult> results = tasks.findTasks(input);
-                    isWaitingForFindPhrase = false;
-                    ui.showFindResults(results);
-                } else if (parser.isListCommand(input)) {
-                    ui.showTaskList(tasks);
-                } else if (parser.isFindCommand(input)) {
-                    isWaitingForFindPhrase = true;
-                    ui.showFindPrompt();
-                } else if (parser.isMarkCommand(input)) {
-                    int number = parser.parseMarkNumber(input);
-                    if (number == -1) {
-                        ui.showInvalidMarkNumber();
-                    } else if (!tasks.hasTaskNumber(number)) {
-                        ui.showMissingTaskNumber();
-                    } else {
-                        Task markedTask = tasks.markTask(number);
-                        saveTasks();
-                        ui.showMarkedTask(markedTask);
-                    }
-                    ui.showLine();
-
-                } else if (parser.isUnmarkCommand(input)) {
-                    int number = parser.parseUnmarkNumber(input);
-                    if (number == -1) {
-                        ui.showInvalidUnmarkNumber();
-                    } else if (!tasks.hasTaskNumber(number)) {
-                        ui.showMissingTaskNumber();
-                    } else {
-                        Task unmarkedTask = tasks.unmarkTask(number);
-                        saveTasks();
-                        ui.showUnmarkedTask(unmarkedTask);
-                    }
-                    ui.showLine();
-
-                } else if (parser.isDeleteCommand(input)) {
-                    int number = parser.parseDeleteNumber(input);
-                    Task removedTask = tasks.deleteTask(number);
-                    saveTasks();
-                    ui.showDeletedTask(removedTask, tasks.size());
-
-                } else {
-                    Task task = parser.parseTask(input);
-                    tasks.addTask(task);
-                    saveTasks();
-                    ui.showAddedTask(task, tasks.size());
-                }
-            } catch (LarperException e) {
-                isWaitingForFindPhrase = false;
-                ui.showError(e.getMessage());
-            }
-
         }
 
         ui.close();
+    }
+
+    /**
+     * Returns Larper's welcome message for non-console user interfaces.
+     */
+    public String getWelcomeMessage() {
+        return Ui.formatWelcomeMessage().stripTrailing();
+    }
+
+    /**
+     * Returns Larper's response to one user command.
+     *
+     * @param input User command to handle.
+     * @return Larper's response message and session status.
+     */
+    public LarperResponse getResponse(String input) {
+        if (parser.isExitCommand(input)) {
+            return new LarperResponse(Ui.formatExitMessage(), true);
+        }
+
+        try {
+            return new LarperResponse(executeCommand(input), false);
+        } catch (LarperException e) {
+            isWaitingForFindPhrase = false;
+            return new LarperResponse(e.getMessage(), false);
+        }
+    }
+
+    private String executeCommand(String input) throws LarperException {
+        if (isWaitingForFindPhrase) {
+            ArrayList<FindResult> results = tasks.findTasks(input);
+            isWaitingForFindPhrase = false;
+            return Ui.formatFindResults(results);
+        } else if (parser.isListCommand(input)) {
+            return Ui.formatTaskList(tasks);
+        } else if (parser.isFindCommand(input)) {
+            isWaitingForFindPhrase = true;
+            return Ui.formatFindPrompt();
+        } else if (parser.isMarkCommand(input)) {
+            return executeMarkCommand(input);
+        } else if (parser.isUnmarkCommand(input)) {
+            return executeUnmarkCommand(input);
+        } else if (parser.isDeleteCommand(input)) {
+            int number = parser.parseDeleteNumber(input);
+            Task removedTask = tasks.deleteTask(number);
+            saveTasks();
+            return Ui.formatDeletedTask(removedTask, tasks.size());
+        } else {
+            Task task = parser.parseTask(input);
+            tasks.addTask(task);
+            saveTasks();
+            return Ui.formatAddedTask(task, tasks.size());
+        }
+    }
+
+    private String executeMarkCommand(String input) throws LarperException {
+        int number = parser.parseMarkNumber(input);
+        if (number == -1) {
+            return Ui.formatInvalidMarkNumber();
+        } else if (!tasks.hasTaskNumber(number)) {
+            return Ui.formatMissingTaskNumber();
+        }
+
+        Task markedTask = tasks.markTask(number);
+        saveTasks();
+        return Ui.formatMarkedTask(markedTask);
+    }
+
+    private String executeUnmarkCommand(String input) throws LarperException {
+        int number = parser.parseUnmarkNumber(input);
+        if (number == -1) {
+            return Ui.formatInvalidUnmarkNumber();
+        } else if (!tasks.hasTaskNumber(number)) {
+            return Ui.formatMissingTaskNumber();
+        }
+
+        Task unmarkedTask = tasks.unmarkTask(number);
+        saveTasks();
+        return Ui.formatUnmarkedTask(unmarkedTask);
     }
 
     /**
@@ -119,7 +143,10 @@ public class Larper {
         new Larper(getDataPath()).run();
     }
 
-    private static Path getDataPath() {
+    /**
+     * Returns the configured data path or the default local data file.
+     */
+    public static Path getDataPath() {
         String dataPath = System.getProperty(DATA_PATH_PROPERTY);
         if (dataPath == null || dataPath.isBlank()) {
             return DEFAULT_DATA_PATH;

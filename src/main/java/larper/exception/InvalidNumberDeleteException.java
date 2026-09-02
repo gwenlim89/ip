@@ -10,8 +10,8 @@ public class InvalidNumberDeleteException extends LarperException {
      * @param taskCount Number of tasks currently in the list.
      */
     public InvalidNumberDeleteException(int taskCount) {
-        super(" The number provided is invalid. Try again.\n"
-                + " You have " + taskCount + " task(s) in the list, so the number must be from 1 to "
+        super(" That delete number is out of bounds. Try again.\n"
+                + " You have " + taskCount + " task(s), so pick from 1 to "
                 + taskCount + ".");
     }
 }

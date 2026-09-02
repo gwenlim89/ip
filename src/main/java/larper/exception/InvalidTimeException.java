@@ -12,7 +12,7 @@ public class InvalidTimeException extends LarperException {
      * @param label Name of the date field that needs a time confirmation.
      */
     public InvalidTimeException(String label) {
-        super(" Larper found the " + label + " date, but no time was given.\n"
+        super(" Larper found the " + label + " date, but the time is still undecided.\n"
                 + CommandHelp.TIME_EXAMPLES);
     }
 }

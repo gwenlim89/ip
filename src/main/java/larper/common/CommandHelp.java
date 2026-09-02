@@ -19,8 +19,8 @@ public class CommandHelp {
             + " Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm";
 
     /** Supported optional time examples shown when a time confirmation is needed. */
-    public static final String TIME_EXAMPLES = " Time is optional, so please confirm with 2pm, 2:30pm, "
-            + "1400, 14:00, or no time.";
+    public static final String TIME_EXAMPLES = " Time is optional: add 2pm, 2:30pm, 1400, 14:00, "
+            + "or type no time.";
 
     private CommandHelp() {
     }

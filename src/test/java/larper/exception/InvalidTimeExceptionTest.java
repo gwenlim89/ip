@@ -9,7 +9,7 @@ public class InvalidTimeExceptionTest {
     public void getMessage_eventStartTimeError_includesOptionalTimePrompt() {
         String message = new InvalidTimeException("event start").getMessage();
 
-        assertTrue(message.contains("Larper found the event start date, but no time was given."));
+        assertTrue(message.contains("Larper found the event start date, but the time is still undecided."));
         assertTrue(message.contains("Time is optional"));
         assertTrue(message.contains("no time"));
     }

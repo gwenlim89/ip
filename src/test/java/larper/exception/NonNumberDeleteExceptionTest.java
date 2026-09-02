@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 public class NonNumberDeleteExceptionTest {
     @Test
     public void getMessage_nonNumberDelete_expectedMessage() {
-        assertEquals(" Deletion needs a number, not characters.", new NonNumberDeleteException().getMessage());
+        assertEquals(" Deletion needs a number, not keyboard confetti.",
+                new NonNumberDeleteException().getMessage());
     }
 }

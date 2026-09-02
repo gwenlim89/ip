@@ -8,6 +8,6 @@ public class NoFindException extends LarperException {
      * Creates an exception for a find command with no matching tasks.
      */
     public NoFindException() {
-        super(" oh no book found! Please retry again!!");
+        super(" No match found. Larper checked the whole quest log, try another phrase.");
     }
 }

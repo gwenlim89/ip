@@ -9,6 +9,7 @@ public class NoFindExceptionTest {
     public void getMessage_noFind_expectedMessage() {
         NoFindException exception = new NoFindException();
 
-        assertEquals(" oh no book found! Please retry again!!", exception.getMessage());
+        assertEquals(" No match found. Larper checked the whole quest log, try another phrase.",
+                exception.getMessage());
     }
 }

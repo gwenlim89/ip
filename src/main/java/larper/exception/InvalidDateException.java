@@ -12,6 +12,6 @@ public class InvalidDateException extends LarperException {
      * @param label Name of the date field that could not be parsed.
      */
     public InvalidDateException(String label) {
-        super(" Where the date is? Larper needs the " + label + " date.\n" + CommandHelp.DATE_EXAMPLES);
+        super(" Where the date at? Larper needs the " + label + " date.\n" + CommandHelp.DATE_EXAMPLES);
     }
 }

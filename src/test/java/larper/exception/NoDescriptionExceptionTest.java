@@ -9,7 +9,7 @@ public class NoDescriptionExceptionTest {
     public void getMessage_missingDescription_includesPersonalisedHelp() {
         String message = new NoDescriptionException().getMessage();
 
-        assertTrue(message.contains("Larper needs a task description"));
+        assertTrue(message.contains("Larper needs the actual task"));
         assertTrue(message.contains("todo DESCRIPTION"));
         assertTrue(message.contains("deadline DESCRIPTION /by DATE TIME"));
         assertTrue(message.contains("event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME"));

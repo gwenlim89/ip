@@ -9,7 +9,7 @@ public class InvalidDateExceptionTest {
     public void getMessage_deadlineDateError_includesExamples() {
         String message = new InvalidDateException("deadline").getMessage();
 
-        assertTrue(message.contains("Where the date is? Larper needs the deadline date."));
+        assertTrue(message.contains("Where the date at? Larper needs the deadline date."));
         assertTrue(message.contains("2019-10-15"));
         assertTrue(message.contains("Aug 6"));
     }

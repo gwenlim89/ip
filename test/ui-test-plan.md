@@ -26,42 +26,42 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [T][ ] read book
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] return book (by: Aug 23 2026)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
- Now you have 3 tasks in the list.
+ Quest log now has 3 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][ ] read book
  2. [D][ ] return book (by: Aug 23 2026)
  3. [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Nice! I've marked this task as done:
+ Locked in. This task is done now:
  [D][X] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- OK, I've marked this task as not done yet:
+ Back on the grind pile:
  [D][ ] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -92,50 +92,50 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [T][ ] read book
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] return library book (by: Jun 06 2026)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [E][ ] book club (from: Aug 08 2026 1400 to: Aug 08 2026 1600)
- Now you have 3 tasks in the list.
+ Quest log now has 3 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What do you want me to find?
+ What phrase are we hunting for?
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- OK found it!!!
+ Found it. Receipts below:
  [T][ ] read book (task no: 1)
  [D][ ] return library book (by: Jun 06 2026) (task no: 2)
  [E][ ] book club (from: Aug 08 2026 1400 to: Aug 08 2026 1600) (task no: 3)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What do you want me to find?
+ What phrase are we hunting for?
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- OK found it!!!
+ Found it. Receipts below:
  [D][ ] return library book (by: Jun 06 2026) (task no: 2)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What do you want me to find?
+ What phrase are we hunting for?
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- oh no book found! Please retry again!!
+ No match found. Larper checked the whole quest log, try another phrase.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -173,22 +173,22 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] submit report (by: Oct 15 2019 1400)
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [D][ ] submit report (by: Oct 15 2019 1400)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -220,40 +220,40 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] project draft (by: Aug 06 2026 0930)
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] dinner (by: Feb 07 2026 1900)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] quiz (by: Sep 08 2026 1800)
- Now you have 3 tasks in the list.
+ Quest log now has 3 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] typo check (by: Jan 09 2026 0800)
- Now you have 4 tasks in the list.
+ Quest log now has 4 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [D][ ] project draft (by: Aug 06 2026 0930)
  2. [D][ ] dinner (by: Feb 07 2026 1900)
  3. [D][ ] quiz (by: Sep 08 2026 1800)
  4. [D][ ] typo check (by: Jan 09 2026 0800)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -285,22 +285,22 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -329,13 +329,13 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper needs a task description before charging into battle.
+ Larper needs the actual task before we start yapping.
  Please use one of these formats:
  todo DESCRIPTION
  deadline DESCRIPTION /by DATE TIME
@@ -344,7 +344,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Times: 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- oh watchu yapping on
+ oh watchu yapping on, give Larper a real command
  Please use one of these formats:
  todo DESCRIPTION
  deadline DESCRIPTION /by DATE TIME
@@ -353,7 +353,7 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Times: 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -384,52 +384,52 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the deadline date, but no time was given.
- Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
+ Larper found the deadline date, but the time is still undecided.
+ Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Where the date is? Larper needs the deadline date.
+ Where the date at? Larper needs the deadline date.
  Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
  Try: deadline DESCRIPTION /by 2019-10-15 1400
  Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Where the date is? Larper needs the deadline date.
+ Where the date at? Larper needs the deadline date.
  Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
  Try: deadline DESCRIPTION /by 2019-10-15 1400
  Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the event start date, but no time was given.
- Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
+ Larper found the event start date, but the time is still undecided.
+ Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] return book (by: Mar 09 2026)
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Nice! I've marked this task as done:
+ Locked in. This task is done now:
  [D][X] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already marked. Lock in and pick one that is not done yet.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- OK, I've marked this task as not done yet:
+ Back on the grind pile:
  [D][ ] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  This task is already unmarked. Quit messing around and pick a done task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -455,32 +455,32 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [T][ ] larp
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the deadline date, but no time was given.
- Time is optional, so please confirm with 2pm, 2:30pm, 1400, 14:00, or no time.
+ Larper found the deadline date, but the time is still undecided.
+ Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] vnervn (by: Mar 09 2026)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][ ] larp
  2. [D][ ] vnervn (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -507,38 +507,38 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [T][ ] alpha
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [D][ ] beta (by: Mar 09 2026)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
- Now you have 3 tasks in the list.
+ Quest log now has 3 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Poof it gone now:
+ Poof, gone from the quest log:
  [D][ ] beta (by: Mar 09 2026)
- Now you have 2 tasks in the list.
+ Quest log now has 2 tasks.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][ ] alpha
  2. [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -571,33 +571,33 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Got it. I've added this task:
+ Say less. I've added this quest:
  [T][ ] alpha
- Now you have 1 task in the list.
+ Quest log now has 1 task.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Deletion needs a number, not characters.
+ Deletion needs a number, not keyboard confetti.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- The number provided is invalid. Try again.
- You have 1 task(s) in the list, so the number must be from 1 to 1.
+ That delete number is out of bounds. Try again.
+ You have 1 task(s), so pick from 1 to 1.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- The number provided is invalid. Try again.
- You have 1 task(s) in the list, so the number must be from 1 to 1.
+ That delete number is out of bounds. Try again.
+ You have 1 task(s), so pick from 1 to 1.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][ ] alpha
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -620,16 +620,16 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Task list is empty nothing to delete here!!!
+ Quest log is empty. Nothing to delete here!!!
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -659,19 +659,19 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][X] read book
  2. [D][ ] return library book (by: Jun 06 2026)
  3. [E][ ] project meeting (from: Aug 08 2026 1400 to: Aug 08 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -708,18 +708,18 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 | |___  | (_| | | |    | |_) | |  __/ | |
 |_____|  \__,_| |_|    | .__/   \___| |_|
                        |_|
-Fine day! I'm Larper.
+Larper has entered the chat.
 
- What can I do for you?
+ Drop a command. Let's lock in.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Here are the tasks in your list:
+ Quest log check:
  1. [T][X] read book
  2. [D][ ] return library book (by: Dec 02 2019 1800)
  3. [D][X] practise work (by: Jul 07 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Bye. Hope to see you again soon!
+ Aight, Larper is logging off. Come back with more quests soon.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
