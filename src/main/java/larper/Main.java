@@ -3,7 +3,6 @@ package larper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -18,6 +17,7 @@ import larper.ui.DialogBox;
 
 /**
  * Shows the JavaFX chat window for the Larper application.
+ * The window routes user commands through the same command engine used by the console interface.
  */
 public class Main extends Application {
     private static final int WINDOW_WIDTH = 640;
@@ -37,6 +37,7 @@ public class Main extends Application {
 
     /**
      * Starts the JavaFX application with the Larper chat interface.
+     * The scene contains the chat history, auto-scroll control, command input field, and send button.
      *
      * @param stage Primary stage supplied by JavaFX.
      */
@@ -92,6 +93,9 @@ public class Main extends Application {
         Platform.runLater(() -> stage.setAlwaysOnTop(false));
     }
 
+    /**
+     * Handles one user command from the JavaFX input field.
+     */
     private void handleUserInput() {
         String input = userInput.getText();
         if (input.isBlank()) {
@@ -109,6 +113,12 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Adds one user or Larper message to the chat history.
+     *
+     * @param message Message text to display.
+     * @param isUser Whether the message was entered by the user.
+     */
     private void addDialog(String message, boolean isUser) {
         DialogBox dialogBox = isUser
                 ? DialogBox.getUserDialog(message, userImage)
@@ -116,6 +126,9 @@ public class Main extends Application {
         dialogContainer.getChildren().add(dialogBox);
     }
 
+    /**
+     * Anchors the chat area and input controls inside the root pane.
+     */
     private void anchorControls() {
         AnchorPane.setTopAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
@@ -134,12 +147,21 @@ public class Main extends Application {
         AnchorPane.setBottomAnchor(sendButton, 0.0);
     }
 
+    /**
+     * Scrolls to the latest message when auto-scroll is enabled.
+     */
     private void scrollToLatestMessage() {
         if (autoScrollToggle != null && autoScrollToggle.isSelected()) {
             scrollPane.setVvalue(1.0);
         }
     }
 
+    /**
+     * Returns an image loaded from the application resources.
+     *
+     * @param imagePath Absolute resource path of the image.
+     * @return Image loaded from the resource path.
+     */
     private Image loadImage(String imagePath) {
         return new Image(Main.class.getResourceAsStream(imagePath));
     }

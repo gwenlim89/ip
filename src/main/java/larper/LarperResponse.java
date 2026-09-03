@@ -1,11 +1,12 @@
 package larper;
 
 /**
- * Represents Larper's reply to one user input.
+ * Stores Larper's reply to one user input.
+ * The response also records whether the current session should end after the reply is shown.
  */
 public class LarperResponse {
-    private String message;
-    private boolean isExit;
+    private final String message;
+    private final boolean isExit;
 
     /**
      * Creates a response with its message and exit status.

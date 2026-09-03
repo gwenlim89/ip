@@ -13,6 +13,7 @@ import javafx.scene.layout.Region;
 
 /**
  * Displays one chat message with an avatar and message bubble.
+ * User messages appear on the right, while Larper messages appear on the left.
  */
 public class DialogBox extends HBox {
     private static final int AVATAR_SIZE = 54;
@@ -30,8 +31,8 @@ public class DialogBox extends HBox {
             + " -fx-border-color: #60a5fa;"
             + BASE_MESSAGE_STYLE;
 
-    private Label text;
-    private ImageView displayPicture;
+    private final Label text;
+    private final ImageView displayPicture;
 
     /**
      * Creates a chat row with a message and display picture.
@@ -84,6 +85,9 @@ public class DialogBox extends HBox {
         return dialogBox;
     }
 
+    /**
+     * Reorders the display picture and text so the avatar appears on the left.
+     */
     private void flip() {
         setAlignment(Pos.CENTER_LEFT);
         ObservableList<Node> nodes = FXCollections.observableArrayList(getChildren());
