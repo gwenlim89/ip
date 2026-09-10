@@ -1,5 +1,7 @@
 package larper;
 
+import java.io.InputStream;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -43,6 +45,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
+        assert stage != null : "JavaFX should provide a primary stage.";
         larper = new Larper(Larper.getDataPath());
         larperImage = loadImage("/images/larper.png");
         userImage = loadImage("/images/user.png");
@@ -97,6 +100,9 @@ public class Main extends Application {
      * Handles one user command from the JavaFX input field.
      */
     private void handleUserInput() {
+        assert larper != null : "Larper engine should be initialized before handling GUI input.";
+        assert userInput != null : "User input field should be initialized before handling GUI input.";
+        assert sendButton != null : "Send button should be initialized before handling GUI input.";
         String input = userInput.getText();
         if (input.isBlank()) {
             return;
@@ -120,9 +126,12 @@ public class Main extends Application {
      * @param isUser Whether the message was entered by the user.
      */
     private void addDialog(String message, boolean isUser) {
+        assert message != null : "Dialog message should not be null.";
+        assert dialogContainer != null : "Dialog container should be initialized before adding messages.";
         DialogBox dialogBox = isUser
                 ? DialogBox.getUserDialog(message, userImage)
                 : DialogBox.getLarperDialog(message, larperImage);
+        assert dialogBox != null : "Dialog factory should return a dialog box.";
         dialogContainer.getChildren().add(dialogBox);
     }
 
@@ -130,6 +139,10 @@ public class Main extends Application {
      * Anchors the chat area and input controls inside the root pane.
      */
     private void anchorControls() {
+        assert scrollPane != null : "Scroll pane should be initialized before anchoring controls.";
+        assert autoScrollToggle != null : "Auto-scroll toggle should be initialized before anchoring controls.";
+        assert userInput != null : "Input field should be initialized before anchoring controls.";
+        assert sendButton != null : "Send button should be initialized before anchoring controls.";
         AnchorPane.setTopAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
         AnchorPane.setBottomAnchor(scrollPane, (double) INPUT_HEIGHT + CONTROL_HEIGHT);
@@ -152,6 +165,7 @@ public class Main extends Application {
      */
     private void scrollToLatestMessage() {
         if (autoScrollToggle != null && autoScrollToggle.isSelected()) {
+            assert scrollPane != null : "Scroll pane should be initialized before auto-scrolling.";
             scrollPane.setVvalue(1.0);
         }
     }
@@ -163,6 +177,9 @@ public class Main extends Application {
      * @return Image loaded from the resource path.
      */
     private Image loadImage(String imagePath) {
-        return new Image(Main.class.getResourceAsStream(imagePath));
+        assert imagePath != null && imagePath.startsWith("/") : "Image path should be an absolute resource path.";
+        InputStream imageStream = Main.class.getResourceAsStream(imagePath);
+        assert imageStream != null : "Image resource should exist before creating an Image.";
+        return new Image(imageStream);
     }
 }

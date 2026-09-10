@@ -28,14 +28,17 @@ public class TaskList {
      * @param tasks Existing tasks to manage.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "TaskList should wrap an existing task collection.";
         this.tasks = tasks;
         taskCount = tasks.size();
+        assertIsConsistent();
     }
 
     /**
      * Returns the number of tasks currently in the list.
      */
     public int size() {
+        assertIsConsistent();
         return taskCount;
     }
 
@@ -43,6 +46,7 @@ public class TaskList {
      * Returns whether the task list has no tasks.
      */
     public boolean isEmpty() {
+        assertIsConsistent();
         return taskCount == 0;
     }
 
@@ -50,6 +54,7 @@ public class TaskList {
      * Returns whether the specified one-based task number exists in the list.
      */
     public boolean hasTaskNumber(int number) {
+        assertIsConsistent();
         return number >= 1 && number <= taskCount;
     }
 
@@ -57,10 +62,12 @@ public class TaskList {
      * Returns the task with the specified one-based task number.
      */
     public Task getTask(int number) {
+        assert hasTaskNumber(number) : "Caller should validate task number before retrieving a task.";
         return tasks.get(number - 1);
     }
 
     public ArrayList<Task> getTasks() {
+        assertIsConsistent();
         return tasks;
     }
 
@@ -70,8 +77,11 @@ public class TaskList {
      * @param task Task to add.
      */
     public void addTask(Task task) {
+        assert task != null : "TaskList should not store null tasks.";
+        assertIsConsistent();
         tasks.add(task);
         taskCount++;
+        assertIsConsistent();
     }
 
     /**
@@ -81,6 +91,7 @@ public class TaskList {
      * @throws InvalidNumberDeleteException If the task number is outside the list.
      */
     public Task deleteTask(int number) throws EmptyDeletionException, InvalidNumberDeleteException {
+        assertIsConsistent();
         if (isEmpty()) {
             throw new EmptyDeletionException();
         }
@@ -89,7 +100,10 @@ public class TaskList {
         }
 
         taskCount--;
-        return tasks.remove(number - 1);
+        Task removedTask = tasks.remove(number - 1);
+        assert removedTask != null : "Deleting a valid task number should return the removed task.";
+        assertIsConsistent();
+        return removedTask;
     }
 
     /**
@@ -98,6 +112,8 @@ public class TaskList {
      * @throws NoFindException If no task description contains the phrase.
      */
     public ArrayList<FindResult> findTasks(String phrase) throws NoFindException {
+        assert phrase != null : "Find phrase should be an empty string instead of null.";
+        assertIsConsistent();
         String normalizedPhrase = normalizeFindPhrase(phrase);
         ArrayList<FindResult> results = new ArrayList<>();
         int index = 0;
@@ -124,12 +140,14 @@ public class TaskList {
      * @throws MarkingException If the task is already marked as done.
      */
     public Task markTask(int number) throws MarkingException {
+        assert hasTaskNumber(number) : "Caller should validate task number before marking a task.";
         Task task = getTask(number);
         if (task.isDone()) {
             throw new MarkingException();
         }
 
         task.markAsDone();
+        assert task.isDone() : "Task should be done after markAsDone is called.";
         return task;
     }
 
@@ -139,13 +157,19 @@ public class TaskList {
      * @throws UnmarkingException If the task is already not done.
      */
     public Task unmarkTask(int number) throws UnmarkingException {
+        assert hasTaskNumber(number) : "Caller should validate task number before unmarking a task.";
         Task task = getTask(number);
         if (!task.isDone()) {
             throw new UnmarkingException();
         }
 
         task.unmarkAsDone();
+        assert !task.isDone() : "Task should not be done after unmarkAsDone is called.";
         return task;
+    }
+
+    private void assertIsConsistent() {
+        assert taskCount == tasks.size() : "Cached task count should match the backing list size.";
     }
 
     private String normalizeFindPhrase(String phrase) {

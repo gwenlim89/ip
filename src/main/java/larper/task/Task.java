@@ -13,6 +13,7 @@ public class Task {
      * @param description Text that describes the task.
      */
     public Task(String description) {
+        assert description != null && !description.isBlank() : "Task description should be provided before creation.";
         this.description = description;
         this.isDone = false;
     }
@@ -30,6 +31,7 @@ public class Task {
      */
     public void markAsDone() {
         isDone = true;
+        assert isDone : "Task should be marked after markAsDone runs.";
     }
 
     /**
@@ -37,6 +39,7 @@ public class Task {
      */
     public void unmarkAsDone() {
         isDone = false;
+        assert !isDone : "Task should be unmarked after unmarkAsDone runs.";
     }
 
     public void setDone(boolean isDone) {
@@ -58,6 +61,7 @@ public class Task {
      * Returns this task in the storage file format.
      */
     public String toFileString() {
+        assert getTypeIcon() != null && !getTypeIcon().isBlank() : "Task type icon should be available for storage.";
         return getTypeIcon() + " | " + getDoneStatusForFile() + " | " + description;
     }
 
@@ -70,6 +74,7 @@ public class Task {
      */
     @Override
     public String toString() {
+        assert getTypeIcon() != null && !getTypeIcon().isBlank() : "Task type icon should be available for display.";
         return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
     }
 }

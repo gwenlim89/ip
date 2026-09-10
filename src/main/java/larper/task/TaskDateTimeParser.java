@@ -66,6 +66,8 @@ public class TaskDateTimeParser {
      * @throws RuntimeException If the date or time cannot be parsed.
      */
     public static TaskDateTime parse(String text, String defaultTime) {
+        assert text != null : "Date-time parser should receive date-time text.";
+        assert defaultTime != null : "Date-time parser should receive a default time.";
         String trimmedText = removeLeadingDateMarker(text.trim());
         if (trimmedText.isEmpty() || isNoTimeOnly(trimmedText)) {
             throw new IllegalArgumentException("Missing task date.");
@@ -84,6 +86,7 @@ public class TaskDateTimeParser {
                 if (looksLikeTime(possibleTime)) {
                     dateText = possibleDate;
                     time = normalizeTime(possibleTime);
+                    assert isNormalizedTime(time) : "Detected task time should be normalized before storage.";
                 }
             }
         }
@@ -97,6 +100,7 @@ public class TaskDateTimeParser {
      * @throws RuntimeException If the date cannot be parsed.
      */
     public static LocalDate parseDate(String dateText) {
+        assert dateText != null : "Date parser should receive date text.";
         String cleanDateText = cleanDateText(dateText);
         try {
             return LocalDate.parse(cleanDateText);
@@ -112,18 +116,25 @@ public class TaskDateTimeParser {
      * @throws IllegalArgumentException If the time cannot be parsed.
      */
     public static String normalizeTime(String timeText) {
+        assert timeText != null : "Time parser should receive time text.";
         String cleanTimeText = timeText.trim().toLowerCase();
         if (isNoTimeOnly(cleanTimeText)) {
             return "no time";
         }
         if (cleanTimeText.matches("\\d{3,4}")) {
-            return String.format("%04d", Integer.parseInt(cleanTimeText));
+            String normalizedTime = String.format("%04d", Integer.parseInt(cleanTimeText));
+            assert isNormalizedTime(normalizedTime) : "Numeric time should be normalized to HHmm.";
+            return normalizedTime;
         }
         if (cleanTimeText.matches("\\d{1,2}:\\d{2}")) {
-            return cleanTimeText.replace(":", "");
+            String normalizedTime = cleanTimeText.replace(":", "");
+            assert isNormalizedTime(normalizedTime) : "Colon time should be normalized to HHmm.";
+            return normalizedTime;
         }
         if (cleanTimeText.matches("\\d{1,2}(:\\d{2})?(am|pm)")) {
-            return parseAmPmTime(cleanTimeText);
+            String normalizedTime = parseAmPmTime(cleanTimeText);
+            assert isNormalizedTime(normalizedTime) : "AM/PM time should be normalized to HHmm.";
+            return normalizedTime;
         }
         throw new IllegalArgumentException("Invalid deadline time.");
     }
@@ -163,6 +174,7 @@ public class TaskDateTimeParser {
      * Returns the date formatted for Larper's console output.
      */
     public static String formatDate(LocalDate date) {
+        assert date != null : "Date formatter should receive a parsed date.";
         return date.format(DISPLAY_DATE_FORMATTER);
     }
 
@@ -180,6 +192,7 @@ public class TaskDateTimeParser {
     }
 
     private static LocalDate getNextDateForDayOfWeek(DayOfWeek dayOfWeek) {
+        assert dayOfWeek != null : "Day-of-week calculation should receive a parsed day.";
         LocalDate today = getToday();
         int daysAhead = dayOfWeek.getValue() - today.getDayOfWeek().getValue();
         if (daysAhead < 0) {
@@ -213,6 +226,8 @@ public class TaskDateTimeParser {
     }
 
     private static String parseAmPmTime(String timeText) {
+        assert timeText != null && timeText.matches("\\d{1,2}(:\\d{2})?(am|pm)")
+                : "AM/PM parser should only receive AM/PM time text.";
         boolean isPm = timeText.endsWith("pm");
         String timeWithoutPeriod = timeText.substring(0, timeText.length() - 2);
         int hour;
@@ -232,7 +247,9 @@ public class TaskDateTimeParser {
             hour = 0;
         }
 
-        return String.format("%02d%02d", hour, minute);
+        String normalizedTime = String.format("%02d%02d", hour, minute);
+        assert isNormalizedTime(normalizedTime) : "AM/PM parser should return HHmm time.";
+        return normalizedTime;
     }
 
     private static String cleanDateText(String dateText) {
@@ -309,6 +326,10 @@ public class TaskDateTimeParser {
 
     private static boolean endsWithNoTime(String text) {
         return text.trim().toLowerCase().endsWith(" no time");
+    }
+
+    private static boolean isNormalizedTime(String timeText) {
+        return isNoTimeOnly(timeText) || timeText.matches("\\d{4}");
     }
 
     private static int getCurrentYear() {

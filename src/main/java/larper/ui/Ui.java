@@ -170,6 +170,7 @@ public class Ui {
      * Returns all tasks in their current order.
      */
     public static String formatTaskList(TaskList tasks) {
+        assert tasks != null : "Task list formatter should receive an existing task list.";
         int count = 0;
         StringBuilder message = new StringBuilder(" Quest log check:");
         while (count < tasks.size()) {
@@ -190,6 +191,7 @@ public class Ui {
      * Returns tasks found by the latest find search.
      */
     public static String formatFindResults(ArrayList<FindResult> results) {
+        assert results != null && !results.isEmpty() : "Find results formatter should receive matches.";
         int index = 0;
         StringBuilder message = new StringBuilder(" Found it. Receipts below:");
         while (index < results.size()) {
@@ -224,6 +226,8 @@ public class Ui {
      * Returns the task that has just been marked as done.
      */
     public static String formatMarkedTask(Task task) {
+        assert task != null : "Marked task formatter should receive the marked task.";
+        assert task.isDone() : "Marked task formatter should receive a done task.";
         return " Locked in. This task is done now:\n " + task;
     }
 
@@ -231,6 +235,8 @@ public class Ui {
      * Returns the task that has just been marked as not done.
      */
     public static String formatUnmarkedTask(Task task) {
+        assert task != null : "Unmarked task formatter should receive the unmarked task.";
+        assert !task.isDone() : "Unmarked task formatter should receive a not-done task.";
         return " Back on the grind pile:\n " + task;
     }
 
@@ -238,6 +244,8 @@ public class Ui {
      * Returns the task that has just been deleted and the new task count.
      */
     public static String formatDeletedTask(Task task, int taskCount) {
+        assert task != null : "Deleted task formatter should receive the removed task.";
+        assert taskCount >= 0 : "Task count should not be negative after deletion.";
         return " Poof, gone from the quest log:\n " + task + "\n" + formatTaskCount(taskCount);
     }
 
@@ -245,6 +253,8 @@ public class Ui {
      * Returns the task that has just been added and the new task count.
      */
     public static String formatAddedTask(Task task, int taskCount) {
+        assert task != null : "Added task formatter should receive the added task.";
+        assert taskCount >= 1 : "Task count should include the newly added task.";
         return " Say less. I've added this quest:\n " + task + "\n" + formatTaskCount(taskCount);
     }
 
@@ -256,6 +266,7 @@ public class Ui {
     }
 
     private static String formatTaskCount(int taskCount) {
+        assert taskCount >= 0 : "Task count should never be negative.";
         String taskWord = taskCount == 1 ? "task" : "tasks";
         return " Quest log now has " + taskCount + " " + taskWord + ".";
     }

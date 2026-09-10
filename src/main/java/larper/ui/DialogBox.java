@@ -41,6 +41,8 @@ public class DialogBox extends HBox {
      * @param image Display picture to show beside the message.
      */
     public DialogBox(String message, Image image) {
+        assert message != null : "Dialog box message should not be null.";
+        assert image != null : "Dialog box image should not be null.";
         text = new Label(message);
         text.setWrapText(true);
         text.setMaxWidth(MESSAGE_WIDTH);
@@ -68,6 +70,7 @@ public class DialogBox extends HBox {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.setAlignment(Pos.CENTER_RIGHT);
         dialogBox.text.setStyle(USER_MESSAGE_STYLE);
+        assert dialogBox.getAlignment() == Pos.CENTER_RIGHT : "User dialog should be aligned to the right.";
         return dialogBox;
     }
 
@@ -82,6 +85,7 @@ public class DialogBox extends HBox {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.text.setStyle(LARPER_MESSAGE_STYLE);
         dialogBox.flip();
+        assert dialogBox.getAlignment() == Pos.CENTER_LEFT : "Larper dialog should be aligned to the left.";
         return dialogBox;
     }
 
@@ -89,6 +93,7 @@ public class DialogBox extends HBox {
      * Reorders the display picture and text so the avatar appears on the left.
      */
     private void flip() {
+        assert getChildren().size() == 2 : "Dialog box should contain exactly a text node and an image node.";
         setAlignment(Pos.CENTER_LEFT);
         ObservableList<Node> nodes = FXCollections.observableArrayList(getChildren());
         FXCollections.reverse(nodes);
