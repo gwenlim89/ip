@@ -144,4 +144,27 @@ public class StorageTest {
         assertEquals("[T][X] read book", tasks.get(0).toString());
         assertEquals("[D][ ] submit report (by: Oct 15 2019 1400)", tasks.get(1).toString());
     }
+
+    @Test
+    public void saveAndLoadTasks_taggedTasks_tagsRetainedAtEndOfFormats() throws Exception {
+        Path dataFile = temporaryDirectory.resolve("tagged-larperdata.txt");
+        Storage storage = new Storage(dataFile);
+        ArrayList<Task> originalTasks = new ArrayList<>();
+        Todo todo = new Todo("read book");
+        todo.addTag("#FUN");
+        originalTasks.add(todo);
+        Deadline deadline = new Deadline("return book", LocalDate.of(2026, 8, 23), "no time");
+        deadline.addTag("school");
+        originalTasks.add(deadline);
+
+        storage.saveTasks(originalTasks);
+
+        assertEquals("T | 0 | read book | #fun\n"
+                + "D | 0 | return book | 2026-08-23 | no time | #school\n", Files.readString(dataFile));
+
+        ArrayList<Task> loadedTasks = storage.loadTasks();
+
+        assertEquals("[T][ ] read book [#fun]", loadedTasks.get(0).toString());
+        assertEquals("[D][ ] return book (by: Aug 23 2026) [#school]", loadedTasks.get(1).toString());
+    }
 }

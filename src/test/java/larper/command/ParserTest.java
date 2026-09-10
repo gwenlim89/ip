@@ -11,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import larper.exception.InvalidDateException;
+import larper.exception.InvalidTagException;
 import larper.exception.InvalidTimeException;
 import larper.exception.NoDescriptionException;
 import larper.exception.NoTaskTypeException;
+import larper.exception.MissingTagException;
 import larper.exception.NonNumberDeleteException;
 import larper.task.Deadline;
 import larper.task.Event;
@@ -56,6 +58,11 @@ public class ParserTest {
 
         assertTrue(parser.isFindCommand("find"));
         assertFalse(parser.isFindCommand("find book"));
+
+        assertTrue(parser.isTagCommand("tag 1 school"));
+        assertTrue(parser.isUntagCommand("untag 1 school"));
+        assertTrue(parser.isFindTagCommand("find tag school"));
+        assertFalse(parser.isFindTagCommand("find tagger"));
     }
 
     @Test
@@ -81,6 +88,23 @@ public class ParserTest {
     }
 
     @Test
+    public void parseTagCommand_multipleNamesAndNumberSign_normalized() throws Exception {
+        assertEquals(2, parser.parseTagTaskNumber("tag 2 #FUN school"));
+        assertEquals("[fun, school]", parser.parseTagNames("tag 2 #FUN school").toString());
+        assertEquals(2, parser.parseTagTaskNumber("untag 2 school"));
+        assertEquals("[school]", parser.parseTagNames("untag 2 school").toString());
+        assertEquals("school", parser.parseFindTag("find tag #SCHOOL"));
+    }
+
+    @Test
+    public void parseTagCommand_missingOrInvalidTag_expectedExceptions() {
+        assertThrows(MissingTagException.class, () -> parser.parseTagNames("tag 1"));
+        assertThrows(InvalidTagException.class, () -> parser.parseTagNames("tag 1 school-time"));
+        assertThrows(MissingTagException.class, () -> parser.parseFindTag("find tag"));
+        assertThrows(InvalidTagException.class, () -> parser.parseFindTag("find tag school-time"));
+    }
+
+    @Test
     public void parseTask_validTodoDeadlineEvent_expectedTaskTypesAndStrings() throws Exception {
         Task todo = parser.parseTask("todo read book");
         assertInstanceOf(Todo.class, todo);
@@ -94,6 +118,36 @@ public class ParserTest {
         assertInstanceOf(Event.class, event);
         assertEquals("[E][ ] project meeting (from: Aug 08 2026 1400 to: Aug 08 2026 1600)",
                 event.toString());
+    }
+
+    @Test
+    public void parseTask_inlineTags_normalizedAndPlacedAfterTaskDetails() throws Exception {
+        Task todo = parser.parseTask("todo read book #FUN #school");
+        assertEquals("[T][ ] read book [#fun] [#school]", todo.toString());
+        assertEquals("T | 0 | read book | #fun #school", todo.toFileString());
+
+        Task deadline = parser.parseTask("deadline return book #Library /by 2026-08-23 no time");
+        assertEquals("[D][ ] return book (by: Aug 23 2026) [#library]", deadline.toString());
+
+        Task event = parser.parseTask("event project sync #Work /from 2026-08-24 2pm /to 2026-08-24 4pm");
+        assertEquals("[E][ ] project sync (from: Aug 24 2026 1400 to: Aug 24 2026 1600) [#work]",
+                event.toString());
+    }
+
+    @Test
+    public void parseTask_invalidInlineTag_exceptionThrown() {
+        assertThrows(InvalidTagException.class, () -> parser.parseTask("todo read book #fun-time"));
+        assertThrows(InvalidTagException.class, () -> parser.parseTask("todo read book #"));
+    }
+
+    @Test
+    public void parseTask_missingTime_tagsRetainedAfterFollowUp() throws Exception {
+        assertThrows(InvalidTimeException.class,
+                () -> parser.parseTask("deadline return book #Library /by 2026-03-09"));
+
+        Task completedTask = parser.parseTask("no time");
+
+        assertEquals("[D][ ] return book (by: Mar 09 2026) [#library]", completedTask.toString());
     }
 
     @Test

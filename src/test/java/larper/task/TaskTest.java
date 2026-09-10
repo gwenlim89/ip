@@ -41,4 +41,16 @@ public class TaskTest {
         task.setDone(false);
         assertEquals(" ", task.getStatusIcon());
     }
+
+    @Test
+    public void addTag_mixedCaseAndNumberSign_normalizedAndShownAtEnd() {
+        Task task = new Task("plain task");
+
+        task.addTag("#Work");
+        task.addTag("urgent");
+
+        assertEquals("[urgent, work]", task.getTags().toString());
+        assertEquals("[?][ ] plain task [#urgent] [#work]", task.toString());
+        assertEquals("? | 0 | plain task | #urgent #work", task.toFileString());
+    }
 }

@@ -1,12 +1,15 @@
 package larper.command;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import larper.exception.InvalidDateException;
+import larper.exception.InvalidTagException;
 import larper.exception.InvalidTimeException;
 import larper.exception.LarperException;
+import larper.exception.MissingTagException;
 import larper.exception.NoDescriptionException;
 import larper.exception.NoTaskTypeException;
 import larper.exception.NonNumberDeleteException;
@@ -24,8 +27,12 @@ public class Parser {
     private static final String EXIT_COMMAND = "exit";
     private static final String LIST_COMMAND = "list";
     private static final String FIND_COMMAND = "find";
+    private static final String FIND_TAG_COMMAND = "find tag";
     private static final String MARK_COMMAND_PREFIX = "mark ";
     private static final String UNMARK_COMMAND_PREFIX = "unmark ";
+    private static final String TAG_COMMAND_PREFIX = "tag ";
+    private static final String UNTAG_COMMAND_PREFIX = "untag ";
+    private static final String FIND_TAG_COMMAND_PREFIX = FIND_TAG_COMMAND + " ";
     private static final String TODO_COMMAND = "todo";
     private static final String DEADLINE_COMMAND = "deadline";
     private static final String EVENT_COMMAND = "event";
@@ -87,6 +94,27 @@ public class Parser {
     }
 
     /**
+     * Returns whether the input starts a direct search for an exact tag.
+     */
+    public boolean isFindTagCommand(String input) {
+        return input.equals(FIND_TAG_COMMAND) || input.startsWith(FIND_TAG_COMMAND_PREFIX);
+    }
+
+    /**
+     * Returns whether the input starts a command that adds tags to a task.
+     */
+    public boolean isTagCommand(String input) {
+        return input.startsWith(TAG_COMMAND_PREFIX);
+    }
+
+    /**
+     * Returns whether the input starts a command that removes tags from a task.
+     */
+    public boolean isUntagCommand(String input) {
+        return input.startsWith(UNTAG_COMMAND_PREFIX);
+    }
+
+    /**
      * Returns the task number from a mark command.
      * If the command does not contain a number, -1 is returned.
      */
@@ -102,6 +130,69 @@ public class Parser {
     public int parseUnmarkNumber(String input) {
         assert isUnmarkCommand(input) : "Unmark number parser should only receive unmark commands.";
         return parseTaskNumber(input.substring(UNMARK_COMMAND_PREFIX.length()).trim());
+    }
+
+    /**
+     * Returns the task number from a tag or untag command.
+     *
+     * @param input Tag command to parse.
+     * @return Parsed one-based task number, or -1 when it is not numeric.
+     */
+    public int parseTagTaskNumber(String input) {
+        assert isTagCommand(input) || isUntagCommand(input)
+                : "Tag task number parser should only receive tag commands.";
+        String arguments = getTagCommandArguments(input);
+        int separatorIndex = arguments.indexOf(' ');
+        String taskNumber = separatorIndex == -1 ? arguments : arguments.substring(0, separatorIndex);
+        return parseTaskNumber(taskNumber);
+    }
+
+    /**
+     * Returns normalized tags from a tag or untag command.
+     *
+     * @param input Tag command to parse.
+     * @return Normalized tags in the order entered.
+     * @throws LarperException If no tag was supplied or a tag is invalid.
+     */
+    public ArrayList<String> parseTagNames(String input) throws LarperException {
+        assert isTagCommand(input) || isUntagCommand(input)
+                : "Tag name parser should only receive tag commands.";
+        String arguments = getTagCommandArguments(input);
+        int separatorIndex = arguments.indexOf(' ');
+        if (separatorIndex == -1 || arguments.substring(separatorIndex).trim().isEmpty()) {
+            throw new MissingTagException();
+        }
+
+        ArrayList<String> tags = new ArrayList<>();
+        String tagText = arguments.substring(separatorIndex).trim();
+        for (String tag : tagText.split("\\s+")) {
+            String normalizedTag = Task.normalizeTag(tag);
+            if (!Task.isValidTag(normalizedTag)) {
+                throw new InvalidTagException();
+            }
+            tags.add(normalizedTag);
+        }
+        return tags;
+    }
+
+    /**
+     * Returns the normalized tag from a direct tag search command.
+     *
+     * @param input Find-tag command to parse.
+     * @return Normalized tag text.
+     * @throws LarperException If no tag was supplied or the tag is invalid.
+     */
+    public String parseFindTag(String input) throws LarperException {
+        assert isFindTagCommand(input) : "Find tag parser should only receive find tag commands.";
+        String tag = input.substring(FIND_TAG_COMMAND.length()).trim();
+        if (tag.isEmpty()) {
+            throw new MissingTagException();
+        }
+        String normalizedTag = Task.normalizeTag(tag);
+        if (!Task.isValidTag(normalizedTag)) {
+            throw new InvalidTagException();
+        }
+        return normalizedTag;
     }
 
     /**
@@ -159,12 +250,16 @@ public class Parser {
         throw new NoTaskTypeException();
     }
 
-    private Task parseTodo(String input) throws NoDescriptionException {
-        String description = input.substring(TODO_COMMAND_PREFIX.length()).trim();
-        if (description.isEmpty() || countSlashes(description) != 0) {
+    private Task parseTodo(String input) throws LarperException {
+        String taskInfo = input.substring(TODO_COMMAND_PREFIX.length()).trim();
+        if (taskInfo.isEmpty() || countSlashes(taskInfo) != 0) {
             throw new NoDescriptionException();
         }
-        return new Todo(description);
+        ParsedDescription parsedDescription = parseDescriptionAndTags(taskInfo);
+        ensureDescriptionPresent(parsedDescription.description);
+        Todo task = new Todo(parsedDescription.description);
+        task.addTags(parsedDescription.tags);
+        return task;
     }
 
     private Task parseDeadline(String input) throws LarperException {
@@ -174,13 +269,16 @@ public class Parser {
             throw new InvalidDateException(PENDING_DEADLINE);
         }
 
-        String description = taskInfo.substring(0, byIndex).trim();
+        ParsedDescription parsedDescription = parseDescriptionAndTags(taskInfo.substring(0, byIndex));
+        String description = parsedDescription.description;
         String by = taskInfo.substring(byIndex + BY_MARKER.length()).trim();
         ensureDescriptionPresent(description);
 
         TaskDateTime byDateTime = parseTaskDateTime(by, PENDING_DEADLINE, PENDING_DEADLINE,
-                description, null, null);
-        return new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
+                description, null, null, parsedDescription.tags);
+        Deadline task = new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
+        task.addTags(parsedDescription.tags);
+        return task;
     }
 
     private Task parseEvent(String input) throws LarperException {
@@ -191,17 +289,20 @@ public class Parser {
             throw new InvalidDateException("event start or end");
         }
 
-        String description = taskInfo.substring(0, fromIndex).trim();
+        ParsedDescription parsedDescription = parseDescriptionAndTags(taskInfo.substring(0, fromIndex));
+        String description = parsedDescription.description;
         String from = taskInfo.substring(fromIndex + FROM_MARKER.length(), toIndex).trim();
         String to = taskInfo.substring(toIndex + TO_MARKER.length()).trim();
         ensureDescriptionPresent(description);
         ensureEventHasExpectedMarkers(taskInfo);
 
         TaskDateTime startDateTime = parseTaskDateTime(from, "event start", PENDING_EVENT_START,
-                description, to, null);
+                description, to, null, parsedDescription.tags);
         TaskDateTime endDateTime = parseTaskDateTime(to, "event end", PENDING_EVENT_END,
-                description, startDateTime.getDate().toString(), startDateTime.getTime());
-        return new Event(description, startDateTime, endDateTime);
+                description, startDateTime.getDate().toString(), startDateTime.getTime(), parsedDescription.tags);
+        Event task = new Event(description, startDateTime, endDateTime);
+        task.addTags(parsedDescription.tags);
+        return task;
     }
 
     private Task completePendingTask(String input) throws LarperException {
@@ -220,28 +321,35 @@ public class Parser {
 
         if (taskToComplete.type.equals(PENDING_DEADLINE)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            return new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime);
+            Deadline task = new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
+                    normalizedTime);
+            task.addTags(taskToComplete.tags);
+            return task;
         }
 
         if (taskToComplete.type.equals(PENDING_EVENT_START)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
             TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", PENDING_EVENT_END,
-                    taskToComplete.description, taskToComplete.firstDate, normalizedTime);
-            return new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime,
-                    endDateTime.getDate(), endDateTime.getTime());
+                    taskToComplete.description, taskToComplete.firstDate, normalizedTime, taskToComplete.tags);
+            Event task = new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
+                    normalizedTime, endDateTime.getDate(), endDateTime.getTime());
+            task.addTags(taskToComplete.tags);
+            return task;
         }
 
         if (taskToComplete.type.equals(PENDING_EVENT_END)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            return new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
+            Event task = new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
                     taskToComplete.secondDate, normalizedTime);
+            task.addTags(taskToComplete.tags);
+            return task;
         }
 
         throw new NoTaskTypeException();
     }
 
     private TaskDateTime parseTaskDateTime(String text, String label, String pendingType, String description,
-            String extraDate, String extraTime)
+            String extraDate, String extraTime, ArrayList<String> tags)
             throws InvalidDateException, InvalidTimeException {
         TaskDateTime taskDateTime;
         try {
@@ -253,10 +361,10 @@ public class Parser {
         if (taskDateTime.getTime().isEmpty()) {
             if (pendingType.equals("event-end")) {
                 pendingTask = new PendingTask(pendingType, description, extraDate, extraTime,
-                        taskDateTime.getDate().toString(), label);
+                        taskDateTime.getDate().toString(), label, tags);
             } else {
                 pendingTask = new PendingTask(pendingType, description, taskDateTime.getDate().toString(),
-                        extraTime, extraDate, label);
+                        extraTime, extraDate, label, tags);
             }
             assert pendingTask != null : "Missing optional time should create a pending task.";
             assert pendingTask.type.equals(pendingType)
@@ -288,6 +396,27 @@ public class Parser {
         }
     }
 
+    private ParsedDescription parseDescriptionAndTags(String taskInfo) throws InvalidTagException {
+        ArrayList<String> tags = new ArrayList<>();
+        StringBuilder description = new StringBuilder();
+        String[] words = taskInfo.trim().split("\\s+");
+        for (String word : words) {
+            if (word.startsWith("#")) {
+                String tag = word.substring(1);
+                if (!Task.isValidTag(tag)) {
+                    throw new InvalidTagException();
+                }
+                tags.add(tag);
+            } else {
+                if (description.length() > 0) {
+                    description.append(" ");
+                }
+                description.append(word);
+            }
+        }
+        return new ParsedDescription(description.toString(), tags);
+    }
+
     private void ensureEventHasExpectedMarkers(String taskInfo) throws InvalidDateException {
         if (countSlashes(taskInfo) != EXPECTED_EVENT_SLASH_COUNT) {
             throw new InvalidDateException("event start or end");
@@ -314,6 +443,11 @@ public class Parser {
         }
     }
 
+    private String getTagCommandArguments(String input) {
+        String commandPrefix = isUntagCommand(input) ? UNTAG_COMMAND_PREFIX : TAG_COMMAND_PREFIX;
+        return input.substring(commandPrefix.length()).trim();
+    }
+
     private static class PendingTask {
         private String type;
         private String description;
@@ -321,17 +455,32 @@ public class Parser {
         private String firstTime;
         private String secondDate;
         private String waitingFor;
+        private ArrayList<String> tags;
 
         public PendingTask(String type, String description, String firstDate, String firstTime,
-                String secondDate, String waitingFor) {
+                String secondDate, String waitingFor, ArrayList<String> tags) {
             assert type != null && !type.isBlank() : "Pending task type should identify how to resume parsing.";
             assert waitingFor != null && !waitingFor.isBlank() : "Pending task should know which time is missing.";
+            assert tags != null : "Pending task should preserve task tags while waiting for a time.";
             this.type = type;
             this.description = description;
             this.firstDate = firstDate;
             this.firstTime = firstTime;
             this.secondDate = secondDate;
             this.waitingFor = waitingFor;
+            this.tags = tags;
+        }
+    }
+
+    private static class ParsedDescription {
+        private String description;
+        private ArrayList<String> tags;
+
+        ParsedDescription(String description, ArrayList<String> tags) {
+            assert description != null : "Parsed task description should not be null.";
+            assert tags != null : "Parsed task tags should not be null.";
+            this.description = description;
+            this.tags = tags;
         }
     }
 }

@@ -50,7 +50,7 @@ public class Deadline extends Task {
     public String toFileString() {
         assert byDate != null : "Deadline date should be available before saving.";
         assert byTime != null && !byTime.isBlank() : "Deadline time should be available before saving.";
-        return super.toFileString() + " | " + byDate + " | " + byTime;
+        return getBaseFileString() + " | " + byDate + " | " + byTime + getTagsFileSuffix();
     }
 
     /**
@@ -62,9 +62,9 @@ public class Deadline extends Task {
         assert byTime != null && !byTime.isBlank() : "Deadline time should be available before display.";
         String formattedDate = TaskDateTimeParser.formatDate(byDate);
         if (isNoTime()) {
-            return super.toString() + " (by: " + formattedDate + ")";
+            return formatWithTags(formatTaskWithoutTags() + " (by: " + formattedDate + ")");
         }
-        return super.toString() + " (by: " + formattedDate + " " + byTime + ")";
+        return formatWithTags(formatTaskWithoutTags() + " (by: " + formattedDate + " " + byTime + ")");
     }
 
     private boolean isNoTime() {

@@ -93,8 +93,17 @@ public class Larper {
         if (parser.isListCommand(input)) {
             return Ui.formatTaskList(tasks);
         }
+        if (parser.isFindTagCommand(input)) {
+            return executeFindTagCommand(input);
+        }
         if (parser.isFindCommand(input)) {
             return executeFindCommand();
+        }
+        if (parser.isTagCommand(input)) {
+            return executeTagCommand(input, false);
+        }
+        if (parser.isUntagCommand(input)) {
+            return executeTagCommand(input, true);
         }
         if (parser.isMarkCommand(input)) {
             return executeMarkCommand(input);
@@ -117,6 +126,31 @@ public class Larper {
     private String executeFindCommand() {
         isWaitingForFindPhrase = true;
         return Ui.formatFindPrompt();
+    }
+
+    private String executeFindTagCommand(String input) throws LarperException {
+        String tag = parser.parseFindTag(input);
+        ArrayList<FindResult> results = tasks.findTasksByTag(tag);
+        return Ui.formatFindResults(results);
+    }
+
+    private String executeTagCommand(String input, boolean shouldRemove) throws LarperException {
+        int number = parser.parseTagTaskNumber(input);
+        if (number == -1) {
+            return Ui.formatInvalidTagNumber();
+        }
+        if (!tasks.hasTaskNumber(number)) {
+            return Ui.formatMissingTaskNumber();
+        }
+
+        ArrayList<String> tagNames = parser.parseTagNames(input);
+        Task updatedTask = shouldRemove
+                ? tasks.untagTask(number, tagNames)
+                : tasks.tagTask(number, tagNames);
+        saveTasks();
+        return shouldRemove
+                ? Ui.formatUntaggedTask(number, updatedTask)
+                : Ui.formatTaggedTask(number, updatedTask);
     }
 
     private String executeMarkCommand(String input) throws LarperException {

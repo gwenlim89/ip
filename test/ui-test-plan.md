@@ -265,6 +265,139 @@ D | 0 | quiz | 2026-09-08 | 1800
 D | 0 | typo check | 2026-01-09 | 0800
 ```
 
+## Test Case: inline tags and tag search
+
+Aim: Verify that one-word inline tags are normalized, displayed after task details, saved in a final storage field, and found by exact tag text.
+
+Inputs:
+```text
+todo read book #FUN #school
+deadline return book #Library /by 2026-08-23 no time
+list
+find
+school
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Larper has entered the chat.
+
+ Drop a command. Let's lock in.
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Say less. I've added this quest:
+ [T][ ] read book [#fun] [#school]
+ Quest log now has 1 task.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Say less. I've added this quest:
+ [D][ ] return book (by: Aug 23 2026) [#library]
+ Quest log now has 2 tasks.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Quest log check:
+ 1. [T][ ] read book [#fun] [#school]
+ 2. [D][ ] return book (by: Aug 23 2026) [#library]
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ What phrase are we hunting for?
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Found it. Receipts below:
+ [T][ ] read book [#fun] [#school] (task no: 1)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Aight, Larper is logging off. Come back with more quests soon.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+T | 0 | read book | #fun #school
+D | 0 | return book | 2026-08-23 | no time | #library
+```
+
+## Test Case: tag and untag commands
+
+Aim: Verify that users can add multiple tags, search by an exact tag, remove a tag from a completed task, and receive prompts when tag names are missing.
+
+Inputs:
+```text
+todo prepare slides
+tag 1 #SCHOOL urgent
+find tag school
+mark 1
+untag 1 #school
+list
+tag 1
+find tag
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Larper has entered the chat.
+
+ Drop a command. Let's lock in.
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Say less. I've added this quest:
+ [T][ ] prepare slides
+ Quest log now has 1 task.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Tagged task 1:
+ [T][ ] prepare slides [#school] [#urgent]
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Found it. Receipts below:
+ [T][ ] prepare slides [#school] [#urgent] (task no: 1)
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Locked in. This task is done now:
+ [T][X] prepare slides [#school] [#urgent]
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Untagged task 1:
+ [T][X] prepare slides [#urgent]
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Quest log check:
+ 1. [T][X] prepare slides [#urgent]
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Larper needs a tag name there. Try a one-word tag like #school.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Larper needs a tag name there. Try a one-word tag like #school.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Aight, Larper is logging off. Come back with more quests soon.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
+Expected data file:
+```text
+T | 1 | prepare slides | #urgent
+```
+
 ## Test Case: event string date and time formatting
 
 Aim: Verify that Larper accepts event dates with month names, short forms, mixed case, and saves event times in military time.

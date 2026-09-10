@@ -83,8 +83,8 @@ public class Event extends Task {
         assert startDate != null && endDate != null : "Event dates should be available before saving.";
         assert startTime != null && !startTime.isBlank() : "Event start time should be available before saving.";
         assert endTime != null && !endTime.isBlank() : "Event end time should be available before saving.";
-        return super.toFileString() + " | " + startDate + " | " + startTime + " | "
-                + endDate + " | " + endTime;
+        return getBaseFileString() + " | " + startDate + " | " + startTime + " | "
+                + endDate + " | " + endTime + getTagsFileSuffix();
     }
 
     /**
@@ -95,8 +95,8 @@ public class Event extends Task {
         assert startDate != null && endDate != null : "Event dates should be available before display.";
         assert startTime != null && !startTime.isBlank() : "Event start time should be available before display.";
         assert endTime != null && !endTime.isBlank() : "Event end time should be available before display.";
-        return super.toString() + " (from: " + formatDateTime(startDate, startTime)
-                + " to: " + formatDateTime(endDate, endTime) + ")";
+        return formatWithTags(formatTaskWithoutTags() + " (from: " + formatDateTime(startDate, startTime)
+                + " to: " + formatDateTime(endDate, endTime) + ")");
     }
 
     private String formatDateTime(LocalDate date, String time) {

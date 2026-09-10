@@ -75,4 +75,22 @@ public class LarperTest {
         assertEquals(" Found it. Receipts below:\n"
                 + " [T][ ] read book (task no: 1)", findResponse.getMessage());
     }
+
+    @Test
+    public void getResponse_tagUntagAndFindTag_updatesAndSearchesTasks() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        larper.getResponse("todo prepare slides");
+        LarperResponse tagResponse = larper.getResponse("tag 1 #SCHOOL urgent");
+        LarperResponse findResponse = larper.getResponse("find tag school");
+        larper.getResponse("mark 1");
+        LarperResponse untagResponse = larper.getResponse("untag 1 #school");
+
+        assertEquals(" Tagged task 1:\n"
+                + " [T][ ] prepare slides [#school] [#urgent]", tagResponse.getMessage());
+        assertEquals(" Found it. Receipts below:\n"
+                + " [T][ ] prepare slides [#school] [#urgent] (task no: 1)", findResponse.getMessage());
+        assertEquals(" Untagged task 1:\n"
+                + " [T][X] prepare slides [#urgent]", untagResponse.getMessage());
+    }
 }

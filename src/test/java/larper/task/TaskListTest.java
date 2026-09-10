@@ -126,6 +126,55 @@ public class TaskListTest {
     }
 
     @Test
+    public void findTasks_exactTagMatch_caseInsensitiveTagReturned() throws Exception {
+        TaskList taskList = new TaskList();
+        Task taggedTask = new Todo("prepare slides");
+        taggedTask.addTag("#School");
+        Task similarTagTask = new Todo("buy groceries");
+        similarTagTask.addTag("#schoolhouse");
+        taskList.addTask(taggedTask);
+        taskList.addTask(similarTagTask);
+
+        ArrayList<FindResult> results = taskList.findTasks("SCHOOL");
+
+        assertEquals(1, results.size());
+        assertEquals(1, results.get(0).getTaskNumber());
+        assertSame(taggedTask, results.get(0).getTask());
+    }
+
+    @Test
+    public void tagAndUntagTask_completedTask_tagsUpdated() throws Exception {
+        TaskList taskList = new TaskList();
+        Task task = new Todo("prepare slides");
+        taskList.addTask(task);
+        taskList.markTask(1);
+
+        taskList.tagTask(1, java.util.List.of("school", "#urgent"));
+        taskList.untagTask(1, java.util.List.of("#school"));
+
+        assertTrue(task.isDone());
+        assertEquals("[urgent]", task.getTags().toString());
+        assertEquals("[T][X] prepare slides [#urgent]", task.toString());
+    }
+
+    @Test
+    public void findTasksByTag_exactCaseInsensitiveMatch_returnsOriginalNumbers() throws Exception {
+        TaskList taskList = new TaskList();
+        Task taggedTask = new Todo("prepare slides");
+        taggedTask.addTag("#School");
+        Task similarTagTask = new Todo("buy groceries");
+        similarTagTask.addTag("#schoolhouse");
+        taskList.addTask(taggedTask);
+        taskList.addTask(similarTagTask);
+
+        ArrayList<FindResult> results = taskList.findTasksByTag("school");
+
+        assertEquals(1, results.size());
+        assertEquals(1, results.get(0).getTaskNumber());
+        assertSame(taggedTask, results.get(0).getTask());
+    }
+
+    @Test
     public void markAndUnmarkTask_validTask_statusUpdated() throws Exception {
         TaskList taskList = new TaskList();
         taskList.addTask(new Todo("read book"));

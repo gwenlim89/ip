@@ -188,6 +188,13 @@ public class Ui {
     }
 
     /**
+     * Returns the message for a tag command without a valid task number.
+     */
+    public static String formatInvalidTagNumber() {
+        return " Give me a real task number to tag. I cannot label thin air.";
+    }
+
+    /**
      * Returns tasks found by the latest find search.
      */
     public static String formatFindResults(ArrayList<FindResult> results) {
@@ -199,6 +206,32 @@ public class Ui {
             index++;
         }
         return message.toString();
+    }
+
+    /**
+     * Returns the task after tags have been added.
+     *
+     * @param taskNumber One-based task number that was updated.
+     * @param task Updated task.
+     * @return Message showing the updated task.
+     */
+    public static String formatTaggedTask(int taskNumber, Task task) {
+        assert taskNumber >= 1 : "Tagged task number should be positive.";
+        assert task != null : "Tagged task formatter should receive the updated task.";
+        return " Tagged task " + taskNumber + ":\n " + task;
+    }
+
+    /**
+     * Returns the task after tags have been removed.
+     *
+     * @param taskNumber One-based task number that was updated.
+     * @param task Updated task.
+     * @return Message showing the updated task.
+     */
+    public static String formatUntaggedTask(int taskNumber, Task task) {
+        assert taskNumber >= 1 : "Untagged task number should be positive.";
+        assert task != null : "Untagged task formatter should receive the updated task.";
+        return " Untagged task " + taskNumber + ":\n " + task;
     }
 
     /**

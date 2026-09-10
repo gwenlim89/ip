@@ -1,6 +1,7 @@
 package larper.task;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import larper.exception.EmptyDeletionException;
 import larper.exception.InvalidNumberDeleteException;
@@ -107,9 +108,9 @@ public class TaskList {
     }
 
     /**
-     * Returns tasks with descriptions containing the given phrase, ignoring case.
+     * Returns tasks with descriptions containing the phrase or an exact matching tag, ignoring case.
      *
-     * @throws NoFindException If no task description contains the phrase.
+     * @throws NoFindException If no task description or tag matches the phrase.
      */
     public ArrayList<FindResult> findTasks(String phrase) throws NoFindException {
         assert phrase != null : "Find phrase should be an empty string instead of null.";
@@ -120,8 +121,7 @@ public class TaskList {
 
         while (index < taskCount) {
             Task task = tasks.get(index);
-            String normalizedDescription = normalizeFindPhrase(task.getDescription());
-            if (!normalizedPhrase.isEmpty() && normalizedDescription.contains(normalizedPhrase)) {
+            if (!normalizedPhrase.isEmpty() && task.matchesSearch(normalizedPhrase)) {
                 results.add(new FindResult(index + 1, task));
             }
             index++;
@@ -166,6 +166,64 @@ public class TaskList {
         task.unmarkAsDone();
         assert !task.isDone() : "Task should not be done after unmarkAsDone is called.";
         return task;
+    }
+
+    /**
+     * Adds tags to the task with the specified one-based task number.
+     *
+     * @param number One-based task number.
+     * @param tags Tags to add.
+     * @return The updated task.
+     */
+    public Task tagTask(int number, Collection<String> tags) {
+        assert hasTaskNumber(number) : "Caller should validate task number before tagging a task.";
+        assert tags != null && !tags.isEmpty() : "Tagging should receive at least one tag.";
+        Task task = getTask(number);
+        task.addTags(tags);
+        return task;
+    }
+
+    /**
+     * Removes tags from the task with the specified one-based task number.
+     *
+     * @param number One-based task number.
+     * @param tags Tags to remove.
+     * @return The updated task.
+     */
+    public Task untagTask(int number, Collection<String> tags) {
+        assert hasTaskNumber(number) : "Caller should validate task number before untagging a task.";
+        assert tags != null && !tags.isEmpty() : "Untagging should receive at least one tag.";
+        Task task = getTask(number);
+        for (String tag : tags) {
+            task.removeTag(tag);
+        }
+        return task;
+    }
+
+    /**
+     * Returns tasks that contain the specified tag, ignoring tag case.
+     *
+     * @param tag Exact tag to find.
+     * @return Matching tasks with their original task numbers.
+     * @throws NoFindException If no task has the tag.
+     */
+    public ArrayList<FindResult> findTasksByTag(String tag) throws NoFindException {
+        assert Task.isValidTag(Task.normalizeTag(tag)) : "Find tag should be validated before searching.";
+        ArrayList<FindResult> results = new ArrayList<>();
+        String normalizedTag = Task.normalizeTag(tag);
+        int index = 0;
+        while (index < taskCount) {
+            Task task = tasks.get(index);
+            if (task.hasTag(normalizedTag)) {
+                results.add(new FindResult(index + 1, task));
+            }
+            index++;
+        }
+
+        if (results.isEmpty()) {
+            throw new NoFindException();
+        }
+        return results;
     }
 
     private void assertIsConsistent() {

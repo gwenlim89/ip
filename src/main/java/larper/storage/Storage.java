@@ -83,17 +83,41 @@ public class Storage {
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
         Task task;
+        int tagFieldIndex;
 
         if (type.equals("T")) {
             task = new Todo(description);
+            tagFieldIndex = 3;
         } else if (type.equals("D")) {
             task = parseDeadline(description, parts);
-        } else {
+            tagFieldIndex = parts.length >= 5 ? 5 : parts.length;
+        } else if (type.equals("E")) {
             task = parseEvent(description, parts);
+            tagFieldIndex = parts.length >= 7 ? 7 : parts.length;
+        } else {
+            throw new IllegalArgumentException("Unknown task type.");
         }
 
         task.setDone(isDone);
+        parseTags(parts, tagFieldIndex, task);
         return task;
+    }
+
+    private void parseTags(String[] parts, int tagFieldIndex, Task task) {
+        if (parts.length <= tagFieldIndex) {
+            return;
+        }
+        if (parts.length > tagFieldIndex + 1) {
+            throw new IllegalArgumentException("Task tags should be stored in one field.");
+        }
+
+        String tagField = parts[tagFieldIndex].trim();
+        if (tagField.isEmpty()) {
+            return;
+        }
+        for (String tag : tagField.split("\\s+")) {
+            task.addTag(tag);
+        }
     }
 
     private Deadline parseDeadline(String description, String[] parts) {
