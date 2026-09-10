@@ -21,6 +21,24 @@ import larper.task.Todo;
  * Interprets raw user input as Larper commands or task objects.
  */
 public class Parser {
+    private static final String EXIT_COMMAND = "exit";
+    private static final String LIST_COMMAND = "list";
+    private static final String FIND_COMMAND = "find";
+    private static final String MARK_COMMAND_PREFIX = "mark ";
+    private static final String UNMARK_COMMAND_PREFIX = "unmark ";
+    private static final String TODO_COMMAND = "todo";
+    private static final String DEADLINE_COMMAND = "deadline";
+    private static final String EVENT_COMMAND = "event";
+    private static final String TODO_COMMAND_PREFIX = TODO_COMMAND + " ";
+    private static final String DEADLINE_COMMAND_PREFIX = DEADLINE_COMMAND + " ";
+    private static final String EVENT_COMMAND_PREFIX = EVENT_COMMAND + " ";
+    private static final String BY_MARKER = "/by";
+    private static final String FROM_MARKER = "/from";
+    private static final String TO_MARKER = "/to";
+    private static final String PENDING_DEADLINE = "deadline";
+    private static final String PENDING_EVENT_START = "event-start";
+    private static final String PENDING_EVENT_END = "event-end";
+    private static final int EXPECTED_EVENT_SLASH_COUNT = 2;
     private static final Pattern DELETE_PATTERN = Pattern.compile("\\bdelete\\b\\s+(\\S+)");
     private static final Pattern DELETE_WORD_PATTERN = Pattern.compile("\\bdelete\\b");
 
@@ -30,28 +48,28 @@ public class Parser {
      * Returns whether the input is the command that exits Larper.
      */
     public boolean isExitCommand(String input) {
-        return input.equals("exit");
+        return input.equals(EXIT_COMMAND);
     }
 
     /**
      * Returns whether the input is the command that lists all tasks.
      */
     public boolean isListCommand(String input) {
-        return input.equals("list");
+        return input.equals(LIST_COMMAND);
     }
 
     /**
      * Returns whether the input starts with the command for marking a task as done.
      */
     public boolean isMarkCommand(String input) {
-        return input.startsWith("mark ");
+        return input.startsWith(MARK_COMMAND_PREFIX);
     }
 
     /**
      * Returns whether the input starts with the command for marking a task as not done.
      */
     public boolean isUnmarkCommand(String input) {
-        return input.startsWith("unmark ");
+        return input.startsWith(UNMARK_COMMAND_PREFIX);
     }
 
     /**
@@ -65,7 +83,7 @@ public class Parser {
      * Returns whether the input is the command that starts a find search.
      */
     public boolean isFindCommand(String input) {
-        return input.equals("find");
+        return input.equals(FIND_COMMAND);
     }
 
     /**
@@ -74,7 +92,7 @@ public class Parser {
      */
     public int parseMarkNumber(String input) {
         assert isMarkCommand(input) : "Mark number parser should only receive mark commands.";
-        return parseTaskNumber(input.substring(5).trim());
+        return parseTaskNumber(input.substring(MARK_COMMAND_PREFIX.length()).trim());
     }
 
     /**
@@ -83,7 +101,7 @@ public class Parser {
      */
     public int parseUnmarkNumber(String input) {
         assert isUnmarkCommand(input) : "Unmark number parser should only receive unmark commands.";
-        return parseTaskNumber(input.substring(7).trim());
+        return parseTaskNumber(input.substring(UNMARK_COMMAND_PREFIX.length()).trim());
     }
 
     /**
@@ -124,57 +142,66 @@ public class Parser {
             throw new NoTaskTypeException();
         }
 
-        if (input.equals("todo") || input.equals("deadline") || input.equals("event")) {
+        if (isTaskTypeWithoutDescription(input)) {
             throw new NoDescriptionException();
         }
 
-        if (input.startsWith("todo ")) {
-            String description = input.substring(5).trim();
-            if (description.isEmpty() || countSlashes(description) != 0) {
-                throw new NoDescriptionException();
-            }
-            return new Todo(description);
+        if (input.startsWith(TODO_COMMAND_PREFIX)) {
+            return parseTodo(input);
         }
-
-        if (input.startsWith("deadline ")) {
-            String taskInfo = input.substring(9).trim();
-            int byIndex = taskInfo.indexOf("/by");
-            if (byIndex == -1) {
-                throw new InvalidDateException("deadline");
-            }
-            String description = taskInfo.substring(0, byIndex).trim();
-            String by = taskInfo.substring(byIndex + 3).trim();
-            if (description.isEmpty()) {
-                throw new NoDescriptionException();
-            }
-            TaskDateTime byDateTime = parseTaskDateTime(by, "deadline", "deadline", description, null, null);
-            return new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
+        if (input.startsWith(DEADLINE_COMMAND_PREFIX)) {
+            return parseDeadline(input);
         }
-
-        if (input.startsWith("event ")) {
-            String taskInfo = input.substring(6).trim();
-            int fromIndex = taskInfo.indexOf("/from");
-            int toIndex = taskInfo.indexOf("/to");
-            if (fromIndex == -1 || toIndex == -1 || fromIndex > toIndex) {
-                throw new InvalidDateException("event start or end");
-            }
-            String description = taskInfo.substring(0, fromIndex).trim();
-            String from = taskInfo.substring(fromIndex + 5, toIndex).trim();
-            String to = taskInfo.substring(toIndex + 3).trim();
-            if (description.isEmpty()) {
-                throw new NoDescriptionException();
-            }
-            if (countSlashes(taskInfo) != 2) {
-                throw new InvalidDateException("event start or end");
-            }
-            TaskDateTime startDateTime = parseTaskDateTime(from, "event start", "event-start",
-                    description, to, null);
-            TaskDateTime endDateTime = parseTaskDateTime(to, "event end", "event-end",
-                    description, startDateTime.getDate().toString(), startDateTime.getTime());
-            return new Event(description, startDateTime, endDateTime);
+        if (input.startsWith(EVENT_COMMAND_PREFIX)) {
+            return parseEvent(input);
         }
 
         throw new NoTaskTypeException();
+    }
+
+    private Task parseTodo(String input) throws NoDescriptionException {
+        String description = input.substring(TODO_COMMAND_PREFIX.length()).trim();
+        if (description.isEmpty() || countSlashes(description) != 0) {
+            throw new NoDescriptionException();
+        }
+        return new Todo(description);
+    }
+
+    private Task parseDeadline(String input) throws LarperException {
+        String taskInfo = input.substring(DEADLINE_COMMAND_PREFIX.length()).trim();
+        int byIndex = taskInfo.indexOf(BY_MARKER);
+        if (byIndex == -1) {
+            throw new InvalidDateException(PENDING_DEADLINE);
+        }
+
+        String description = taskInfo.substring(0, byIndex).trim();
+        String by = taskInfo.substring(byIndex + BY_MARKER.length()).trim();
+        ensureDescriptionPresent(description);
+
+        TaskDateTime byDateTime = parseTaskDateTime(by, PENDING_DEADLINE, PENDING_DEADLINE,
+                description, null, null);
+        return new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
+    }
+
+    private Task parseEvent(String input) throws LarperException {
+        String taskInfo = input.substring(EVENT_COMMAND_PREFIX.length()).trim();
+        int fromIndex = taskInfo.indexOf(FROM_MARKER);
+        int toIndex = taskInfo.indexOf(TO_MARKER);
+        if (fromIndex == -1 || toIndex == -1 || fromIndex > toIndex) {
+            throw new InvalidDateException("event start or end");
+        }
+
+        String description = taskInfo.substring(0, fromIndex).trim();
+        String from = taskInfo.substring(fromIndex + FROM_MARKER.length(), toIndex).trim();
+        String to = taskInfo.substring(toIndex + TO_MARKER.length()).trim();
+        ensureDescriptionPresent(description);
+        ensureEventHasExpectedMarkers(taskInfo);
+
+        TaskDateTime startDateTime = parseTaskDateTime(from, "event start", PENDING_EVENT_START,
+                description, to, null);
+        TaskDateTime endDateTime = parseTaskDateTime(to, "event end", PENDING_EVENT_END,
+                description, startDateTime.getDate().toString(), startDateTime.getTime());
+        return new Event(description, startDateTime, endDateTime);
     }
 
     private Task completePendingTask(String input) throws LarperException {
@@ -191,20 +218,20 @@ public class Parser {
         assert taskToComplete.firstDate != null && !taskToComplete.firstDate.isBlank()
                 : "Pending task should preserve its parsed date.";
 
-        if (taskToComplete.type.equals("deadline")) {
+        if (taskToComplete.type.equals(PENDING_DEADLINE)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
             return new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime);
         }
 
-        if (taskToComplete.type.equals("event-start")) {
+        if (taskToComplete.type.equals(PENDING_EVENT_START)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", "event-end",
+            TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", PENDING_EVENT_END,
                     taskToComplete.description, taskToComplete.firstDate, normalizedTime);
             return new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate), normalizedTime,
                     endDateTime.getDate(), endDateTime.getTime());
         }
 
-        if (taskToComplete.type.equals("event-end")) {
+        if (taskToComplete.type.equals(PENDING_EVENT_END)) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
             return new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
                     taskToComplete.secondDate, normalizedTime);
@@ -247,8 +274,24 @@ public class Parser {
     }
 
     private boolean startsWithTaskCommand(String input) {
-        return input.startsWith("todo ") || input.startsWith("deadline ") || input.startsWith("event ")
-                || input.equals("todo") || input.equals("deadline") || input.equals("event");
+        return input.startsWith(TODO_COMMAND_PREFIX) || input.startsWith(DEADLINE_COMMAND_PREFIX)
+                || input.startsWith(EVENT_COMMAND_PREFIX) || isTaskTypeWithoutDescription(input);
+    }
+
+    private boolean isTaskTypeWithoutDescription(String input) {
+        return input.equals(TODO_COMMAND) || input.equals(DEADLINE_COMMAND) || input.equals(EVENT_COMMAND);
+    }
+
+    private void ensureDescriptionPresent(String description) throws NoDescriptionException {
+        if (description.isEmpty()) {
+            throw new NoDescriptionException();
+        }
+    }
+
+    private void ensureEventHasExpectedMarkers(String taskInfo) throws InvalidDateException {
+        if (countSlashes(taskInfo) != EXPECTED_EVENT_SLASH_COUNT) {
+            throw new InvalidDateException("event start or end");
+        }
     }
 
     private int countSlashes(String input) {

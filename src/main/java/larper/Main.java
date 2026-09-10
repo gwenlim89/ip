@@ -47,24 +47,44 @@ public class Main extends Application {
     public void start(Stage stage) {
         assert stage != null : "JavaFX should provide a primary stage.";
         larper = new Larper(Larper.getDataPath());
+        loadDialogImages();
+        initializeDialogContainer();
+        initializeScrollPane();
+        initializeAutoScrollToggle();
+        initializeInputControls();
+
+        AnchorPane root = createRootPane();
+        addDialog(larper.getWelcomeMessage(), false);
+        configureStage(stage, root);
+    }
+
+    private void loadDialogImages() {
         larperImage = loadImage("/images/larper.png");
         userImage = loadImage("/images/user.png");
+    }
 
+    private void initializeDialogContainer() {
         dialogContainer = new VBox(10);
         dialogContainer.setPadding(new Insets(12));
         dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
+    }
 
+    private void initializeScrollPane() {
         scrollPane = new ScrollPane(dialogContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         dialogContainer.heightProperty().addListener((observable, oldValue, newValue) -> scrollToLatestMessage());
+    }
 
+    private void initializeAutoScrollToggle() {
         autoScrollToggle = new CheckBox("Auto-scroll");
         autoScrollToggle.setSelected(true);
         autoScrollToggle.setPadding(new Insets(0, 12, 0, 12));
         autoScrollToggle.setOnAction(event -> scrollToLatestMessage());
+    }
 
+    private void initializeInputControls() {
         userInput = new TextField();
         userInput.setPromptText("Type a command...");
         userInput.setOnAction(event -> handleUserInput());
@@ -74,14 +94,17 @@ public class Main extends Application {
         sendButton.setOnAction(event -> handleUserInput());
         sendButton.setPrefWidth(SEND_BUTTON_WIDTH);
         sendButton.setPrefHeight(INPUT_HEIGHT);
+    }
 
+    private AnchorPane createRootPane() {
         AnchorPane root = new AnchorPane();
         root.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         root.getChildren().addAll(scrollPane, autoScrollToggle, userInput, sendButton);
         anchorControls();
+        return root;
+    }
 
-        addDialog(larper.getWelcomeMessage(), false);
-
+    private void configureStage(Stage stage, AnchorPane root) {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         stage.setTitle("Larper");
         stage.setResizable(false);
