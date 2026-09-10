@@ -28,6 +28,7 @@ public class Storage {
      * @param filePath Path of the task data file.
      */
     public Storage(Path filePath) {
+        assert filePath != null : "Storage should always receive a data file path.";
         this.filePath = filePath;
     }
 
@@ -38,13 +39,17 @@ public class Storage {
      * @throws IOException If the data file cannot be written.
      */
     public void saveTasks(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null : "Storage should save an existing task collection.";
         Path parentDirectory = filePath.getParent();
         if (parentDirectory != null) {
             Files.createDirectories(parentDirectory);
         }
 
         ArrayList<String> lines = tasks.stream()
-                .map(Task::toFileString)
+                .map(task -> {
+                    assert task != null : "Storage should not save null task entries.";
+                    return task.toFileString();
+                })
                 .collect(Collectors.toCollection(ArrayList::new));
 
         Files.write(filePath, lines, StandardCharsets.UTF_8);
