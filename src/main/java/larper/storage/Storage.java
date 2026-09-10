@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import larper.task.Deadline;
 import larper.task.Event;
@@ -41,10 +43,9 @@ public class Storage {
             Files.createDirectories(parentDirectory);
         }
 
-        ArrayList<String> lines = new ArrayList<>();
-        for (Task task : tasks) {
-            lines.add(task.toFileString());
-        }
+        ArrayList<String> lines = tasks.stream()
+                .map(Task::toFileString)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         Files.write(filePath, lines, StandardCharsets.UTF_8);
     }
@@ -61,17 +62,19 @@ public class Storage {
             return tasks;
         }
 
-        ArrayList<String> lines = new ArrayList<>(Files.readAllLines(filePath, StandardCharsets.UTF_8));
-        for (String line : lines) {
-            if (!line.isBlank()) {
-                try {
-                    tasks.add(parseTask(line));
-                } catch (RuntimeException e) {
-                    continue;
-                }
-            }
+        return Files.readAllLines(filePath, StandardCharsets.UTF_8).stream()
+                .filter(line -> !line.isBlank())
+                .map(this::parseTaskOrNull)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private Task parseTaskOrNull(String line) {
+        try {
+            return parseTask(line);
+        } catch (RuntimeException e) {
+            return null;
         }
-        return tasks;
     }
 
     private Task parseTask(String line) {

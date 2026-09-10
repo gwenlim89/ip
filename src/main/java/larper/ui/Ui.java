@@ -2,6 +2,8 @@ package larper.ui;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import larper.task.FindResult;
 import larper.task.Task;
@@ -170,13 +172,13 @@ public class Ui {
      * Returns all tasks in their current order.
      */
     public static String formatTaskList(TaskList tasks) {
-        int count = 0;
-        StringBuilder message = new StringBuilder(" Quest log check:");
-        while (count < tasks.size()) {
-            message.append("\n ").append(count + 1).append(". ").append(tasks.getTask(count + 1));
-            count++;
+        String formattedTasks = IntStream.range(0, tasks.size())
+                .mapToObj(index -> " " + (index + 1) + ". " + tasks.getTask(index + 1))
+                .collect(Collectors.joining("\n"));
+        if (formattedTasks.isEmpty()) {
+            return " Quest log check:";
         }
-        return message.toString();
+        return " Quest log check:\n" + formattedTasks;
     }
 
     /**
@@ -190,13 +192,10 @@ public class Ui {
      * Returns tasks found by the latest find search.
      */
     public static String formatFindResults(ArrayList<FindResult> results) {
-        int index = 0;
-        StringBuilder message = new StringBuilder(" Found it. Receipts below:");
-        while (index < results.size()) {
-            message.append("\n ").append(results.get(index));
-            index++;
-        }
-        return message.toString();
+        String formattedResults = results.stream()
+                .map(result -> " " + result)
+                .collect(Collectors.joining("\n"));
+        return " Found it. Receipts below:\n" + formattedResults;
     }
 
     /**

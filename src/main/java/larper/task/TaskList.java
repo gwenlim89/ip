@@ -1,6 +1,8 @@
 package larper.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import larper.exception.EmptyDeletionException;
 import larper.exception.InvalidNumberDeleteException;
@@ -99,23 +101,21 @@ public class TaskList {
      */
     public ArrayList<FindResult> findTasks(String phrase) throws NoFindException {
         String normalizedPhrase = normalizeFindPhrase(phrase);
-        ArrayList<FindResult> results = new ArrayList<>();
-        int index = 0;
-
-        while (index < taskCount) {
-            Task task = tasks.get(index);
-            String normalizedDescription = normalizeFindPhrase(task.getDescription());
-            if (!normalizedPhrase.isEmpty() && normalizedDescription.contains(normalizedPhrase)) {
-                results.add(new FindResult(index + 1, task));
-            }
-            index++;
-        }
+        ArrayList<FindResult> results = IntStream.range(0, taskCount)
+                .filter(index -> hasMatchingDescription(index, normalizedPhrase))
+                .mapToObj(index -> new FindResult(index + 1, tasks.get(index)))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if (results.isEmpty()) {
             throw new NoFindException();
         }
 
         return results;
+    }
+
+    private boolean hasMatchingDescription(int index, String normalizedPhrase) {
+        String normalizedDescription = normalizeFindPhrase(tasks.get(index).getDescription());
+        return !normalizedPhrase.isEmpty() && normalizedDescription.contains(normalizedPhrase);
     }
 
     /**
