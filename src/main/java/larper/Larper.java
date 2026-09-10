@@ -83,29 +83,35 @@ public class Larper {
 
     private String executeCommand(String input) throws LarperException {
         if (isWaitingForFindPhrase) {
-            ArrayList<FindResult> results = tasks.findTasks(input);
-            isWaitingForFindPhrase = false;
-            return Ui.formatFindResults(results);
-        } else if (parser.isListCommand(input)) {
-            return Ui.formatTaskList(tasks);
-        } else if (parser.isFindCommand(input)) {
-            isWaitingForFindPhrase = true;
-            return Ui.formatFindPrompt();
-        } else if (parser.isMarkCommand(input)) {
-            return executeMarkCommand(input);
-        } else if (parser.isUnmarkCommand(input)) {
-            return executeUnmarkCommand(input);
-        } else if (parser.isDeleteCommand(input)) {
-            int number = parser.parseDeleteNumber(input);
-            Task removedTask = tasks.deleteTask(number);
-            saveTasks();
-            return Ui.formatDeletedTask(removedTask, tasks.size());
-        } else {
-            Task task = parser.parseTask(input);
-            tasks.addTask(task);
-            saveTasks();
-            return Ui.formatAddedTask(task, tasks.size());
+            return executeFindPhrase(input);
         }
+        if (parser.isListCommand(input)) {
+            return Ui.formatTaskList(tasks);
+        }
+        if (parser.isFindCommand(input)) {
+            return executeFindCommand();
+        }
+        if (parser.isMarkCommand(input)) {
+            return executeMarkCommand(input);
+        }
+        if (parser.isUnmarkCommand(input)) {
+            return executeUnmarkCommand(input);
+        }
+        if (parser.isDeleteCommand(input)) {
+            return executeDeleteCommand(input);
+        }
+        return executeAddCommand(input);
+    }
+
+    private String executeFindPhrase(String input) throws LarperException {
+        ArrayList<FindResult> results = tasks.findTasks(input);
+        isWaitingForFindPhrase = false;
+        return Ui.formatFindResults(results);
+    }
+
+    private String executeFindCommand() {
+        isWaitingForFindPhrase = true;
+        return Ui.formatFindPrompt();
     }
 
     private String executeMarkCommand(String input) throws LarperException {
@@ -132,6 +138,20 @@ public class Larper {
         Task unmarkedTask = tasks.unmarkTask(number);
         saveTasks();
         return Ui.formatUnmarkedTask(unmarkedTask);
+    }
+
+    private String executeDeleteCommand(String input) throws LarperException {
+        int number = parser.parseDeleteNumber(input);
+        Task removedTask = tasks.deleteTask(number);
+        saveTasks();
+        return Ui.formatDeletedTask(removedTask, tasks.size());
+    }
+
+    private String executeAddCommand(String input) throws LarperException {
+        Task task = parser.parseTask(input);
+        tasks.addTask(task);
+        saveTasks();
+        return Ui.formatAddedTask(task, tasks.size());
     }
 
     /**
