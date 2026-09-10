@@ -35,6 +35,10 @@ public class Larper {
         parser = new Parser();
         storage = new Storage(dataPath);
         tasks = loadTasks();
+        assert ui != null : "Ui should be initialized before Larper handles commands.";
+        assert parser != null : "Parser should be initialized before Larper handles commands.";
+        assert storage != null : "Storage should be initialized before Larper handles commands.";
+        assert tasks != null : "Task list should always be available after loading.";
     }
 
     /**
@@ -69,6 +73,7 @@ public class Larper {
      * @return Larper's response message and session status.
      */
     public LarperResponse getResponse(String input) {
+        assert input != null : "Command input should be an empty string instead of null.";
         if (parser.isExitCommand(input)) {
             return new LarperResponse(Ui.formatExitMessage(), true);
         }
@@ -122,7 +127,9 @@ public class Larper {
             return Ui.formatMissingTaskNumber();
         }
 
+        assert tasks.hasTaskNumber(number) : "Mark command should only run after task number validation.";
         Task markedTask = tasks.markTask(number);
+        assert markedTask.isDone() : "Marked task should be done after markTask succeeds.";
         saveTasks();
         return Ui.formatMarkedTask(markedTask);
     }
@@ -135,7 +142,9 @@ public class Larper {
             return Ui.formatMissingTaskNumber();
         }
 
+        assert tasks.hasTaskNumber(number) : "Unmark command should only run after task number validation.";
         Task unmarkedTask = tasks.unmarkTask(number);
+        assert !unmarkedTask.isDone() : "Unmarked task should not be done after unmarkTask succeeds.";
         saveTasks();
         return Ui.formatUnmarkedTask(unmarkedTask);
     }

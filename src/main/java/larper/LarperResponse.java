@@ -15,6 +15,7 @@ public class LarperResponse {
      * @param isExit Whether this response should end the current session.
      */
     public LarperResponse(String message, boolean isExit) {
+        assert message != null : "Larper response message should never be null.";
         this.message = message;
         this.isExit = isExit;
     }
