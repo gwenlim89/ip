@@ -16,6 +16,8 @@ public class TaskDateTime {
      * @param time Normalized time of the task, or "no time".
      */
     public TaskDateTime(LocalDate date, String time) {
+        assert date != null : "TaskDateTime should always contain a parsed date.";
+        assert time != null : "TaskDateTime should always contain a time value or an empty pending marker.";
         this.date = date;
         this.time = time;
     }

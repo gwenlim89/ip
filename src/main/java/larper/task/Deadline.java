@@ -29,6 +29,8 @@ public class Deadline extends Task {
      */
     public Deadline(String description, LocalDate byDate, String byTime) {
         super(description);
+        assert byDate != null : "Deadline date should be parsed before creating a deadline.";
+        assert byTime != null && !byTime.isBlank() : "Deadline time should be normalized before creating a deadline.";
         this.byDate = byDate;
         this.byTime = byTime;
     }
@@ -46,6 +48,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toFileString() {
+        assert byDate != null : "Deadline date should be available before saving.";
+        assert byTime != null && !byTime.isBlank() : "Deadline time should be available before saving.";
         return super.toFileString() + " | " + byDate + " | " + byTime;
     }
 
@@ -54,6 +58,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
+        assert byDate != null : "Deadline date should be available before display.";
+        assert byTime != null && !byTime.isBlank() : "Deadline time should be available before display.";
         String formattedDate = TaskDateTimeParser.formatDate(byDate);
         if (isNoTime()) {
             return super.toString() + " (by: " + formattedDate + ")";

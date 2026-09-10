@@ -35,6 +35,10 @@ public class Event extends Task {
      */
     public Event(String description, LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
         super(description);
+        assert startDate != null : "Event start date should be parsed before creating an event.";
+        assert startTime != null && !startTime.isBlank() : "Event start time should be normalized before creation.";
+        assert endDate != null : "Event end date should be parsed before creating an event.";
+        assert endTime != null && !endTime.isBlank() : "Event end time should be normalized before creation.";
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
@@ -76,6 +80,9 @@ public class Event extends Task {
      */
     @Override
     public String toFileString() {
+        assert startDate != null && endDate != null : "Event dates should be available before saving.";
+        assert startTime != null && !startTime.isBlank() : "Event start time should be available before saving.";
+        assert endTime != null && !endTime.isBlank() : "Event end time should be available before saving.";
         return super.toFileString() + " | " + startDate + " | " + startTime + " | "
                 + endDate + " | " + endTime;
     }
@@ -85,6 +92,9 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        assert startDate != null && endDate != null : "Event dates should be available before display.";
+        assert startTime != null && !startTime.isBlank() : "Event start time should be available before display.";
+        assert endTime != null && !endTime.isBlank() : "Event end time should be available before display.";
         return super.toString() + " (from: " + formatDateTime(startDate, startTime)
                 + " to: " + formatDateTime(endDate, endTime) + ")";
     }

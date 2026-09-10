@@ -73,6 +73,7 @@ public class Parser {
      * If the command does not contain a number, -1 is returned.
      */
     public int parseMarkNumber(String input) {
+        assert isMarkCommand(input) : "Mark number parser should only receive mark commands.";
         return parseTaskNumber(input.substring(5).trim());
     }
 
@@ -81,6 +82,7 @@ public class Parser {
      * If the command does not contain a number, -1 is returned.
      */
     public int parseUnmarkNumber(String input) {
+        assert isUnmarkCommand(input) : "Unmark number parser should only receive unmark commands.";
         return parseTaskNumber(input.substring(7).trim());
     }
 
@@ -176,6 +178,7 @@ public class Parser {
     }
 
     private Task completePendingTask(String input) throws LarperException {
+        assert pendingTask != null : "Pending task completion should only run when a task is waiting for time.";
         String time = input.trim();
         if (time.isEmpty() || !isValidTimeAnswer(time)) {
             throw new InvalidTimeException(pendingTask.waitingFor);
@@ -183,6 +186,10 @@ public class Parser {
 
         PendingTask taskToComplete = pendingTask;
         pendingTask = null;
+        assert taskToComplete.description != null && !taskToComplete.description.isBlank()
+                : "Pending task should preserve its original description.";
+        assert taskToComplete.firstDate != null && !taskToComplete.firstDate.isBlank()
+                : "Pending task should preserve its parsed date.";
 
         if (taskToComplete.type.equals("deadline")) {
             String normalizedTime = TaskDateTimeParser.normalizeTime(time);
@@ -224,9 +231,14 @@ public class Parser {
                 pendingTask = new PendingTask(pendingType, description, taskDateTime.getDate().toString(),
                         extraTime, extraDate, label);
             }
+            assert pendingTask != null : "Missing optional time should create a pending task.";
+            assert pendingTask.type.equals(pendingType)
+                    : "Pending task should remember the command type being completed.";
             throw new InvalidTimeException(label);
         }
 
+        assert taskDateTime.getDate() != null : "Date-time parser should return a parsed date on success.";
+        assert !taskDateTime.getTime().isEmpty() : "Date-time parser should return a time on success.";
         return taskDateTime;
     }
 
@@ -269,6 +281,8 @@ public class Parser {
 
         public PendingTask(String type, String description, String firstDate, String firstTime,
                 String secondDate, String waitingFor) {
+            assert type != null && !type.isBlank() : "Pending task type should identify how to resume parsing.";
+            assert waitingFor != null && !waitingFor.isBlank() : "Pending task should know which time is missing.";
             this.type = type;
             this.description = description;
             this.firstDate = firstDate;

@@ -14,6 +14,8 @@ public class FindResult {
      * @param task Task that matched the search phrase.
      */
     public FindResult(int taskNumber, Task task) {
+        assert taskNumber >= 1 : "Find results should keep a one-based task number.";
+        assert task != null : "Find results should always reference a matched task.";
         this.taskNumber = taskNumber;
         this.task = task;
     }
