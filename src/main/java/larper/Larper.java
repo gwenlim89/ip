@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import larper.command.Parser;
 import larper.exception.LarperException;
+import larper.exception.NoTaskTypeException;
 import larper.storage.Storage;
 import larper.task.FindResult;
 import larper.task.Task;
@@ -18,6 +19,11 @@ import larper.ui.Ui;
 public class Larper {
     private static final String DATA_PATH_PROPERTY = "larper.data.path";
     private static final Path DEFAULT_DATA_PATH = Path.of("data", "larperdata.txt");
+    private static final String HELP_COMMAND = "help";
+    private static final String[] KNOWN_COMMANDS = {
+        "todo", "deadline", "event", "list", "mark", "unmark", "delete", "find", "tag", "untag",
+        HELP_COMMAND, "exit"
+    };
 
     private Ui ui;
     private Parser parser;
@@ -67,6 +73,19 @@ public class Larper {
     }
 
     /**
+     * Returns the current tasks as display strings for non-console user interfaces.
+     *
+     * @return A snapshot of the task list in its current order.
+     */
+    public ArrayList<String> getTaskSummaries() {
+        ArrayList<String> taskSummaries = new ArrayList<>();
+        for (int taskNumber = 1; taskNumber <= tasks.size(); taskNumber++) {
+            taskSummaries.add(tasks.getTask(taskNumber).toString());
+        }
+        return taskSummaries;
+    }
+
+    /**
      * Returns Larper's response to one user command.
      *
      * @param input User command to handle.
@@ -79,25 +98,31 @@ public class Larper {
         }
 
         try {
-            return new LarperResponse(executeCommand(input), false);
+            return executeCommand(input);
+        } catch (NoTaskTypeException e) {
+            isWaitingForFindPhrase = false;
+            return createErrorResponse(formatUnknownCommand(input, e.getMessage()));
         } catch (LarperException e) {
             isWaitingForFindPhrase = false;
-            return new LarperResponse(e.getMessage(), false);
+            return new LarperResponse(e.getMessage(), false, true);
         }
     }
 
-    private String executeCommand(String input) throws LarperException {
+    private LarperResponse executeCommand(String input) throws LarperException {
         if (isWaitingForFindPhrase) {
-            return executeFindPhrase(input);
+            return createResponse(executeFindPhrase(input));
         }
         if (parser.isListCommand(input)) {
-            return Ui.formatTaskList(tasks);
+            return createResponse(Ui.formatTaskList(tasks));
         }
         if (parser.isFindTagCommand(input)) {
-            return executeFindTagCommand(input);
+            return createResponse(executeFindTagCommand(input));
         }
         if (parser.isFindCommand(input)) {
-            return executeFindCommand();
+            return createResponse(executeFindCommand());
+        }
+        if (input.equals(HELP_COMMAND)) {
+            return createResponse(Ui.formatHelpMessage());
         }
         if (parser.isTagCommand(input)) {
             return executeTagCommand(input, false);
@@ -112,9 +137,9 @@ public class Larper {
             return executeUnmarkCommand(input);
         }
         if (parser.isDeleteCommand(input)) {
-            return executeDeleteCommand(input);
+            return createResponse(executeDeleteCommand(input));
         }
-        return executeAddCommand(input);
+        return createResponse(executeAddCommand(input));
     }
 
     private String executeFindPhrase(String input) throws LarperException {
@@ -134,13 +159,13 @@ public class Larper {
         return Ui.formatFindResults(results);
     }
 
-    private String executeTagCommand(String input, boolean shouldRemove) throws LarperException {
+    private LarperResponse executeTagCommand(String input, boolean shouldRemove) throws LarperException {
         int number = parser.parseTagTaskNumber(input);
         if (number == -1) {
-            return Ui.formatInvalidTagNumber();
+            return createErrorResponse(Ui.formatInvalidTagNumber());
         }
         if (!tasks.hasTaskNumber(number)) {
-            return Ui.formatMissingTaskNumber();
+            return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
         ArrayList<String> tagNames = parser.parseTagNames(input);
@@ -148,39 +173,40 @@ public class Larper {
                 ? tasks.untagTask(number, tagNames)
                 : tasks.tagTask(number, tagNames);
         saveTasks();
-        return shouldRemove
+        String message = shouldRemove
                 ? Ui.formatUntaggedTask(number, updatedTask)
                 : Ui.formatTaggedTask(number, updatedTask);
+        return createResponse(message);
     }
 
-    private String executeMarkCommand(String input) throws LarperException {
+    private LarperResponse executeMarkCommand(String input) throws LarperException {
         int number = parser.parseMarkNumber(input);
         if (number == -1) {
-            return Ui.formatInvalidMarkNumber();
+            return createErrorResponse(Ui.formatInvalidMarkNumber());
         } else if (!tasks.hasTaskNumber(number)) {
-            return Ui.formatMissingTaskNumber();
+            return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
         assert tasks.hasTaskNumber(number) : "Mark command should only run after task number validation.";
         Task markedTask = tasks.markTask(number);
         assert markedTask.isDone() : "Marked task should be done after markTask succeeds.";
         saveTasks();
-        return Ui.formatMarkedTask(markedTask);
+        return createResponse(Ui.formatMarkedTask(markedTask));
     }
 
-    private String executeUnmarkCommand(String input) throws LarperException {
+    private LarperResponse executeUnmarkCommand(String input) throws LarperException {
         int number = parser.parseUnmarkNumber(input);
         if (number == -1) {
-            return Ui.formatInvalidUnmarkNumber();
+            return createErrorResponse(Ui.formatInvalidUnmarkNumber());
         } else if (!tasks.hasTaskNumber(number)) {
-            return Ui.formatMissingTaskNumber();
+            return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
         assert tasks.hasTaskNumber(number) : "Unmark command should only run after task number validation.";
         Task unmarkedTask = tasks.unmarkTask(number);
         assert !unmarkedTask.isDone() : "Unmarked task should not be done after unmarkTask succeeds.";
         saveTasks();
-        return Ui.formatUnmarkedTask(unmarkedTask);
+        return createResponse(Ui.formatUnmarkedTask(unmarkedTask));
     }
 
     private String executeDeleteCommand(String input) throws LarperException {
@@ -231,5 +257,73 @@ public class Larper {
         } catch (IOException e) {
             return new TaskList();
         }
+    }
+
+    private LarperResponse createResponse(String message) {
+        return new LarperResponse(message, false);
+    }
+
+    private LarperResponse createErrorResponse(String message) {
+        return new LarperResponse(message, false, true);
+    }
+
+    private String formatUnknownCommand(String input, String fallbackMessage) {
+        assert input != null : "Unknown command formatter should receive the original input.";
+        assert fallbackMessage != null : "Unknown command formatter should receive a fallback message.";
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            return fallbackMessage;
+        }
+
+        String commandWord = trimmedInput.split("\\s+", 2)[0];
+        String normalizedCommandWord = commandWord.toLowerCase();
+        String suggestion = findSuggestedCommand(normalizedCommandWord);
+        if (suggestion.isEmpty()) {
+            return " Unknown command: `" + commandWord + "`\n\nType `help` for commands.";
+        }
+
+        String suggestedInput = suggestion + trimmedInput.substring(commandWord.length());
+        return " Unknown command: `" + commandWord + "`\n"
+                + " Did you mean `" + suggestedInput + "`?\n\n"
+                + " Type `help` for commands.";
+    }
+
+    private String findSuggestedCommand(String commandWord) {
+        assert commandWord != null : "Command word should not be null.";
+        String bestCommand = "";
+        int bestDistance = Integer.MAX_VALUE;
+        for (String knownCommand : KNOWN_COMMANDS) {
+            int distance = getEditDistance(commandWord, knownCommand);
+            if (distance == 0) {
+                return "";
+            }
+            if (distance < bestDistance) {
+                bestCommand = knownCommand;
+                bestDistance = distance;
+            }
+        }
+        int maximumHelpfulDistance = commandWord.length() <= 4 ? 1 : 2;
+        return bestDistance <= maximumHelpfulDistance ? bestCommand : "";
+    }
+
+    private int getEditDistance(String first, String second) {
+        assert first != null && second != null : "Edit distance inputs should not be null.";
+        int[][] distance = new int[first.length() + 1][second.length() + 1];
+        for (int i = 0; i <= first.length(); i++) {
+            distance[i][0] = i;
+        }
+        for (int j = 0; j <= second.length(); j++) {
+            distance[0][j] = j;
+        }
+        for (int i = 1; i <= first.length(); i++) {
+            for (int j = 1; j <= second.length(); j++) {
+                int substitutionCost = first.charAt(i - 1) == second.charAt(j - 1) ? 0 : 1;
+                int deletionDistance = distance[i - 1][j] + 1;
+                int insertionDistance = distance[i][j - 1] + 1;
+                int substitutionDistance = distance[i - 1][j - 1] + substitutionCost;
+                distance[i][j] = Math.min(Math.min(deletionDistance, insertionDistance), substitutionDistance);
+            }
+        }
+        return distance[first.length()][second.length()];
     }
 }

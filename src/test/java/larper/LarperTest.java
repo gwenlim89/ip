@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +60,65 @@ public class LarperTest {
         assertTrue(exitResponse.isExit());
         assertEquals(" Aight, Larper is logging off. Come back with more quests soon.",
                 exitResponse.getMessage());
+    }
+
+    @Test
+    public void getTaskSummaries_afterTaskChanges_returnsCurrentTasks() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        larper.getResponse("todo read book");
+        larper.getResponse("deadline submit report /by 2026-08-23 no time");
+        larper.getResponse("mark 2");
+        larper.getResponse("delete 1");
+
+        assertEquals(List.of("[D][X] submit report (by: Aug 23 2026)"), larper.getTaskSummaries());
+    }
+
+    @Test
+    public void getResponse_invalidCommand_returnsErrorResponse() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        LarperResponse response = larper.getResponse("hello");
+
+        assertFalse(response.isExit());
+        assertTrue(response.isError());
+    }
+
+    @Test
+    public void getResponse_help_returnsCommandGuide() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        LarperResponse response = larper.getResponse("help");
+
+        assertFalse(response.isExit());
+        assertFalse(response.isError());
+        assertTrue(response.getMessage().contains("todo DESCRIPTION"));
+        assertTrue(response.getMessage().contains("delete NUMBER"));
+    }
+
+    @Test
+    public void getResponse_misspelledCommand_returnsSuggestionError() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        LarperResponse response = larper.getResponse("delet 2");
+
+        assertFalse(response.isExit());
+        assertTrue(response.isError());
+        assertEquals(" Unknown command: `delet`\n"
+                + " Did you mean `delete 2`?\n\n"
+                + " Type `help` for commands.", response.getMessage());
+    }
+
+    @Test
+    public void getResponse_invalidTaskNumber_returnsErrorResponse() {
+        Larper larper = new Larper(tempDir.resolve("larperdata.txt"));
+
+        larper.getResponse("todo read book");
+        LarperResponse response = larper.getResponse("mark 999");
+
+        assertFalse(response.isExit());
+        assertTrue(response.isError());
+        assertEquals(" That task number is not in the quest log.", response.getMessage());
     }
 
     @Test

@@ -65,6 +65,55 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
+## Test Case: help and typo suggestion
+
+Aim: Verify that users can discover commands from `help`, and that a misspelled command gives a useful suggestion.
+
+Inputs:
+```text
+help
+delet 2
+exit
+```
+
+Expected output:
+```text
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ _
+| |       __ _   _ __   _ __     ___   _ __
+| |      / _` | | '__| | '_ \   / _ \ | '__|
+| |___  | (_| | | |    | |_) | |  __/ | |
+|_____|  \__,_| |_|    | .__/   \___| |_|
+                       |_|
+Larper has entered the chat.
+
+ Drop a command. Let's lock in.
+
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Commands Larper understands:
+ todo DESCRIPTION
+ deadline DESCRIPTION /by DATE TIME
+ event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
+ list
+ mark NUMBER / unmark NUMBER
+ delete NUMBER
+ find, then enter a search phrase
+ find tag TAG
+ tag NUMBER TAG / untag NUMBER TAG
+ exit
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Unknown command: `delet`
+ Did you mean `delete 2`?
+
+ Type `help` for commands.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Aight, Larper is logging off. Come back with more quests soon.
+_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+```
+
 ## Test Case: find matching and missing tasks
 
 Aim: Verify that find prompts for a search phrase, matches full phrases case-insensitively in descriptions only, shows original task numbers beside matches, and reports no matches.

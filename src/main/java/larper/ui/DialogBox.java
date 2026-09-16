@@ -14,6 +14,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -23,24 +25,40 @@ import javafx.scene.text.TextFlow;
  * User messages appear on the right, while Larper messages appear on the left.
  */
 public class DialogBox extends HBox {
-    private static final int AVATAR_SIZE = 54;
-    private static final int MESSAGE_WIDTH = 460;
+    private static final int AVATAR_SIZE = 24;
+    private static final int MESSAGE_WIDTH = 520;
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[#([A-Za-z0-9]+)\\]");
     private static final String[] TAG_COLORS = {
         "#fbcfe8", "#bfdbfe", "#bbf7d0", "#fde68a", "#ddd6fe", "#fed7aa"
     };
-    private static final String BASE_MESSAGE_STYLE = "-fx-background-radius: 12;"
-            + " -fx-border-radius: 12;"
+    private static final String BASE_MESSAGE_STYLE = "-fx-background-radius: 16;"
+            + " -fx-border-radius: 16;"
             + " -fx-border-width: 1;"
-            + " -fx-padding: 10;"
-            + " -fx-font-family: 'Verdana';"
+            + " -fx-padding: 11 13 11 13;"
+            + " -fx-font-family: 'Avenir Next';"
             + " -fx-font-size: 13;";
-    private static final String LARPER_MESSAGE_STYLE = "-fx-background-color: #f1f3f5;"
-            + " -fx-border-color: #d1d5db;"
+    private static final String LARPER_MESSAGE_STYLE = "-fx-background-color: #fffaf3;"
+            + " -fx-border-color: #e7d9c8;"
             + BASE_MESSAGE_STYLE;
-    private static final String USER_MESSAGE_STYLE = "-fx-background-color: #dbeafe;"
-            + " -fx-border-color: #60a5fa;"
+    private static final String USER_MESSAGE_STYLE = "-fx-background-color: #ead4c2;"
+            + " -fx-border-color: #c89a79;"
             + BASE_MESSAGE_STYLE;
+    private static final String ERROR_MESSAGE_STYLE = "-fx-background-color: #fff1f1;"
+            + " -fx-border-color: #e66b6b;"
+            + BASE_MESSAGE_STYLE
+            + " -fx-border-width: 1 1 1 4;";
+    private static final String ERROR_HEADER_STYLE = "-fx-text-fill: #9b2c2c;"
+            + " -fx-font-size: 11;"
+            + " -fx-font-weight: 800;";
+    private static final String ERROR_ICON_STYLE = "-fx-background-color: #d94a4a;"
+            + " -fx-background-radius: 999;"
+            + " -fx-text-fill: white;"
+            + " -fx-font-size: 10;"
+            + " -fx-font-weight: 800;"
+            + " -fx-alignment: center;";
+    private static final String MESSAGE_TEXT_FONT = "Avenir Next";
+    private static final String BANNER_TEXT_FONT = "Menlo";
+    private static final String TAG_CHIP_FONT = "Avenir Next";
 
     private final VBox text;
     private final ImageView displayPicture;
@@ -57,10 +75,7 @@ public class DialogBox extends HBox {
         text = createMessageBubble(message);
         text.setMinHeight(Region.USE_PREF_SIZE);
 
-        displayPicture = new ImageView(image);
-        displayPicture.setFitWidth(AVATAR_SIZE);
-        displayPicture.setFitHeight(AVATAR_SIZE);
-        displayPicture.setPreserveRatio(true);
+        displayPicture = createDisplayPicture(image);
 
         setSpacing(8);
         setPadding(new Insets(2, 0, 2, 0));
@@ -86,7 +101,7 @@ public class DialogBox extends HBox {
 
     private TextFlow createMessageLine(String messageLine) {
         TextFlow messageLineFlow = new TextFlow();
-        messageLineFlow.setPrefWidth(MESSAGE_WIDTH - 20);
+        messageLineFlow.setPrefWidth(MESSAGE_WIDTH - 26);
         messageLineFlow.setMinHeight(Region.USE_PREF_SIZE);
 
         Matcher matcher = TAG_PATTERN.matcher(messageLine);
@@ -97,6 +112,9 @@ public class DialogBox extends HBox {
             textStart = matcher.end();
         }
         addTextSegment(messageLineFlow, messageLine.substring(textStart));
+        if (isAsciiArtLine(messageLine)) {
+            setLineFont(messageLineFlow, Font.font(BANNER_TEXT_FONT, 13));
+        }
         return messageLineFlow;
     }
 
@@ -104,13 +122,13 @@ public class DialogBox extends HBox {
         if (textSegment.isEmpty()) {
             if (messageLine.getChildren().isEmpty()) {
                 Text blankText = new Text(" ");
-                blankText.setFont(Font.font("Verdana", 13));
+                blankText.setFont(Font.font(MESSAGE_TEXT_FONT, 13));
                 messageLine.getChildren().add(blankText);
             }
             return;
         }
         Text text = new Text(textSegment);
-        text.setFont(Font.font("Verdana", 13));
+        text.setFont(Font.font(MESSAGE_TEXT_FONT, 13));
         messageLine.getChildren().add(text);
     }
 
@@ -124,9 +142,9 @@ public class DialogBox extends HBox {
     static String getTagChipStyle(String tag) {
         int colorIndex = Math.floorMod(tag.toLowerCase().hashCode(), TAG_COLORS.length);
         return "-fx-background-color: " + TAG_COLORS[colorIndex] + ";"
-                + " -fx-background-radius: 6;"
-                + " -fx-padding: 2 5 2 5;"
-                + " -fx-font-family: 'Verdana';"
+                + " -fx-background-radius: 7;"
+                + " -fx-padding: 2 6 2 6;"
+                + " -fx-font-family: '" + TAG_CHIP_FONT + "';"
                 + " -fx-font-size: 12;";
     }
 
@@ -141,6 +159,8 @@ public class DialogBox extends HBox {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.setAlignment(Pos.CENTER_RIGHT);
         dialogBox.text.setStyle(USER_MESSAGE_STYLE);
+        dialogBox.text.setMaxWidth(330);
+        dialogBox.setMessageTextFill(Color.web("#3f2b24"));
         assert dialogBox.getAlignment() == Pos.CENTER_RIGHT : "User dialog should be aligned to the right.";
         return dialogBox;
     }
@@ -155,8 +175,26 @@ public class DialogBox extends HBox {
     public static DialogBox getLarperDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.text.setStyle(LARPER_MESSAGE_STYLE);
+        dialogBox.setMessageTextFill(Color.web("#4a3a33"));
         dialogBox.flip();
         assert dialogBox.getAlignment() == Pos.CENTER_LEFT : "Larper dialog should be aligned to the left.";
+        return dialogBox;
+    }
+
+    /**
+     * Returns a dialog box aligned and styled for an error message.
+     *
+     * @param message Error text returned by Larper.
+     * @param image Larper display picture.
+     * @return Dialog box for the error message.
+     */
+    public static DialogBox getErrorDialog(String message, Image image) {
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.text.setStyle(ERROR_MESSAGE_STYLE);
+        dialogBox.setMessageTextFill(Color.web("#7a2c2c"));
+        dialogBox.addErrorHeader();
+        dialogBox.flip();
+        assert dialogBox.getAlignment() == Pos.CENTER_LEFT : "Error dialog should be aligned to the left.";
         return dialogBox;
     }
 
@@ -169,5 +207,61 @@ public class DialogBox extends HBox {
         ObservableList<Node> nodes = FXCollections.observableArrayList(getChildren());
         FXCollections.reverse(nodes);
         getChildren().setAll(nodes);
+    }
+
+    private void addErrorHeader() {
+        Label icon = new Label("!");
+        icon.setMinSize(18, 18);
+        icon.setPrefSize(18, 18);
+        icon.setStyle(ERROR_ICON_STYLE);
+
+        Label title = new Label("Command issue");
+        title.setStyle(ERROR_HEADER_STYLE);
+
+        HBox header = new HBox(6, icon, title);
+        header.setAlignment(Pos.CENTER_LEFT);
+        text.getChildren().add(0, header);
+    }
+
+    private void setMessageTextFill(Color color) {
+        assert color != null : "Message text color should not be null.";
+        for (Node line : text.getChildren()) {
+            if (line instanceof TextFlow messageLine) {
+                setLineTextFill(messageLine, color);
+            }
+        }
+    }
+
+    private void setLineTextFill(TextFlow messageLine, Color color) {
+        for (Node child : messageLine.getChildren()) {
+            if (child instanceof Text textNode) {
+                textNode.setFill(color);
+            }
+        }
+    }
+
+    private void setLineFont(TextFlow messageLine, Font font) {
+        assert font != null : "Message text font should not be null.";
+        for (Node child : messageLine.getChildren()) {
+            if (child instanceof Text textNode) {
+                textNode.setFont(font);
+            }
+        }
+    }
+
+    private boolean isAsciiArtLine(String messageLine) {
+        return !messageLine.isBlank()
+                && !messageLine.chars().anyMatch(Character::isLetterOrDigit)
+                && messageLine.matches(".*[_|/\\\\].*");
+    }
+
+    private ImageView createDisplayPicture(Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(AVATAR_SIZE);
+        imageView.setFitHeight(AVATAR_SIZE);
+        imageView.setPreserveRatio(false);
+        imageView.setSmooth(true);
+        imageView.setClip(new Circle(AVATAR_SIZE / 2.0, AVATAR_SIZE / 2.0, AVATAR_SIZE / 2.0));
+        return imageView;
     }
 }

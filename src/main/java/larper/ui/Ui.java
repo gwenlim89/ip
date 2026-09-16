@@ -162,6 +162,23 @@ public class Ui {
     }
 
     /**
+     * Returns a compact guide to the supported commands.
+     */
+    public static String formatHelpMessage() {
+        return " Commands Larper understands:\n"
+                + " todo DESCRIPTION\n"
+                + " deadline DESCRIPTION /by DATE TIME\n"
+                + " event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME\n"
+                + " list\n"
+                + " mark NUMBER / unmark NUMBER\n"
+                + " delete NUMBER\n"
+                + " find, then enter a search phrase\n"
+                + " find tag TAG\n"
+                + " tag NUMBER TAG / untag NUMBER TAG\n"
+                + " exit";
+    }
+
+    /**
      * Returns Larper's exit message.
      */
     public static String formatExitMessage() {
