@@ -8,6 +8,6 @@ public class NonNumberDeleteException extends LarperException {
      * Creates an exception for delete commands that do not provide a number.
      */
     public NonNumberDeleteException() {
-        super(" Deletion needs a number, not keyboard confetti.");
+        super(" Deletion needs a number. Reputation management requires specifics.");
     }
 }

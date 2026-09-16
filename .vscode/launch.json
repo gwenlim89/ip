@@ -3,17 +3,22 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launcher",
+            "name": "Run Larper Console",
             "request": "launch",
-            "mainClass": "larper.Launcher",
-            "projectName": "ip"
+            "mainClass": "larper.Larper",
+            "projectName": "ip",
+            "classPaths": [
+                "${workspaceFolder}/bin"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
         },
         {
             "type": "java",
-            "name": "Run Larper",
+            "name": "Run Larper GUI",
             "request": "launch",
-            "mainClass": "larper.Larper",
-            "cwd": "${workspaceFolder}"
+            "mainClass": "larper.Launcher",
+            "projectName": "ip"
         }
     ]
 }

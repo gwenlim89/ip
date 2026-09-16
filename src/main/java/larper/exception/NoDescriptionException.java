@@ -10,6 +10,6 @@ public class NoDescriptionException extends LarperException {
      * Creates an exception for task commands without a usable description.
      */
     public NoDescriptionException() {
-        super(" Larper needs the actual task before we start yapping.\n" + CommandHelp.INPUT_FORMATS);
+        super(" Insufficient lore. Give me the actual task first.\n" + CommandHelp.INPUT_FORMATS);
     }
 }

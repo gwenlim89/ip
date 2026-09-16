@@ -215,7 +215,7 @@ public class DialogBox extends HBox {
         icon.setPrefSize(18, 18);
         icon.setStyle(ERROR_ICON_STYLE);
 
-        Label title = new Label("Command issue");
+        Label title = new Label("Reality check");
         title.setStyle(ERROR_HEADER_STYLE);
 
         HBox header = new HBox(6, icon, title);

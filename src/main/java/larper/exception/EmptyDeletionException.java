@@ -8,6 +8,6 @@ public class EmptyDeletionException extends LarperException {
      * Creates an exception for deleting from an empty task list.
      */
     public EmptyDeletionException() {
-        super(" Quest log is empty. Nothing to delete here!!!");
+        super(" The agenda is empty. There is no evidence to erase.");
     }
 }

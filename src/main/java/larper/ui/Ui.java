@@ -158,14 +158,17 @@ public class Ui {
      * Returns Larper's greeting and command prompt.
      */
     public static String formatWelcomeMessage() {
-        return BANNER + "Larper has entered the chat.\n\n Drop a command. Let's lock in.\n\n";
+        return BANNER + "Larper has entered the chat.\n\n"
+                + " Productivity expert (allegedly).\n"
+                + " Let's get productive. Or at least look productive.\n\n"
+                + " Drop a command.\n\n";
     }
 
     /**
      * Returns a compact guide to the supported commands.
      */
     public static String formatHelpMessage() {
-        return " Commands Larper understands:\n"
+        return " Commands Larper understands (allegedly):\n"
                 + " todo DESCRIPTION\n"
                 + " deadline DESCRIPTION /by DATE TIME\n"
                 + " event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME\n"
@@ -182,7 +185,7 @@ public class Ui {
      * Returns Larper's exit message.
      */
     public static String formatExitMessage() {
-        return " Aight, Larper is logging off. Come back with more quests soon.";
+        return " Aight, I'm clocking out. Continue larping productivity without me.";
     }
 
     /**
@@ -194,23 +197,23 @@ public class Ui {
                 .mapToObj(index -> " " + (index + 1) + ". " + tasks.getTask(index + 1))
                 .collect(Collectors.joining("\n"));
         if (formattedTasks.isEmpty()) {
-            return " Quest log check:";
+            return " The agenda is empty. Suspiciously peaceful.";
         }
-        return " Quest log check:\n" + formattedTasks;
+        return " The current agenda (very serious):\n" + formattedTasks;
     }
 
     /**
      * Returns the prompt that asks what phrase to find.
      */
     public static String formatFindPrompt() {
-        return " What phrase are we hunting for?";
+        return " Drop the keywords. I'll find the receipts.";
     }
 
     /**
      * Returns the message for a tag command without a valid task number.
      */
     public static String formatInvalidTagNumber() {
-        return " Give me a real task number to tag. I cannot label thin air.";
+        return " Give me a real task number to label. I cannot curate thin air.";
     }
 
     /**
@@ -221,7 +224,7 @@ public class Ui {
         String formattedResults = results.stream()
                 .map(result -> " " + result)
                 .collect(Collectors.joining("\n"));
-        return " Found it. Receipts below:\n" + formattedResults;
+        return " Caught in 4K. Here's what I found:\n" + formattedResults;
     }
 
     /**
@@ -234,7 +237,7 @@ public class Ui {
     public static String formatTaggedTask(int taskNumber, Task task) {
         assert taskNumber >= 1 : "Tagged task number should be positive.";
         assert task != null : "Tagged task formatter should receive the updated task.";
-        return " Tagged task " + taskNumber + ":\n " + task;
+        return " Labeled task " + taskNumber + ". Personal brand curated:\n " + task;
     }
 
     /**
@@ -247,28 +250,28 @@ public class Ui {
     public static String formatUntaggedTask(int taskNumber, Task task) {
         assert taskNumber >= 1 : "Untagged task number should be positive.";
         assert task != null : "Untagged task formatter should receive the updated task.";
-        return " Untagged task " + taskNumber + ":\n " + task;
+        return " Rebranded task " + taskNumber + ". Removed that label:\n " + task;
     }
 
     /**
      * Returns the message for a mark command without a valid task number.
      */
     public static String formatInvalidMarkNumber() {
-        return " Give me a real task number to mark. I cannot lock onto thin air.";
+        return " Give me a real task number to mark. I cannot verify imaginary productivity.";
     }
 
     /**
      * Returns the message for an unmark command without a valid task number.
      */
     public static String formatInvalidUnmarkNumber() {
-        return " Give me a real task number to unmark. I cannot unlock mystery tasks.";
+        return " Give me a real task number to unmark. I cannot retract mystery progress.";
     }
 
     /**
      * Returns the message for a command that refers to a task number not in the list.
      */
     public static String formatMissingTaskNumber() {
-        return " That task number is not in the quest log.";
+        return " That task literally does not exist.";
     }
 
     /**
@@ -277,7 +280,7 @@ public class Ui {
     public static String formatMarkedTask(Task task) {
         assert task != null : "Marked task formatter should receive the marked task.";
         assert task.isDone() : "Marked task formatter should receive a done task.";
-        return " Locked in. This task is done now:\n " + task;
+        return " Wait. Actual productivity? Locked in:\n " + task;
     }
 
     /**
@@ -286,7 +289,7 @@ public class Ui {
     public static String formatUnmarkedTask(Task task) {
         assert task != null : "Unmarked task formatter should receive the unmarked task.";
         assert !task.isDone() : "Unmarked task formatter should receive a not-done task.";
-        return " Back on the grind pile:\n " + task;
+        return " False alarm. Back to larping productivity:\n " + task;
     }
 
     /**
@@ -295,7 +298,7 @@ public class Ui {
     public static String formatDeletedTask(Task task, int taskCount) {
         assert task != null : "Deleted task formatter should receive the removed task.";
         assert taskCount >= 0 : "Task count should not be negative after deletion.";
-        return " Poof, gone from the quest log:\n " + task + "\n" + formatTaskCount(taskCount);
+        return " Removed from the record. We control the narrative:\n " + task + "\n" + formatTaskCount(taskCount);
     }
 
     /**
@@ -304,7 +307,8 @@ public class Ui {
     public static String formatAddedTask(Task task, int taskCount) {
         assert task != null : "Added task formatter should receive the added task.";
         assert taskCount >= 1 : "Task count should include the newly added task.";
-        return " Say less. I've added this quest:\n " + task + "\n" + formatTaskCount(taskCount);
+        return " Say less. Adding it to the agenda so we can feel productive:\n "
+                + task + "\n" + formatTaskCount(taskCount);
     }
 
     /**
@@ -316,7 +320,7 @@ public class Ui {
 
     private static String formatTaskCount(int taskCount) {
         assert taskCount >= 0 : "Task count should never be negative.";
-        String taskWord = taskCount == 1 ? "task" : "tasks";
-        return " Quest log now has " + taskCount + " " + taskWord + ".";
+        String commitmentWord = taskCount == 1 ? "commitment" : "commitments";
+        return " Agenda now has " + taskCount + " public " + commitmentWord + ".";
     }
 }

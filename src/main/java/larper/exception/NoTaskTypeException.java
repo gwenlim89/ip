@@ -10,6 +10,6 @@ public class NoTaskTypeException extends LarperException {
      * Creates an exception for input that does not identify a supported task type.
      */
     public NoTaskTypeException() {
-        super(" oh watchu yapping on, give Larper a real command\n" + CommandHelp.INPUT_FORMATS);
+        super(" Source: you made that command up.\n" + CommandHelp.INPUT_FORMATS);
     }
 }

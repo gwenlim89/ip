@@ -39,7 +39,9 @@ public class LarperTest {
                 + "|_____|  \\__,_| |_|    | .__/   \\___| |_|\n"
                 + "                       |_|\n"
                 + "Larper has entered the chat.\n\n"
-                + " Drop a command. Let's lock in.", larper.getWelcomeMessage());
+                + " Productivity expert (allegedly).\n"
+                + " Let's get productive. Or at least look productive.\n\n"
+                + " Drop a command.", larper.getWelcomeMessage());
     }
 
     @Test
@@ -51,14 +53,14 @@ public class LarperTest {
         LarperResponse exitResponse = larper.getResponse("exit");
 
         assertFalse(addResponse.isExit());
-        assertEquals(" Say less. I've added this quest:\n"
+        assertEquals(" Say less. Adding it to the agenda so we can feel productive:\n"
                 + " [T][ ] read book\n"
-                + " Quest log now has 1 task.", addResponse.getMessage());
+                + " Agenda now has 1 public commitment.", addResponse.getMessage());
         assertFalse(listResponse.isExit());
-        assertEquals(" Quest log check:\n"
+        assertEquals(" The current agenda (very serious):\n"
                 + " 1. [T][ ] read book", listResponse.getMessage());
         assertTrue(exitResponse.isExit());
-        assertEquals(" Aight, Larper is logging off. Come back with more quests soon.",
+        assertEquals(" Aight, I'm clocking out. Continue larping productivity without me.",
                 exitResponse.getMessage());
     }
 
@@ -104,9 +106,10 @@ public class LarperTest {
 
         assertFalse(response.isExit());
         assertTrue(response.isError());
-        assertEquals(" Unknown command: `delet`\n"
+        assertEquals(" Minor misinformation detected.\n"
+                + " Unknown command: `delet`\n"
                 + " Did you mean `delete 2`?\n\n"
-                + " Type `help` for commands.", response.getMessage());
+                + " Type `help` before freelancing syntax.", response.getMessage());
     }
 
     @Test
@@ -118,7 +121,7 @@ public class LarperTest {
 
         assertFalse(response.isExit());
         assertTrue(response.isError());
-        assertEquals(" That task number is not in the quest log.", response.getMessage());
+        assertEquals(" That task literally does not exist.", response.getMessage());
     }
 
     @Test
@@ -130,9 +133,9 @@ public class LarperTest {
         LarperResponse findResponse = larper.getResponse("READ BOOK");
 
         assertFalse(promptResponse.isExit());
-        assertEquals(" What phrase are we hunting for?", promptResponse.getMessage());
+        assertEquals(" Drop the keywords. I'll find the receipts.", promptResponse.getMessage());
         assertFalse(findResponse.isExit());
-        assertEquals(" Found it. Receipts below:\n"
+        assertEquals(" Caught in 4K. Here's what I found:\n"
                 + " [T][ ] read book (task no: 1)", findResponse.getMessage());
     }
 
@@ -146,11 +149,11 @@ public class LarperTest {
         larper.getResponse("mark 1");
         LarperResponse untagResponse = larper.getResponse("untag 1 #school");
 
-        assertEquals(" Tagged task 1:\n"
+        assertEquals(" Labeled task 1. Personal brand curated:\n"
                 + " [T][ ] prepare slides [#school] [#urgent]", tagResponse.getMessage());
-        assertEquals(" Found it. Receipts below:\n"
+        assertEquals(" Caught in 4K. Here's what I found:\n"
                 + " [T][ ] prepare slides [#school] [#urgent] (task no: 1)", findResponse.getMessage());
-        assertEquals(" Untagged task 1:\n"
+        assertEquals(" Rebranded task 1. Removed that label:\n"
                 + " [T][X] prepare slides [#urgent]", untagResponse.getMessage());
     }
 }

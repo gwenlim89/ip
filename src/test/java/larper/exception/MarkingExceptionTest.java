@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class MarkingExceptionTest {
     @Test
     public void getMessage_alreadyMarked_expectedMessage() {
-        assertEquals(" This task is already marked. Lock in and pick one that is not done yet.",
+        assertEquals(" This one is already done. No need to perform extra productivity.",
                 new MarkingException().getMessage());
     }
 }

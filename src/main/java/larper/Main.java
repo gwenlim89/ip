@@ -202,7 +202,7 @@ public class Main extends Application {
         historyIndex = 0;
 
         userInput = new TextField();
-        userInput.setPromptText("Type a command... (help for commands)");
+        userInput.setPromptText("Drop a command... (help for commands)");
         userInput.setOnAction(event -> handleUserInput());
         userInput.setOnKeyPressed(this::handleHistoryNavigation);
         userInput.setPrefHeight(INPUT_HEIGHT);
@@ -211,7 +211,7 @@ public class Main extends Application {
             userInput.setStyle(isFocused ? FOCUSED_INPUT_FIELD_STYLE : INPUT_FIELD_STYLE);
         });
 
-        sendButton = new Button("Send");
+        sendButton = new Button("Cook");
         sendButton.setOnAction(event -> handleUserInput());
         sendButton.setPrefWidth(SEND_BUTTON_WIDTH);
         sendButton.setPrefHeight(INPUT_HEIGHT);
@@ -234,12 +234,16 @@ public class Main extends Application {
         taskPanel.setMaxWidth(360);
         taskPanel.setStyle(PANEL_STYLE);
 
-        Label title = new Label("Tasks");
+        Label title = new Label("THE AGENDA");
         title.setStyle(TITLE_STYLE);
         taskCountLabel = new Label();
+        taskCountLabel.setWrapText(true);
+        taskCountLabel.setMaxWidth(Double.MAX_VALUE);
+        taskCountLabel.setMinHeight(Region.USE_PREF_SIZE);
         taskCountLabel.setStyle(SUBTITLE_STYLE);
 
         VBox header = new VBox(2, title, taskCountLabel);
+        header.setFillWidth(true);
         ScrollPane taskScrollPane = new ScrollPane(taskListContainer);
         taskScrollPane.setFitToWidth(true);
         taskScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -269,7 +273,7 @@ public class Main extends Application {
         VBox titleBlock = new VBox(1);
         Label title = new Label("Larper");
         title.setStyle("-fx-text-fill: #3f2b24; -fx-font-size: 15; -fx-font-weight: 800;");
-        Label subtitle = new Label("Quest log assistant");
+        Label subtitle = new Label("Productivity expert (allegedly)");
         subtitle.setStyle(SUBTITLE_STYLE);
         titleBlock.getChildren().addAll(title, subtitle);
 
@@ -360,7 +364,7 @@ public class Main extends Application {
         taskCountLabel.setText(formatTaskCount(taskSummaries.size()));
 
         if (taskSummaries.isEmpty()) {
-            Label emptyState = new Label("No tasks yet. Add one from the chat.");
+            Label emptyState = new Label("No public commitments yet. Declare one from the chat.");
             emptyState.setWrapText(true);
             emptyState.setStyle(EMPTY_TASK_STYLE);
             taskListContainer.getChildren().add(emptyState);
@@ -486,8 +490,16 @@ public class Main extends Application {
 
     private String formatTaskCount(int taskCount) {
         assert taskCount >= 0 : "Task count should not be negative.";
-        String taskWord = taskCount == 1 ? "task" : "tasks";
-        return taskCount + " " + taskWord + " in your list";
+        if (taskCount == 0) {
+            return "0 commitments. Suspiciously peaceful.";
+        }
+        if (taskCount == 1) {
+            return "1 commitment made";
+        }
+        if (taskCount >= 5) {
+            return taskCount + " commitments. Ambitious narrative.";
+        }
+        return taskCount + " commitments made";
     }
 
     private void rememberCommand(String input) {

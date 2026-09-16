@@ -9,7 +9,6 @@ public class NoFindExceptionTest {
     public void getMessage_noFind_expectedMessage() {
         NoFindException exception = new NoFindException();
 
-        assertEquals(" No match found. Larper checked the whole quest log, try another phrase.",
-                exception.getMessage());
+        assertEquals(" Yeah, I got nothing. The receipts do not exist.", exception.getMessage());
     }
 }

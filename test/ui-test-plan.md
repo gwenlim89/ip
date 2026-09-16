@@ -28,40 +28,43 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] read book
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] return book (by: Aug 23 2026)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
- Quest log now has 3 tasks.
+ Agenda now has 3 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][ ] read book
  2. [D][ ] return book (by: Aug 23 2026)
  3. [E][ ] meeting (from: Aug 24 2026 1400 to: Aug 25 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Locked in. This task is done now:
+ Wait. Actual productivity? Locked in:
  [D][X] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Back on the grind pile:
+ False alarm. Back to larping productivity:
  [D][ ] return book (by: Aug 23 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -87,11 +90,14 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Commands Larper understands:
+ Commands Larper understands (allegedly):
  todo DESCRIPTION
  deadline DESCRIPTION /by DATE TIME
  event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
@@ -104,13 +110,14 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  exit
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
+ Minor misinformation detected.
  Unknown command: `delet`
  Did you mean `delete 2`?
 
- Type `help` for commands.
+ Type `help` before freelancing syntax.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -143,48 +150,51 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] read book
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] return library book (by: Jun 06 2026)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [E][ ] book club (from: Aug 08 2026 1400 to: Aug 08 2026 1600)
- Quest log now has 3 tasks.
+ Agenda now has 3 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What phrase are we hunting for?
+ Drop the keywords. I'll find the receipts.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Found it. Receipts below:
+ Caught in 4K. Here's what I found:
  [T][ ] read book (task no: 1)
  [D][ ] return library book (by: Jun 06 2026) (task no: 2)
  [E][ ] book club (from: Aug 08 2026 1400 to: Aug 08 2026 1600) (task no: 3)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What phrase are we hunting for?
+ Drop the keywords. I'll find the receipts.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Found it. Receipts below:
+ Caught in 4K. Here's what I found:
  [D][ ] return library book (by: Jun 06 2026) (task no: 2)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What phrase are we hunting for?
+ Drop the keywords. I'll find the receipts.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- No match found. Larper checked the whole quest log, try another phrase.
+ Yeah, I got nothing. The receipts do not exist.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -224,20 +234,23 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] submit report (by: Oct 15 2019 1400)
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [D][ ] submit report (by: Oct 15 2019 1400)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -271,38 +284,41 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] project draft (by: Aug 06 2026 0930)
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] dinner (by: Feb 07 2026 1900)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] quiz (by: Sep 08 2026 1800)
- Quest log now has 3 tasks.
+ Agenda now has 3 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] typo check (by: Jan 09 2026 0800)
- Quest log now has 4 tasks.
+ Agenda now has 4 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [D][ ] project draft (by: Aug 06 2026 0930)
  2. [D][ ] dinner (by: Feb 07 2026 1900)
  3. [D][ ] quiz (by: Sep 08 2026 1800)
  4. [D][ ] typo check (by: Jan 09 2026 0800)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -339,33 +355,36 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] read book [#fun] [#school]
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] return book (by: Aug 23 2026) [#library]
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][ ] read book [#fun] [#school]
  2. [D][ ] return book (by: Aug 23 2026) [#library]
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- What phrase are we hunting for?
+ Drop the keywords. I'll find the receipts.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Found it. Receipts below:
+ Caught in 4K. Here's what I found:
  [T][ ] read book [#fun] [#school] (task no: 1)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -403,42 +422,45 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] prepare slides
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Tagged task 1:
+ Labeled task 1. Personal brand curated:
  [T][ ] prepare slides [#school] [#urgent]
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Found it. Receipts below:
+ Caught in 4K. Here's what I found:
  [T][ ] prepare slides [#school] [#urgent] (task no: 1)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Locked in. This task is done now:
+ Wait. Actual productivity? Locked in:
  [T][X] prepare slides [#school] [#urgent]
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Untagged task 1:
+ Rebranded task 1. Removed that label:
  [T][X] prepare slides [#urgent]
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][X] prepare slides [#urgent]
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper needs a tag name there. Try a one-word tag like #school.
+ Larper needs a tag name there. Try a one-word era like #school.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper needs a tag name there. Try a one-word tag like #school.
+ Larper needs a tag name there. Try a one-word era like #school.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -469,20 +491,23 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [E][ ] project sync (from: Feb 07 2026 1430 to: Sep 08 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -513,11 +538,14 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper needs the actual task before we start yapping.
+ Insufficient lore. Give me the actual task first.
  Please use one of these formats:
  todo DESCRIPTION
  deadline DESCRIPTION /by DATE TIME
@@ -526,16 +554,13 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
  Times: 2pm, 2:30pm, 1400, 14:00, or no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- oh watchu yapping on, give Larper a real command
- Please use one of these formats:
- todo DESCRIPTION
- deadline DESCRIPTION /by DATE TIME
- event DESCRIPTION /from START_DATE START_TIME /to END_DATE END_TIME
- Dates: 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
- Times: 2pm, 2:30pm, 1400, 14:00, or no time.
+ Source: you made that command up.
+ Unknown command: `what`
+
+ Type `help` before freelancing syntax.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -568,50 +593,53 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the deadline date, but the time is still undecided.
+ Larper found the deadline date, but the time is still allegedly missing.
  Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Where the date at? Larper needs the deadline date.
+ Missing lore. Larper needs the deadline date.
  Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
  Try: deadline DESCRIPTION /by 2019-10-15 1400
  Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Where the date at? Larper needs the deadline date.
+ Missing lore. Larper needs the deadline date.
  Dates can look like 2019-10-15, 2/12/2019, Aug 6, August 6th, or Monday.
  Try: deadline DESCRIPTION /by 2019-10-15 1400
  Or: event DESCRIPTION /from Aug 6 2pm /to Aug 6 4pm
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the event start date, but the time is still undecided.
+ Larper found the event start date, but the time is still allegedly missing.
  Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] return book (by: Mar 09 2026)
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Locked in. This task is done now:
+ Wait. Actual productivity? Locked in:
  [D][X] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- This task is already marked. Lock in and pick one that is not done yet.
+ This one is already done. No need to perform extra productivity.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Back on the grind pile:
+ False alarm. Back to larping productivity:
  [D][ ] return book (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- This task is already unmarked. Quit messing around and pick a done task.
+ This task is already unmarked. Productivity allegations were never confirmed.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -639,30 +667,33 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] larp
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Larper found the deadline date, but the time is still undecided.
+ Larper found the deadline date, but the time is still allegedly missing.
  Time is optional: add 2pm, 2:30pm, 1400, 14:00, or type no time.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] vnervn (by: Mar 09 2026)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][ ] larp
  2. [D][ ] vnervn (by: Mar 09 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -691,36 +722,39 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] alpha
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [D][ ] beta (by: Mar 09 2026)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
- Quest log now has 3 tasks.
+ Agenda now has 3 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Poof, gone from the quest log:
+ Removed from the record. We control the narrative:
  [D][ ] beta (by: Mar 09 2026)
- Quest log now has 2 tasks.
+ Agenda now has 2 public commitments.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][ ] alpha
  2. [E][ ] gamma (from: Mar 10 2026 1400 to: Mar 11 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -755,31 +789,34 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Say less. I've added this quest:
+ Say less. Adding it to the agenda so we can feel productive:
  [T][ ] alpha
- Quest log now has 1 task.
+ Agenda now has 1 public commitment.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Deletion needs a number, not keyboard confetti.
+ Deletion needs a number. Reputation management requires specifics.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- That delete number is out of bounds. Try again.
- You have 1 task(s), so pick from 1 to 1.
+ Citation needed. That delete number does not exist.
+ You have 1 public commitment(s), so pick from 1 to 1.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- That delete number is out of bounds. Try again.
- You have 1 task(s), so pick from 1 to 1.
+ Citation needed. That delete number does not exist.
+ You have 1 public commitment(s), so pick from 1 to 1.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][ ] alpha
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -804,14 +841,17 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log is empty. Nothing to delete here!!!
+ The agenda is empty. There is no evidence to erase.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -843,17 +883,20 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][X] read book
  2. [D][ ] return library book (by: Jun 06 2026)
  3. [E][ ] project meeting (from: Aug 08 2026 1400 to: Aug 08 2026 1600)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```
 
@@ -892,16 +935,19 @@ _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
                        |_|
 Larper has entered the chat.
 
- Drop a command. Let's lock in.
+ Productivity expert (allegedly).
+ Let's get productive. Or at least look productive.
+
+ Drop a command.
 
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Quest log check:
+ The current agenda (very serious):
  1. [T][X] read book
  2. [D][ ] return library book (by: Dec 02 2019 1800)
  3. [D][X] practise work (by: Jul 07 2026)
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
- Aight, Larper is logging off. Come back with more quests soon.
+ Aight, I'm clocking out. Continue larping productivity without me.
 _*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_
 ```

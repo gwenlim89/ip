@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class UnmarkingExceptionTest {
     @Test
     public void getMessage_alreadyUnmarked_expectedMessage() {
-        assertEquals(" This task is already unmarked. Quit messing around and pick a done task.",
+        assertEquals(" This task is already unmarked. Productivity allegations were never confirmed.",
                 new UnmarkingException().getMessage());
     }
 }

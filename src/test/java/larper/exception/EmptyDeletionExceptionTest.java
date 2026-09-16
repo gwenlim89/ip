@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 public class EmptyDeletionExceptionTest {
     @Test
     public void getMessage_emptyDeletion_expectedMessage() {
-        assertEquals(" Quest log is empty. Nothing to delete here!!!", new EmptyDeletionException().getMessage());
+        assertEquals(" The agenda is empty. There is no evidence to erase.",
+                new EmptyDeletionException().getMessage());
     }
 }

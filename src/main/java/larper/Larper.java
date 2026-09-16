@@ -279,13 +279,16 @@ public class Larper {
         String normalizedCommandWord = commandWord.toLowerCase();
         String suggestion = findSuggestedCommand(normalizedCommandWord);
         if (suggestion.isEmpty()) {
-            return " Unknown command: `" + commandWord + "`\n\nType `help` for commands.";
+            return " Source: you made that command up.\n"
+                    + " Unknown command: `" + commandWord + "`\n\n"
+                    + " Type `help` before freelancing syntax.";
         }
 
         String suggestedInput = suggestion + trimmedInput.substring(commandWord.length());
-        return " Unknown command: `" + commandWord + "`\n"
+        return " Minor misinformation detected.\n"
+                + " Unknown command: `" + commandWord + "`\n"
                 + " Did you mean `" + suggestedInput + "`?\n\n"
-                + " Type `help` for commands.";
+                + " Type `help` before freelancing syntax.";
     }
 
     private String findSuggestedCommand(String commandWord) {
