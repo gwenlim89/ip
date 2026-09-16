@@ -44,6 +44,17 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns a detached copy of this deadline task.
+     */
+    @Override
+    public Task copy() {
+        Deadline taskCopy = new Deadline(getDescription(), byDate, byTime);
+        taskCopy.addTags(getTags());
+        taskCopy.setDone(isDone());
+        return taskCopy;
+    }
+
+    /**
      * Returns this deadline in the storage file format.
      */
     @Override

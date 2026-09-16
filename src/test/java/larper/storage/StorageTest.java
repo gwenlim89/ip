@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -28,6 +29,7 @@ public class StorageTest {
         ArrayList<Task> tasks = storage.loadTasks();
 
         assertTrue(tasks.isEmpty());
+        assertTrue(storage.getSkippedLineNumbers().isEmpty());
     }
 
     @Test
@@ -143,6 +145,7 @@ public class StorageTest {
         assertEquals(2, tasks.size());
         assertEquals("[T][X] read book", tasks.get(0).toString());
         assertEquals("[D][ ] submit report (by: Oct 15 2019 1400)", tasks.get(1).toString());
+        assertEquals(List.of(2), storage.getSkippedLineNumbers());
     }
 
     @Test

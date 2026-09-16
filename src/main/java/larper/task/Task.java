@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  */
 public class Task {
     private static final Pattern VALID_TAG_PATTERN = Pattern.compile("[A-Za-z0-9]+");
+    private static final String FILE_FIELD_SEPARATOR = "|";
 
     private String description;
     private boolean isDone;
@@ -35,6 +36,9 @@ public class Task {
     public Task(String description, Collection<String> tags) {
         assert description != null && !description.isBlank() : "Task description should be provided before creation.";
         assert tags != null : "Task tags should be provided as an empty collection when there are none.";
+        if (description.contains(FILE_FIELD_SEPARATOR)) {
+            throw new IllegalArgumentException("Task descriptions cannot contain the storage field separator.");
+        }
         this.description = description;
         this.isDone = false;
         this.tags = new TreeSet<>();
@@ -138,6 +142,15 @@ public class Task {
      */
     public Set<String> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Returns a detached copy of this task.
+     */
+    public Task copy() {
+        Task taskCopy = new Task(description, tags);
+        taskCopy.setDone(isDone);
+        return taskCopy;
     }
 
     /**

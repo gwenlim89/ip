@@ -20,4 +20,15 @@ public class Todo extends Task {
     public String getTypeIcon() {
         return "T";
     }
+
+    /**
+     * Returns a detached copy of this todo task.
+     */
+    @Override
+    public Task copy() {
+        Todo taskCopy = new Todo(getDescription());
+        taskCopy.addTags(getTags());
+        taskCopy.setDone(isDone());
+        return taskCopy;
+    }
 }

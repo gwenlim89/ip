@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import larper.exception.InvalidDateException;
+import larper.exception.InvalidDescriptionException;
 import larper.exception.InvalidTagException;
 import larper.exception.InvalidTimeException;
 import larper.exception.NoDescriptionException;
@@ -158,6 +159,7 @@ public class ParserTest {
         assertThrows(NoDescriptionException.class, () -> parser.parseTask("deadline"));
         assertThrows(NoDescriptionException.class, () -> parser.parseTask("event"));
         assertThrows(NoDescriptionException.class, () -> parser.parseTask("todo read /by 2026-08-23"));
+        assertThrows(InvalidDescriptionException.class, () -> parser.parseTask("todo compare A | B"));
     }
 
     @Test

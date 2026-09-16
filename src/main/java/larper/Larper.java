@@ -29,6 +29,7 @@ public class Larper {
     private Parser parser;
     private Storage storage;
     private TaskList tasks;
+    private ArrayList<Integer> skippedDataLineNumbers;
     private boolean isWaitingForFindPhrase;
 
     /**
@@ -52,6 +53,7 @@ public class Larper {
      */
     public void run() {
         ui.showWelcome();
+        showDataWarningIfNeeded();
         while (ui.hasNextInput()) {
             String input = ui.readInput();
             ui.showLine();
@@ -69,7 +71,11 @@ public class Larper {
      * Returns Larper's welcome message for non-console user interfaces.
      */
     public String getWelcomeMessage() {
-        return Ui.formatWelcomeMessage().stripTrailing();
+        String welcomeMessage = Ui.formatWelcomeMessage().stripTrailing();
+        if (skippedDataLineNumbers.isEmpty()) {
+            return welcomeMessage;
+        }
+        return welcomeMessage + "\n\n" + formatSkippedDataLinesMessage();
     }
 
     /**
@@ -160,67 +166,77 @@ public class Larper {
     }
 
     private LarperResponse executeTagCommand(String input, boolean shouldRemove) throws LarperException {
-        int number = parser.parseTagTaskNumber(input);
-        if (number == -1) {
+        int taskNumber = parser.parseTagTaskNumber(input);
+        if (taskNumber == -1) {
             return createErrorResponse(Ui.formatInvalidTagNumber());
         }
-        if (!tasks.hasTaskNumber(number)) {
+        if (!tasks.hasTaskNumber(taskNumber)) {
             return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
         ArrayList<String> tagNames = parser.parseTagNames(input);
+        TaskList updatedTasks = tasks.copy();
         Task updatedTask = shouldRemove
-                ? tasks.untagTask(number, tagNames)
-                : tasks.tagTask(number, tagNames);
-        saveTasks();
+                ? updatedTasks.untagTask(taskNumber, tagNames)
+                : updatedTasks.tagTask(taskNumber, tagNames);
+        saveTasks(updatedTasks);
+        tasks = updatedTasks;
         String message = shouldRemove
-                ? Ui.formatUntaggedTask(number, updatedTask)
-                : Ui.formatTaggedTask(number, updatedTask);
+                ? Ui.formatUntaggedTask(taskNumber, updatedTask)
+                : Ui.formatTaggedTask(taskNumber, updatedTask);
         return createResponse(message);
     }
 
     private LarperResponse executeMarkCommand(String input) throws LarperException {
-        int number = parser.parseMarkNumber(input);
-        if (number == -1) {
+        int taskNumber = parser.parseMarkNumber(input);
+        if (taskNumber == -1) {
             return createErrorResponse(Ui.formatInvalidMarkNumber());
-        } else if (!tasks.hasTaskNumber(number)) {
+        } else if (!tasks.hasTaskNumber(taskNumber)) {
             return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
-        assert tasks.hasTaskNumber(number) : "Mark command should only run after task number validation.";
-        Task markedTask = tasks.markTask(number);
+        assert tasks.hasTaskNumber(taskNumber) : "Mark command should only run after task number validation.";
+        TaskList updatedTasks = tasks.copy();
+        Task markedTask = updatedTasks.markTask(taskNumber);
         assert markedTask.isDone() : "Marked task should be done after markTask succeeds.";
-        saveTasks();
+        saveTasks(updatedTasks);
+        tasks = updatedTasks;
         return createResponse(Ui.formatMarkedTask(markedTask));
     }
 
     private LarperResponse executeUnmarkCommand(String input) throws LarperException {
-        int number = parser.parseUnmarkNumber(input);
-        if (number == -1) {
+        int taskNumber = parser.parseUnmarkNumber(input);
+        if (taskNumber == -1) {
             return createErrorResponse(Ui.formatInvalidUnmarkNumber());
-        } else if (!tasks.hasTaskNumber(number)) {
+        } else if (!tasks.hasTaskNumber(taskNumber)) {
             return createErrorResponse(Ui.formatMissingTaskNumber());
         }
 
-        assert tasks.hasTaskNumber(number) : "Unmark command should only run after task number validation.";
-        Task unmarkedTask = tasks.unmarkTask(number);
+        assert tasks.hasTaskNumber(taskNumber) : "Unmark command should only run after task number validation.";
+        TaskList updatedTasks = tasks.copy();
+        Task unmarkedTask = updatedTasks.unmarkTask(taskNumber);
         assert !unmarkedTask.isDone() : "Unmarked task should not be done after unmarkTask succeeds.";
-        saveTasks();
+        saveTasks(updatedTasks);
+        tasks = updatedTasks;
         return createResponse(Ui.formatUnmarkedTask(unmarkedTask));
     }
 
     private String executeDeleteCommand(String input) throws LarperException {
-        int number = parser.parseDeleteNumber(input);
-        Task removedTask = tasks.deleteTask(number);
-        saveTasks();
-        return Ui.formatDeletedTask(removedTask, tasks.size());
+        int taskNumber = parser.parseDeleteNumber(input);
+        TaskList updatedTasks = tasks.copy();
+        Task removedTask = updatedTasks.deleteTask(taskNumber);
+        saveTasks(updatedTasks);
+        tasks = updatedTasks;
+        return Ui.formatDeletedTask(removedTask, updatedTasks.size());
     }
 
     private String executeAddCommand(String input) throws LarperException {
         Task task = parser.parseTask(input);
-        tasks.addTask(task);
-        saveTasks();
-        return Ui.formatAddedTask(task, tasks.size());
+        TaskList updatedTasks = tasks.copy();
+        updatedTasks.addTask(task);
+        saveTasks(updatedTasks);
+        tasks = updatedTasks;
+        return Ui.formatAddedTask(task, updatedTasks.size());
     }
 
     /**
@@ -243,9 +259,10 @@ public class Larper {
         return Path.of(dataPath);
     }
 
-    private void saveTasks() throws LarperException {
+    private void saveTasks(TaskList tasksToSave) throws LarperException {
+        assert tasksToSave != null : "Save should receive the task list state to persist.";
         try {
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasksToSave.getTasks());
         } catch (IOException e) {
             throw new LarperException(" Larper could not save the task list to the local data file.");
         }
@@ -253,10 +270,29 @@ public class Larper {
 
     private TaskList loadTasks() {
         try {
-            return new TaskList(storage.loadTasks());
+            TaskList loadedTasks = new TaskList(storage.loadTasks());
+            skippedDataLineNumbers = storage.getSkippedLineNumbers();
+            return loadedTasks;
         } catch (IOException e) {
+            skippedDataLineNumbers = new ArrayList<>();
             return new TaskList();
         }
+    }
+
+    private void showDataWarningIfNeeded() {
+        if (!skippedDataLineNumbers.isEmpty()) {
+            ui.showMessage(formatSkippedDataLinesMessage());
+        }
+    }
+
+    private String formatSkippedDataLinesMessage() {
+        String lineNumbers = skippedDataLineNumbers.stream()
+                .map(String::valueOf)
+                .reduce((first, second) -> first + ", " + second)
+                .orElse("");
+        return " Storage reality check.\n"
+                + " Larper skipped saved data line(s): " + lineNumbers + ".\n"
+                + " Fix the data file before changing tasks, because saving rewrites the loaded agenda.";
     }
 
     private LarperResponse createResponse(String message) {

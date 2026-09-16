@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import larper.exception.InvalidDateException;
+import larper.exception.InvalidDescriptionException;
 import larper.exception.InvalidTagException;
 import larper.exception.InvalidTimeException;
 import larper.exception.LarperException;
@@ -42,9 +43,6 @@ public class Parser {
     private static final String BY_MARKER = "/by";
     private static final String FROM_MARKER = "/from";
     private static final String TO_MARKER = "/to";
-    private static final String PENDING_DEADLINE = "deadline";
-    private static final String PENDING_EVENT_START = "event-start";
-    private static final String PENDING_EVENT_END = "event-end";
     private static final int EXPECTED_EVENT_SLASH_COUNT = 2;
     private static final Pattern DELETE_PATTERN = Pattern.compile("\\bdelete\\b\\s+(\\S+)");
     private static final Pattern DELETE_WORD_PATTERN = Pattern.compile("\\bdelete\\b");
@@ -256,7 +254,7 @@ public class Parser {
             throw new NoDescriptionException();
         }
         ParsedDescription parsedDescription = parseDescriptionAndTags(taskInfo);
-        ensureDescriptionPresent(parsedDescription.description);
+        ensureDescriptionCanBeSaved(parsedDescription.description);
         Todo task = new Todo(parsedDescription.description);
         task.addTags(parsedDescription.tags);
         return task;
@@ -266,15 +264,15 @@ public class Parser {
         String taskInfo = input.substring(DEADLINE_COMMAND_PREFIX.length()).trim();
         int byIndex = taskInfo.indexOf(BY_MARKER);
         if (byIndex == -1) {
-            throw new InvalidDateException(PENDING_DEADLINE);
+            throw new InvalidDateException("deadline");
         }
 
         ParsedDescription parsedDescription = parseDescriptionAndTags(taskInfo.substring(0, byIndex));
         String description = parsedDescription.description;
         String by = taskInfo.substring(byIndex + BY_MARKER.length()).trim();
-        ensureDescriptionPresent(description);
+        ensureDescriptionCanBeSaved(description);
 
-        TaskDateTime byDateTime = parseTaskDateTime(by, PENDING_DEADLINE, PENDING_DEADLINE,
+        TaskDateTime byDateTime = parseTaskDateTime(by, "deadline", PendingStage.DEADLINE,
                 description, null, null, parsedDescription.tags);
         Deadline task = new Deadline(description, byDateTime.getDate(), byDateTime.getTime());
         task.addTags(parsedDescription.tags);
@@ -293,12 +291,12 @@ public class Parser {
         String description = parsedDescription.description;
         String from = taskInfo.substring(fromIndex + FROM_MARKER.length(), toIndex).trim();
         String to = taskInfo.substring(toIndex + TO_MARKER.length()).trim();
-        ensureDescriptionPresent(description);
+        ensureDescriptionCanBeSaved(description);
         ensureEventHasExpectedMarkers(taskInfo);
 
-        TaskDateTime startDateTime = parseTaskDateTime(from, "event start", PENDING_EVENT_START,
+        TaskDateTime startDateTime = parseTaskDateTime(from, "event start", PendingStage.EVENT_START,
                 description, to, null, parsedDescription.tags);
-        TaskDateTime endDateTime = parseTaskDateTime(to, "event end", PENDING_EVENT_END,
+        TaskDateTime endDateTime = parseTaskDateTime(to, "event end", PendingStage.EVENT_END,
                 description, startDateTime.getDate().toString(), startDateTime.getTime(), parsedDescription.tags);
         Event task = new Event(description, startDateTime, endDateTime);
         task.addTags(parsedDescription.tags);
@@ -308,73 +306,107 @@ public class Parser {
     private Task completePendingTask(String input) throws LarperException {
         assert pendingTask != null : "Pending task completion should only run when a task is waiting for time.";
         String time = input.trim();
+        ensurePendingTimeIsValid(time);
+
+        PendingTask taskToComplete = removePendingTask();
+
+        if (taskToComplete.pendingStage == PendingStage.DEADLINE) {
+            return completePendingDeadline(taskToComplete, time);
+        }
+        if (taskToComplete.pendingStage == PendingStage.EVENT_START) {
+            return completePendingEventStart(taskToComplete, time);
+        }
+        if (taskToComplete.pendingStage == PendingStage.EVENT_END) {
+            return completePendingEventEnd(taskToComplete, time);
+        }
+
+        throw new NoTaskTypeException();
+    }
+
+    private void ensurePendingTimeIsValid(String time) throws InvalidTimeException {
         if (time.isEmpty() || !isValidTimeAnswer(time)) {
             throw new InvalidTimeException(pendingTask.waitingFor);
         }
+    }
 
+    private PendingTask removePendingTask() {
         PendingTask taskToComplete = pendingTask;
         pendingTask = null;
         assert taskToComplete.description != null && !taskToComplete.description.isBlank()
                 : "Pending task should preserve its original description.";
         assert taskToComplete.firstDate != null && !taskToComplete.firstDate.isBlank()
                 : "Pending task should preserve its parsed date.";
-
-        if (taskToComplete.type.equals(PENDING_DEADLINE)) {
-            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            Deadline task = new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
-                    normalizedTime);
-            task.addTags(taskToComplete.tags);
-            return task;
-        }
-
-        if (taskToComplete.type.equals(PENDING_EVENT_START)) {
-            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", PENDING_EVENT_END,
-                    taskToComplete.description, taskToComplete.firstDate, normalizedTime, taskToComplete.tags);
-            Event task = new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
-                    normalizedTime, endDateTime.getDate(), endDateTime.getTime());
-            task.addTags(taskToComplete.tags);
-            return task;
-        }
-
-        if (taskToComplete.type.equals(PENDING_EVENT_END)) {
-            String normalizedTime = TaskDateTimeParser.normalizeTime(time);
-            Event task = new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
-                    taskToComplete.secondDate, normalizedTime);
-            task.addTags(taskToComplete.tags);
-            return task;
-        }
-
-        throw new NoTaskTypeException();
+        return taskToComplete;
     }
 
-    private TaskDateTime parseTaskDateTime(String text, String label, String pendingType, String description,
+    private Task completePendingDeadline(PendingTask taskToComplete, String time) {
+        String normalizedTime = TaskDateTimeParser.normalizeTime(time);
+        Deadline task = new Deadline(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
+                normalizedTime);
+        task.addTags(taskToComplete.tags);
+        return task;
+    }
+
+    private Task completePendingEventStart(PendingTask taskToComplete, String time) throws LarperException {
+        String normalizedTime = TaskDateTimeParser.normalizeTime(time);
+        TaskDateTime endDateTime = parseTaskDateTime(taskToComplete.secondDate, "event end", PendingStage.EVENT_END,
+                taskToComplete.description, taskToComplete.firstDate, normalizedTime, taskToComplete.tags);
+        Event task = new Event(taskToComplete.description, LocalDate.parse(taskToComplete.firstDate),
+                normalizedTime, endDateTime.getDate(), endDateTime.getTime());
+        task.addTags(taskToComplete.tags);
+        return task;
+    }
+
+    private Task completePendingEventEnd(PendingTask taskToComplete, String time) {
+        String normalizedTime = TaskDateTimeParser.normalizeTime(time);
+        Event task = new Event(taskToComplete.description, taskToComplete.firstDate, taskToComplete.firstTime,
+                taskToComplete.secondDate, normalizedTime);
+        task.addTags(taskToComplete.tags);
+        return task;
+    }
+
+    private TaskDateTime parseTaskDateTime(String text, String label, PendingStage pendingStage, String description,
             String extraDate, String extraTime, ArrayList<String> tags)
             throws InvalidDateException, InvalidTimeException {
-        TaskDateTime taskDateTime;
-        try {
-            taskDateTime = TaskDateTimeParser.parse(text, "");
-        } catch (RuntimeException e) {
-            throw new InvalidDateException(label);
-        }
+        TaskDateTime taskDateTime = parseDateTimeOrThrow(text, label);
 
         if (taskDateTime.getTime().isEmpty()) {
-            if (pendingType.equals("event-end")) {
-                pendingTask = new PendingTask(pendingType, description, extraDate, extraTime,
-                        taskDateTime.getDate().toString(), label, tags);
-            } else {
-                pendingTask = new PendingTask(pendingType, description, taskDateTime.getDate().toString(),
-                        extraTime, extraDate, label, tags);
-            }
-            assert pendingTask != null : "Missing optional time should create a pending task.";
-            assert pendingTask.type.equals(pendingType)
-                    : "Pending task should remember the command type being completed.";
-            throw new InvalidTimeException(label);
+            handleMissingTime(taskDateTime, label, pendingStage, description, extraDate, extraTime, tags);
         }
 
         assert taskDateTime.getDate() != null : "Date-time parser should return a parsed date on success.";
         assert !taskDateTime.getTime().isEmpty() : "Date-time parser should return a time on success.";
         return taskDateTime;
+    }
+
+    private TaskDateTime parseDateTimeOrThrow(String text, String label) throws InvalidDateException {
+        try {
+            return TaskDateTimeParser.parse(text, "");
+        } catch (RuntimeException e) {
+            throw new InvalidDateException(label);
+        }
+    }
+
+    private void handleMissingTime(TaskDateTime taskDateTime, String label, PendingStage pendingStage,
+            String description, String extraDate, String extraTime, ArrayList<String> tags)
+            throws InvalidTimeException {
+        rememberPendingTask(taskDateTime, label, pendingStage, description, extraDate, extraTime, tags);
+        throw new InvalidTimeException(label);
+    }
+
+    private void rememberPendingTask(TaskDateTime taskDateTime, String label, PendingStage pendingStage,
+            String description,
+            String extraDate, String extraTime, ArrayList<String> tags) {
+        if (pendingStage == PendingStage.EVENT_END) {
+            pendingTask = new PendingTask(pendingStage, description, extraDate, extraTime,
+                    taskDateTime.getDate().toString(), label, tags);
+        } else {
+            pendingTask = new PendingTask(pendingStage, description, taskDateTime.getDate().toString(),
+                    extraTime, extraDate, label, tags);
+        }
+        assert pendingTask != null : "Missing optional time should create a pending task.";
+        assert pendingTask.pendingStage == pendingStage
+                : "Pending task should remember the command type being completed.";
     }
 
     private boolean isValidTimeAnswer(String text) {
@@ -390,9 +422,13 @@ public class Parser {
         return input.equals(TODO_COMMAND) || input.equals(DEADLINE_COMMAND) || input.equals(EVENT_COMMAND);
     }
 
-    private void ensureDescriptionPresent(String description) throws NoDescriptionException {
+    private void ensureDescriptionCanBeSaved(String description)
+            throws NoDescriptionException, InvalidDescriptionException {
         if (description.isEmpty()) {
             throw new NoDescriptionException();
+        }
+        if (description.contains("|")) {
+            throw new InvalidDescriptionException();
         }
     }
 
@@ -448,8 +484,14 @@ public class Parser {
         return input.substring(commandPrefix.length()).trim();
     }
 
+    private enum PendingStage {
+        DEADLINE,
+        EVENT_START,
+        EVENT_END
+    }
+
     private static class PendingTask {
-        private String type;
+        private PendingStage pendingStage;
         private String description;
         private String firstDate;
         private String firstTime;
@@ -457,12 +499,12 @@ public class Parser {
         private String waitingFor;
         private ArrayList<String> tags;
 
-        public PendingTask(String type, String description, String firstDate, String firstTime,
+        public PendingTask(PendingStage pendingStage, String description, String firstDate, String firstTime,
                 String secondDate, String waitingFor, ArrayList<String> tags) {
-            assert type != null && !type.isBlank() : "Pending task type should identify how to resume parsing.";
+            assert pendingStage != null : "Pending task stage should identify how to resume parsing.";
             assert waitingFor != null && !waitingFor.isBlank() : "Pending task should know which time is missing.";
             assert tags != null : "Pending task should preserve task tags while waiting for a time.";
-            this.type = type;
+            this.pendingStage = pendingStage;
             this.description = description;
             this.firstDate = firstDate;
             this.firstTime = firstTime;

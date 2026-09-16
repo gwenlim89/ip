@@ -76,6 +76,17 @@ public class Event extends Task {
     }
 
     /**
+     * Returns a detached copy of this event task.
+     */
+    @Override
+    public Task copy() {
+        Event taskCopy = new Event(getDescription(), startDate, startTime, endDate, endTime);
+        taskCopy.addTags(getTags());
+        taskCopy.setDone(isDone());
+        return taskCopy;
+    }
+
+    /**
      * Returns this event in the storage file format.
      */
     @Override

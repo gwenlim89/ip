@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -155,5 +156,42 @@ public class LarperTest {
                 + " [T][ ] prepare slides [#school] [#urgent] (task no: 1)", findResponse.getMessage());
         assertEquals(" Rebranded task 1. Removed that label:\n"
                 + " [T][X] prepare slides [#urgent]", untagResponse.getMessage());
+    }
+
+    @Test
+    public void getWelcomeMessage_malformedSavedLine_reportsSkippedLine() throws Exception {
+        Path dataFile = tempDir.resolve("larperdata.txt");
+        Files.writeString(dataFile, """
+                T | 0 | read book
+                not valid
+                """);
+
+        Larper larper = new Larper(dataFile);
+
+        assertTrue(larper.getWelcomeMessage().contains("Larper skipped saved data line(s): 2."));
+    }
+
+    @Test
+    public void getResponse_addWhenSaveFails_taskListUnchanged() {
+        Larper larper = new Larper(tempDir);
+
+        LarperResponse response = larper.getResponse("todo read book");
+
+        assertTrue(response.isError());
+        assertTrue(larper.getTaskSummaries().isEmpty());
+    }
+
+    @Test
+    public void getResponse_markWhenSaveFails_taskStatusUnchanged() throws Exception {
+        Path dataFile = tempDir.resolve("larperdata.txt");
+        Files.writeString(dataFile, "T | 0 | read book\n");
+        Larper larper = new Larper(dataFile);
+        Files.delete(dataFile);
+        Files.createDirectory(dataFile);
+
+        LarperResponse response = larper.getResponse("mark 1");
+
+        assertTrue(response.isError());
+        assertEquals(List.of("[T][ ] read book"), larper.getTaskSummaries());
     }
 }

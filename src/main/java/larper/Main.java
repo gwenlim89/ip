@@ -381,40 +381,70 @@ public class Main extends Application {
         assert taskSummary != null : "Task summary should not be null.";
         TaskDisplay task = parseTaskSummary(taskSummary);
 
+        Label numberLabel = createTaskNumberLabel(taskNumber);
+        VBox taskText = createTaskText(task);
+        return createTaskCardLayout(numberLabel, taskText, task.isDone);
+    }
+
+    private Label createTaskNumberLabel(int taskNumber) {
         Label numberLabel = new Label(String.valueOf(taskNumber));
         numberLabel.setMinSize(26, 26);
         numberLabel.setPrefSize(26, 26);
         numberLabel.setAlignment(Pos.CENTER);
         numberLabel.setStyle(TASK_NUMBER_STYLE);
+        return numberLabel;
+    }
 
+    private VBox createTaskText(TaskDisplay task) {
+        VBox taskText = new VBox(3, createTaskMetaRow(task), createTaskTitleLabel(task));
+        addSecondaryTextIfPresent(taskText, task);
+        return taskText;
+    }
+
+    private HBox createTaskCardLayout(Label numberLabel, VBox taskText, boolean isDone) {
+        HBox taskCard = new HBox(9, numberLabel, taskText);
+        taskCard.setAlignment(Pos.TOP_LEFT);
+        taskCard.setPadding(new Insets(8, 9, 8, 9));
+        taskCard.setStyle(isDone ? DONE_TASK_CARD_STYLE : TASK_CARD_STYLE);
+        HBox.setHgrow(taskText, Priority.ALWAYS);
+        return taskCard;
+    }
+
+    private HBox createTaskMetaRow(TaskDisplay task) {
+        HBox metaRow = new HBox(6, createTaskTypeLabel(task), createTaskStatusLabel(task));
+        metaRow.setAlignment(Pos.CENTER_LEFT);
+        return metaRow;
+    }
+
+    private Label createTaskTypeLabel(TaskDisplay task) {
         Label typeLabel = new Label(task.type);
         typeLabel.setStyle(task.isDone ? DONE_TASK_TYPE_STYLE : TASK_TYPE_STYLE);
+        return typeLabel;
+    }
 
+    private Label createTaskStatusLabel(TaskDisplay task) {
         Label statusLabel = new Label(task.isDone ? "Done" : "Open");
         statusLabel.setStyle(task.isDone ? DONE_TASK_STATUS_STYLE : TASK_STATUS_STYLE);
+        return statusLabel;
+    }
 
+    private Label createTaskTitleLabel(TaskDisplay task) {
         Label taskTitle = new Label(task.title);
         taskTitle.setWrapText(true);
         taskTitle.setMaxWidth(Double.MAX_VALUE);
         taskTitle.setStyle(task.isDone ? DONE_TASK_TITLE_STYLE : TASK_TITLE_STYLE);
+        return taskTitle;
+    }
 
-        HBox metaRow = new HBox(6, typeLabel, statusLabel);
-        metaRow.setAlignment(Pos.CENTER_LEFT);
-
-        VBox taskText = new VBox(3, metaRow, taskTitle);
-        if (!task.secondaryText.isBlank()) {
-            Label secondaryLabel = new Label(task.secondaryText);
-            secondaryLabel.setWrapText(true);
-            secondaryLabel.setStyle(task.isDone ? DONE_TASK_SECONDARY_STYLE : TASK_SECONDARY_STYLE);
-            taskText.getChildren().add(secondaryLabel);
+    private void addSecondaryTextIfPresent(VBox taskText, TaskDisplay task) {
+        if (task.secondaryText.isBlank()) {
+            return;
         }
 
-        HBox taskCard = new HBox(9, numberLabel, taskText);
-        taskCard.setAlignment(Pos.TOP_LEFT);
-        taskCard.setPadding(new Insets(8, 9, 8, 9));
-        taskCard.setStyle(task.isDone ? DONE_TASK_CARD_STYLE : TASK_CARD_STYLE);
-        HBox.setHgrow(taskText, Priority.ALWAYS);
-        return taskCard;
+        Label secondaryLabel = new Label(task.secondaryText);
+        secondaryLabel.setWrapText(true);
+        secondaryLabel.setStyle(task.isDone ? DONE_TASK_SECONDARY_STYLE : TASK_SECONDARY_STYLE);
+        taskText.getChildren().add(secondaryLabel);
     }
 
     private TaskDisplay parseTaskSummary(String taskSummary) {

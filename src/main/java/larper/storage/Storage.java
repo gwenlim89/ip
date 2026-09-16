@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import larper.task.Deadline;
@@ -21,6 +20,7 @@ import larper.task.Todo;
  */
 public class Storage {
     private Path filePath;
+    private ArrayList<Integer> skippedLineNumbers;
 
     /**
      * Creates storage that reads and writes the specified task data file.
@@ -30,6 +30,7 @@ public class Storage {
     public Storage(Path filePath) {
         assert filePath != null : "Storage should always receive a data file path.";
         this.filePath = filePath;
+        skippedLineNumbers = new ArrayList<>();
     }
 
     /**
@@ -63,23 +64,31 @@ public class Storage {
      */
     public ArrayList<Task> loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
+        skippedLineNumbers.clear();
         if (!Files.exists(filePath)) {
             return tasks;
         }
 
-        return Files.readAllLines(filePath, StandardCharsets.UTF_8).stream()
-                .filter(line -> !line.isBlank())
-                .map(this::parseTaskOrNull)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> lines = new ArrayList<>(Files.readAllLines(filePath, StandardCharsets.UTF_8));
+        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
+            String line = lines.get(lineIndex);
+            if (line.isBlank()) {
+                continue;
+            }
+            try {
+                tasks.add(parseTask(line));
+            } catch (RuntimeException e) {
+                skippedLineNumbers.add(lineIndex + 1);
+            }
+        }
+        return tasks;
     }
 
-    private Task parseTaskOrNull(String line) {
-        try {
-            return parseTask(line);
-        } catch (RuntimeException e) {
-            return null;
-        }
+    /**
+     * Returns the one-based line numbers skipped during the latest load.
+     */
+    public ArrayList<Integer> getSkippedLineNumbers() {
+        return new ArrayList<>(skippedLineNumbers);
     }
 
     private Task parseTask(String line) {

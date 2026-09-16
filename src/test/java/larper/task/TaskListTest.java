@@ -2,6 +2,7 @@ package larper.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import larper.exception.EmptyDeletionException;
 import larper.exception.InvalidNumberDeleteException;
-import larper.exception.MarkingException;
 import larper.exception.NoFindException;
-import larper.exception.UnmarkingException;
+import larper.exception.TaskAlreadyMarkedException;
+import larper.exception.TaskAlreadyUnmarkedException;
 
 public class TaskListTest {
     @Test
@@ -45,7 +46,11 @@ public class TaskListTest {
         assertEquals(2, taskList.size());
         assertSame(firstTask, taskList.getTask(1));
         assertSame(secondTask, taskList.getTask(2));
-        assertSame(tasks, taskList.getTasks());
+        assertEquals(tasks, taskList.getTasks());
+        assertNotSame(tasks, taskList.getTasks());
+
+        tasks.clear();
+        assertEquals(2, taskList.size());
     }
 
     @Test
@@ -193,9 +198,9 @@ public class TaskListTest {
         TaskList taskList = new TaskList();
         taskList.addTask(new Todo("read book"));
 
-        assertThrows(UnmarkingException.class, () -> taskList.unmarkTask(1));
+        assertThrows(TaskAlreadyUnmarkedException.class, () -> taskList.unmarkTask(1));
 
         taskList.markTask(1);
-        assertThrows(MarkingException.class, () -> taskList.markTask(1));
+        assertThrows(TaskAlreadyMarkedException.class, () -> taskList.markTask(1));
     }
 }

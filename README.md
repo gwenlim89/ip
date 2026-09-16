@@ -24,3 +24,14 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Acknowledgements
+
+- This project was built from the [SE-EDU Duke project template](https://github.com/se-edu/duke).
+- The JavaFX GUI structure was adapted from the
+  [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart1.html).
+- The user guide follows the structure recommended in the CS2103/T Week 6 iP instructions and uses the
+  [AddressBook Level 3 User Guide](https://se-education.org/addressbook-level3/UserGuide.html) as a formatting
+  benchmark.
+- Profile images are project assets stored in `src/main/resources/images`. If any of them were downloaded from an
+  external source, add the exact source here before final submission.
