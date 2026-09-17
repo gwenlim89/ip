@@ -33,5 +33,8 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 - The user guide follows the structure recommended in the CS2103/T Week 6 iP instructions and uses the
   [AddressBook Level 3 User Guide](https://se-education.org/addressbook-level3/UserGuide.html) as a formatting
   benchmark.
-- Profile images are project assets stored in `src/main/resources/images`. If any of them were downloaded from an
-  external source, add the exact source here before final submission.
+- The Larper avatar uses the [Trollface image][trollface-image], created by Carlos Ramirez.
+- The user avatar was adapted from this [Roblox character image][roblox-image].
+
+[trollface-image]: https://upload.wikimedia.org/wikipedia/en/7/73/Trollface.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original
+[roblox-image]: https://media.sketchfab.com/models/a86ea34c1bac433fb1e41918a2a9864f/thumbnails/26aef9c3f8f74b9d9674725164adf87b/a9ec07fca15a4e6b86b57bd2168259f2.jpeg

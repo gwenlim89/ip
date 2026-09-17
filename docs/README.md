@@ -304,5 +304,8 @@ Move `larper.jar` and the `data` folder to the new computer. Keep the same folde
 - This guide uses the
   [AddressBook Level 3 User Guide](https://se-education.org/addressbook-level3/UserGuide.html) as a structural
   reference and follows [GitHub's basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-- The Larper avatar uses [Trollface](https://commons.wikimedia.org/wiki/Category:Trollface), created by Carlos
-  Ramirez. The user avatar depicts the classic Roblox character design by Roblox Corporation.
+- The Larper avatar uses the [Trollface image][trollface-image], created by Carlos Ramirez.
+- The user avatar was adapted from this [Roblox character image][roblox-image].
+
+[trollface-image]: https://upload.wikimedia.org/wikipedia/en/7/73/Trollface.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original
+[roblox-image]: https://media.sketchfab.com/models/a86ea34c1bac433fb1e41918a2a9864f/thumbnails/26aef9c3f8f74b9d9674725164adf87b/a9ec07fca15a4e6b86b57bd2168259f2.jpeg
