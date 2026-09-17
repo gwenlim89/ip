@@ -1,333 +1,308 @@
 # Larper User Guide
 
-Larper is a desktop task manager for todos, deadlines, and events. It is optimized for typing commands quickly
-while still showing your current agenda in the GUI.
+Larper is a desktop task manager for todos, deadlines, and events. It combines fast, command-based input with a
+graphical agenda that keeps your tasks visible while you work.
 
-Larper's personality is simple: it is a productivity expert, allegedly.
+Larper is a productivity expert, allegedly.
+
+![Larper's two-column task and chat interface](Ui.png)
 
 ## Contents
 
 - [Quick start](#quick-start)
-- [Command format notes](#command-format-notes)
 - [Features](#features)
+  - [Command format](#command-format)
+  - [Viewing help: `help`](#viewing-help-help)
+  - [Adding a todo: `todo`](#adding-a-todo-todo)
+  - [Adding a deadline: `deadline`](#adding-a-deadline-deadline)
+  - [Adding an event: `event`](#adding-an-event-event)
+  - [Listing tasks: `list`](#listing-tasks-list)
+  - [Marking a task as done: `mark`](#marking-a-task-as-done-mark)
+  - [Marking a task as not done: `unmark`](#marking-a-task-as-not-done-unmark)
+  - [Deleting a task: `delete`](#deleting-a-task-delete)
+  - [Finding tasks by text: `find`](#finding-tasks-by-text-find)
+  - [Finding tasks by tag: `find tag`](#finding-tasks-by-tag-find-tag)
+  - [Adding tags: `tag`](#adding-tags-tag)
+  - [Removing tags: `untag`](#removing-tags-untag)
+  - [Exiting Larper: `exit`](#exiting-larper-exit)
+  - [Saving data](#saving-data)
+  - [Editing the data file](#editing-the-data-file)
+  - [Error handling](#error-handling)
 - [FAQ](#faq)
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
 - [Acknowledgements](#acknowledgements)
 
-## Quick Start
+---
+
+## Quick start
 
 1. Ensure that Java `25` or later is installed on your computer.
-2. Download the latest `larper.jar` file from the project's GitHub release page.
-3. Copy the JAR file to the folder you want to use as Larper's home folder.
+
+   macOS users should install the
+   [Java 25 JDK+FX distribution specified by the course](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+
+2. Download the latest `larper.jar` from the
+   [GitHub Releases page](https://github.com/gwenlim89/ip/releases).
+3. Place `larper.jar` in the folder you want to use as Larper's home folder.
 4. Open a terminal in that folder and run:
 
-   ```sh
+   ```shell
    java -jar larper.jar
    ```
 
-5. Type a command into the command box and press `Enter`.
-6. Type `help` to see the supported commands inside the app.
+5. Wait for the Larper window to appear.
+6. Type a command in the command box and press `Enter`, or select **Cook**.
 
-Example commands to try:
+Some commands to try:
 
-```text
-todo read lecture notes
-deadline submit iP /by 2026-09-18 2359
-event project meeting /from 2026-09-17 2pm /to 2026-09-17 4pm
-list
-```
+- `todo read lecture notes #school` adds a todo tagged `school`.
+- `deadline submit iP /by 2026-09-18 2359` adds a deadline.
+- `event project meeting /from 2026-09-19 2pm /to 2026-09-19 4pm` adds an event.
+- `list` shows all tasks in the chat.
+- `help` shows a compact command reference inside Larper.
 
-## Command Format Notes
+The left panel, **The Agenda**, displays task numbers, types, completion states, dates, and tags. The right panel
+contains your conversation with Larper. Both panels update after a command changes the task list.
 
-- Words in `UPPER_CASE` are parameters you should replace.
-- `NUMBER` means the task number shown in the agenda or task list.
-- `[OPTIONAL]` means that the part can be omitted.
-- `TAG...` means that one or more tags can be provided.
-- Tags are one-word labels. You may type them as `school` or `#school`.
-- Commands are case-sensitive. For example, use `todo`, not `Todo`.
-- Descriptions cannot contain `|`, because Larper uses that character to save task fields safely.
-- Dates can be typed as `2026-09-18`, `18/9/2026`, `18 Sep 2026`, `Sep 18 2026`, or a weekday
-  such as `friday`.
-- Times can be typed as `2359`, `23:59`, `2pm`, or `2:30pm`.
-- Use `no time` when a deadline or event date has no specific time.
+> [!TIP]
+> Press the up and down arrow keys in the command box to revisit commands from the current session. Turn
+> **Auto-scroll** off when you want to inspect an earlier message.
+
+---
 
 ## Features
 
-### Viewing Help: `help`
+### Command format
 
-Shows a compact list of commands Larper understands.
+- Words in `UPPER_CASE` are parameters supplied by you. For example, replace `DESCRIPTION` with `read notes`.
+- Items in square brackets are optional. For example, `todo DESCRIPTION [#TAG]...` works with or without a tag.
+- Items followed by `...` may be repeated. For example, `[#TAG]...` accepts `#school`, `#school #urgent`, or no tag.
+- `NUMBER` is the positive task number displayed in **The Agenda**. Task numbers can change after a task is deleted.
+- Commands are case-sensitive. Enter `todo`, not `Todo`.
+- A task description cannot contain `|` because Larper uses that character to separate saved fields.
+- Tags are one-word labels containing only letters and numbers.
+- When creating a task, include `#` before each tag. The `tag`, `untag`, and `find tag` commands accept tags with or
+  without `#`.
+- Dates accept formats such as `2026-09-18`, `18/9/2026`, `18 Sep 2026`, `Sep 18 2026`, and `friday`.
+- Times accept formats such as `2359`, `23:59`, `2pm`, and `2:30pm`. Enter `no time` when no specific time applies.
 
-Format:
+### Viewing help: `help`
 
-```text
-help
-```
+Shows a compact list of Larper's commands.
 
-### Adding A Todo: `todo`
+**Format:** `help`
 
-Adds a todo task without a date.
+### Adding a todo: `todo`
 
-Format:
+Adds a task without a date or time.
 
-```text
-todo DESCRIPTION [TAG...]
-```
+**Format:** `todo DESCRIPTION [#TAG]...`
 
-Examples:
+**Examples:**
 
-```text
-todo read lecture notes
-todo clean desk #home
-```
+- `todo read lecture notes` adds an untagged todo.
+- `todo clean desk #home` adds a todo tagged `home`.
+- `todo prepare slides #school #urgent` adds a todo with two tags.
 
-### Adding A Deadline: `deadline`
+### Adding a deadline: `deadline`
 
-Adds a task that must be done by a date, with an optional time.
+Adds a task that must be completed by a date and, optionally, a time.
 
-Format:
+**Format:** `deadline DESCRIPTION [#TAG]... /by DATE [TIME]`
 
-```text
-deadline DESCRIPTION [TAG...] /by DATE [TIME]
-```
+- `/by` must appear after the description and any tags.
+- If `TIME` is omitted, Larper asks for it. Reply with a supported time or `no time`.
 
-Examples:
+**Examples:**
 
-```text
-deadline submit iP /by 2026-09-18 2359
-deadline return library book #school /by 18 Sep 2026 no time
-```
+- `deadline submit iP /by 2026-09-18 2359` adds a deadline with a time.
+- `deadline return library book #personal /by 18 Sep 2026 no time` adds a deadline without a specific time.
 
-If you give a date but leave out the time, Larper will ask for the missing time. Reply with a supported time
-such as `2pm`, or type `no time`.
+### Adding an event: `event`
 
-### Adding An Event: `event`
+Adds a task that takes place between a start and an end date/time.
 
-Adds a task that happens from one date/time to another date/time.
+**Format:** `event DESCRIPTION [#TAG]... /from START_DATE [START_TIME] /to END_DATE [END_TIME]`
 
-Format:
+- `/from` and `/to` must appear in that order.
+- If a start or end time is omitted, Larper asks for it. Reply with a supported time or `no time`.
 
-```text
-event DESCRIPTION [TAG...] /from START_DATE [START_TIME] /to END_DATE [END_TIME]
-```
+**Examples:**
 
-Examples:
+- `event project meeting /from 2026-09-19 2pm /to 2026-09-19 4pm` adds a two-hour event.
+- `event workshop #school /from friday 9am /to friday 11am` adds a tagged event using a weekday.
 
-```text
-event project meeting /from 2026-09-17 2pm /to 2026-09-17 4pm
-event workshop #school /from friday 9am /to friday 11am
-```
+### Listing tasks: `list`
 
-If a start or end time is missing, Larper will ask for it. Reply with a supported time or `no time`.
+Shows every task in the chat. The same tasks remain visible in **The Agenda**.
 
-### Listing Tasks: `list`
+**Format:** `list`
 
-Shows every task in the current agenda.
+### Marking a task as done: `mark`
 
-Format:
+Marks an unfinished task as completed.
 
-```text
-list
-```
+**Format:** `mark NUMBER`
 
-### Marking A Task As Done: `mark`
+**Example:** `mark 2` marks task 2 as done.
 
-Marks a task as completed.
+### Marking a task as not done: `unmark`
 
-Format:
+Returns a completed task to its unfinished state.
 
-```text
-mark NUMBER
-```
+**Format:** `unmark NUMBER`
 
-Example:
+**Example:** `unmark 2` marks task 2 as not done.
 
-```text
-mark 2
-```
+### Deleting a task: `delete`
 
-### Marking A Task As Not Done: `unmark`
+Permanently removes the specified task from the agenda.
 
-Marks a completed task as not completed.
+**Format:** `delete NUMBER`
 
-Format:
+- The number must refer to an existing task.
+- Tasks after the deleted task receive new numbers.
 
-```text
-unmark NUMBER
-```
+**Example:** `delete 3` deletes task 3.
 
-Example:
+### Finding tasks by text: `find`
 
-```text
-unmark 2
-```
+Searches task descriptions for a phrase. It also returns a task when the entire search phrase exactly matches one of
+its tags. The search is case-insensitive.
 
-### Deleting A Task: `delete`
+**Format:**
 
-Deletes a task from the agenda.
+1. Enter `find`.
+2. Enter `SEARCH_PHRASE` when Larper prompts you.
 
-Format:
+**Example:** Enter `find`, then enter `project` to find tasks whose descriptions contain `project`.
 
-```text
-delete NUMBER
-```
+### Finding tasks by tag: `find tag`
 
-Example:
+Finds tasks containing an exact tag. The search is case-insensitive.
 
-```text
-delete 3
-```
+**Format:** `find tag TAG`
 
-### Finding Tasks By Text: `find`
+**Examples:**
 
-Searches task descriptions and exact tag text.
+- `find tag school`
+- `find tag #school`
 
-Format:
+Both examples find tasks tagged `school`.
 
-```text
-find
-SEARCH_PHRASE
-```
+### Adding tags: `tag`
 
-Example:
+Adds one or more tags to an existing task. Existing tags remain attached.
 
-```text
-find
-school
-```
+**Format:** `tag NUMBER TAG...`
 
-Larper first prompts for the search phrase, then shows matching tasks.
+**Examples:**
 
-### Finding Tasks By Tag: `find tag`
+- `tag 1 school` adds the `school` tag to task 1.
+- `tag 1 #school urgent` adds two tags to task 1.
 
-Searches for tasks with an exact tag.
-
-Format:
-
-```text
-find tag TAG
-```
-
-Examples:
-
-```text
-find tag school
-find tag #school
-```
-
-### Adding Tags: `tag`
-
-Adds one or more tags to an existing task.
-
-Format:
-
-```text
-tag NUMBER TAG...
-```
-
-Examples:
-
-```text
-tag 1 school
-tag 1 #school urgent
-```
-
-### Removing Tags: `untag`
+### Removing tags: `untag`
 
 Removes one or more tags from an existing task.
 
-Format:
+**Format:** `untag NUMBER TAG...`
 
-```text
-untag NUMBER TAG...
-```
+**Example:** `untag 1 urgent` removes the `urgent` tag from task 1.
 
-Example:
+### Exiting Larper: `exit`
 
-```text
-untag 1 urgent
-```
+Ends the current Larper session.
 
-### Exiting The App: `exit`
+**Format:** `exit`
 
-Exits Larper.
+In the GUI, the command box becomes disabled after `exit`. Close the window when you are done.
 
-Format:
+### Saving data
 
-```text
-exit
-```
+Larper automatically saves after `todo`, `deadline`, `event`, `mark`, `unmark`, `delete`, `tag`, and `untag`.
+You do not need to save manually.
 
-### Saving Data
-
-Larper saves the task list automatically after commands that change the agenda. The data file is stored at:
+Data is stored relative to Larper's home folder:
 
 ```text
 data/larperdata.txt
 ```
 
-If the data file is missing, Larper starts with an empty agenda and creates the file again when tasks are saved.
+If the file is missing, Larper starts with an empty agenda and creates the file when it next saves a task change.
 
-Advanced users may edit the data file directly, but invalid lines may be skipped when Larper loads the file
-again. Back up the file before editing it manually.
+### Editing the data file
 
-### Error Handling
+Advanced users may edit `data/larperdata.txt` directly while Larper is closed.
 
-Larper shows command errors as highlighted messages in the GUI. Examples of handled errors include:
+> [!CAUTION]
+> Back up the data file before editing it. Larper skips malformed lines when loading and warns you which lines were
+> skipped. Saving another task change rewrites the file using only the tasks that loaded successfully.
 
-- Unknown commands, such as `delet 2`
-- Missing task descriptions
-- Descriptions containing `|`
-- Invalid task numbers
-- Missing or invalid tags
-- Missing dates or times
-- Missing or malformed data files
+### Error handling
+
+Larper displays command errors as highlighted messages. It handles common problems such as unknown commands, missing
+descriptions, invalid task numbers, invalid tags, unsupported dates or times, and missing or malformed data files.
+
+---
 
 ## FAQ
 
-**Q: Do I need to save manually?**
+### Do I need to save manually?
 
-A: No. Larper saves automatically after commands such as `todo`, `deadline`, `event`, `mark`, `unmark`,
-`delete`, `tag`, and `untag`.
+No. Larper saves automatically after every command that changes the agenda.
 
-**Q: Can I use Larper from the terminal?**
+### Where do task numbers come from?
 
-A: Yes. The same command engine supports the console version and the JavaFX GUI.
+Use the number shown beside a task in **The Agenda**. Check the number again after deleting a task because the
+remaining tasks are renumbered.
 
-**Q: Why does Larper ask for a time after I enter a deadline or event?**
+### Why does Larper ask for a time after I enter a deadline or event?
 
-A: The date was understood, but the time was missing. Type a time such as `1400` or `2pm`, or type `no time`.
+Larper understood the date, but no time was provided. Enter a time such as `1400` or `2pm`, or enter `no time`.
 
-## Known Issues
+### How do I move my tasks to another computer?
+
+Move `larper.jar` and the `data` folder to the new computer. Keep the same folder structure so Larper can find
+`data/larperdata.txt`.
+
+---
+
+## Known issues
 
 1. Commands are case-sensitive.
-2. Tags can contain only one alphanumeric word.
-3. The GUI command box is designed for single-line commands.
+2. Tags can contain only letters and numbers, with no spaces or punctuation.
+3. The GUI command box accepts single-line commands only.
 
-## Command Summary
+---
 
-Action | Format | Example
---- | --- | ---
-Help | `help` | `help`
-Add todo | `todo DESCRIPTION [TAG...]` | `todo read notes #school`
-Add deadline | `deadline DESCRIPTION [TAG...] /by DATE [TIME]` | `deadline submit iP /by 2026-09-18 2359`
-Add event | `event DESCRIPTION [TAG...] /from START_DATE [START_TIME] /to END_DATE [END_TIME]` | `event meeting /from friday 2pm /to friday 4pm`
-List tasks | `list` | `list`
-Mark done | `mark NUMBER` | `mark 2`
-Mark not done | `unmark NUMBER` | `unmark 2`
-Delete task | `delete NUMBER` | `delete 3`
-Find text | `find`, then `SEARCH_PHRASE` | `find`, then `school`
-Find tag | `find tag TAG` | `find tag school`
-Add tags | `tag NUMBER TAG...` | `tag 1 school urgent`
-Remove tags | `untag NUMBER TAG...` | `untag 1 urgent`
-Exit | `exit` | `exit`
+## Command summary
+
+| Action | Format | Example |
+| --- | --- | --- |
+| View help | `help` | `help` |
+| Add todo | `todo DESCRIPTION [#TAG]...` | `todo read notes #school` |
+| Add deadline | `deadline DESCRIPTION [#TAG]... /by DATE [TIME]` | `deadline submit iP /by 2026-09-18 2359` |
+| Add event | `event DESCRIPTION [#TAG]... /from START_DATE [START_TIME] /to END_DATE [END_TIME]` | `event meeting #school /from friday 2pm /to friday 4pm` |
+| List tasks | `list` | `list` |
+| Mark as done | `mark NUMBER` | `mark 2` |
+| Mark as not done | `unmark NUMBER` | `unmark 2` |
+| Delete task | `delete NUMBER` | `delete 3` |
+| Find text | `find`, then `SEARCH_PHRASE` | `find`, then `project` |
+| Find tag | `find tag TAG` | `find tag school` |
+| Add tags | `tag NUMBER TAG...` | `tag 1 school urgent` |
+| Remove tags | `untag NUMBER TAG...` | `untag 1 urgent` |
+| Exit | `exit` | `exit` |
+
+---
 
 ## Acknowledgements
 
 - This project was built from the [SE-EDU Duke project template](https://github.com/se-edu/duke).
-- The JavaFX GUI structure was adapted from the [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart1.html).
-- This user guide follows the structure recommended in the CS2103/T Week 6 iP instructions and uses the
-  [AddressBook Level 3 User Guide](https://se-education.org/addressbook-level3/UserGuide.html) as a formatting
-  benchmark.
-- Profile images are project assets stored in `src/main/resources/images`. If any of them were downloaded from an
-  external source, add the exact source here before final submission.
+- The JavaFX GUI structure was adapted from the
+  [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart1.html).
+- This guide uses the
+  [AddressBook Level 3 User Guide](https://se-education.org/addressbook-level3/UserGuide.html) as a structural
+  reference and follows [GitHub's basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+- The Larper avatar uses [Trollface](https://commons.wikimedia.org/wiki/Category:Trollface), created by Carlos
+  Ramirez. The user avatar depicts the classic Roblox character design by Roblox Corporation.
